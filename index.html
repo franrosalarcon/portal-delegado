@@ -84,7 +84,7 @@ h1 em{font-family:var(--serif);font-style:italic;font-weight:400}
 .role:hover{border-color:#fff}
 .tabs{display:flex;gap:2px;margin-top:22px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{appearance:none;border:0;background:rgba(255,255,255,.08);color:#fff;font:500 13.5px/1 var(--sans);padding:14px 13px;cursor:pointer;white-space:nowrap;display:flex;gap:8px;align-items:center}
+.tab{appearance:none;border:0;background:rgba(255,255,255,.08);color:#fff;font:500 13.5px/1 var(--sans);padding:14px 12px;cursor:pointer;white-space:nowrap;display:flex;gap:8px;align-items:center}
 .tab:hover{background:rgba(255,255,255,.16)}
 .tab[aria-selected="true"]{background:var(--bg);color:var(--ink)}
 .tab .n{font-size:11px;font-weight:700;background:#ffe768;color:#1d1f21;padding:3px 6px;border-radius:999px;font-variant-numeric:tabular-nums}
@@ -389,6 +389,22 @@ main a:not(.btn),.foot a{color:var(--brand)}
 .secure b{color:inherit}
 .syncline{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13.5px}
 .hero-btn[hidden]{display:none}
+.rsgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.rsgrid .paper{max-width:none}
+@media (max-width:980px){.rsgrid{grid-template-columns:1fr}}
+.rpaper .ante{font:700 10.5px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#96234a;margin:0 0 6px}
+.rpaper .rt{font-family:"Montserrat",var(--sans);font-weight:700;font-size:21px;line-height:1.2;margin:0 0 6px;color:#1d1f21}
+.rpaper .rmeta{font-size:12px;color:#606263;margin:0 0 14px}
+.rpaper .callout{background:#f5e9ed;border-left:4px solid #96234a;padding:10px 14px;margin:0 0 14px;white-space:pre-wrap}
+.rpaper .callout b{display:block;font:700 10.5px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#96234a;margin-bottom:4px}
+.rpaper h5{font-family:"Montserrat",var(--sans);font-weight:700;font-size:13.5px;color:#96234a;margin:16px 0 6px}
+.rpaper ul,.rpaper ol{margin:0 0 10px;padding-left:22px}
+.rpaper li{margin:0 0 4px}
+.rpaper .rbox{background:#f2f2f2;padding:10px 14px;margin:14px 0 0}
+.rpaper .rbox b{display:block;font:700 10.5px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#606263;margin-bottom:6px}
+.rpaper .rbox ul{margin:0}
+main .rpaper a:not(.btn){color:#96234a;word-break:break-all}
+.rpaper .firma{font-size:11.5px;color:#606263;margin-top:18px;border-top:1px solid #e1e1e1;padding-top:8px}
 @media (max-width:760px){.hero-tools{position:static;margin-bottom:12px;flex-wrap:wrap}.hero-btn kbd{display:none}}
 @media (max-width:760px){
   .compose{grid-template-columns:1fr}
@@ -422,12 +438,12 @@ main a:not(.btn),.foot a{color:var(--brand)}
       <button class="tab" role="tab" data-t="asignaturas">Asignaturas <span class="n" id="n-asignaturas"></span></button>
       <button class="tab" role="tab" data-t="normativa">Normativa</button>
       <button class="tab" role="tab" data-t="redactar">Redactar</button>
+      <button class="tab" role="tab" data-t="resumenes">Resúmenes</button>
       <button class="tab" role="tab" data-t="actas">Reuniones</button>
       <button class="tab" role="tab" data-t="eventos">Eventos</button>
       <button class="tab" role="tab" data-t="encuestas">Encuestas</button>
       <button class="tab" role="tab" data-t="directorio">Quién es quién</button>
       <button class="tab" role="tab" data-t="wiki">Wiki</button>
-      <button class="tab" role="tab" data-t="ajustes">Ajustes</button>
     </nav>
   </div>
 </header>
@@ -1076,7 +1092,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>
 const BUILD="web";
 const LOGO_DEFAULT="";
-const LOCAL_VERSION="3 · 24 de octubre de 2026";
+const LOCAL_VERSION="4 · 25 de octubre de 2026";
 /* ===== núcleo: datos, utilidades, editor genérico ===== */
 const AMB={
   escuela:{label:'Escuela Politécnica',role:'Delegado',full:'Escuela Politécnica Superior de Tecnología y Ciencia',firma:'Delegado de Estudiantes de la Escuela Politécnica Superior de Tecnología y Ciencia'},
@@ -1084,9 +1100,9 @@ const AMB={
   curso:{label:'2º curso',role:'Delegado',full:'2º curso del Grado en Ingeniería Robótica e Inteligencia Artificial',firma:'Delegado de 2º curso del Grado en Ingeniería Robótica e Inteligencia Artificial'}
 };
 const ASIG_BASE=['Redes de Computadores','Fundamentos de Automática','Estadística','Sensores y Actuadores','Señales y Sistemas','Arquitectura de Computadores','Fundamentos de Bases de Datos','Estructura de Datos','Ingeniería y Sistemas de Control','Aspectos Profesionales de la Robótica','Matemática Discreta'];
-const COLS=['incidencias','evaluaciones','reuniones','tareas','contactos','wiki','encuestas','eventos','patrocinios','org','compromisos','enviados','asignaturas','horario','inventario','prestamos','participantes'];
+const COLS=['incidencias','evaluaciones','reuniones','tareas','contactos','wiki','encuestas','eventos','patrocinios','org','compromisos','enviados','asignaturas','horario','inventario','prestamos','participantes','resumenes'];
 const LIBS={chart:'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js',pdf:'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js',zip:'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'};
-const TABS=['inicio','incidencias','calendario','asignaturas','normativa','redactar','actas','eventos','encuestas','directorio','wiki','ajustes'];
+const TABS=['inicio','incidencias','calendario','asignaturas','normativa','redactar','resumenes','actas','eventos','encuestas','directorio','wiki','ajustes'];
 
 const D={};COLS.forEach(c=>D[c]=[]);
 const LOADED={};COLS.forEach(c=>LOADED[c]=false);
@@ -1457,6 +1473,7 @@ MODS.inicio={
         <button class="btn" data-act="lastActa">Acta de la última reunión</button>
         <button class="btn" data-act="go" data-t="encuestas" data-state='{"mode":"rapida"}'>Lanzar encuesta rápida</button>
         <button class="btn" data-act="liveNew">Reunión en directo</button>
+        <button class="btn" data-act="go" data-t="resumenes" data-state='{"sel":"nuevo"}'>Resumir una charla</button>
         <button class="btn" data-act="go" data-t="normativa">Comprobar un plazo</button>
       </div></div>
       <div id="slot-alerts"></div>
@@ -1854,7 +1871,7 @@ MODS.redactar={
     const groups={};Object.entries(TPLS).forEach(([k,t])=>(groups[t.group]=groups[t.group]||[]).push([k,t]));
     root.innerHTML=`<div class="head"><div><div class="kicker">Redactar</div><h2>Plantillas <em>inteligentes</em></h2><p class="lead">Elige una plantilla, rellena lo básico y copia el resultado. Los escritos formales salen con el formato de las plantillas de la UCJC, en Word o PDF.</p></div></div>
       <div class="compose"><aside class="tpls">${Object.entries(groups).map(([g,l])=>`<div class="tpl-group"><h3>${esc(g)}</h3>${l.map(([k,t])=>`<button class="tpl" data-act="tpl" data-k="${k}" aria-pressed="${k===st.tpl}"><b>${esc(t.name)}</b><span>${esc(t.desc)}</span></button>`).join('')}</div>`).join('')}</aside>
-      <div class="stack"><section class="panel stack"><h3>${esc(T.name)}</h3><div class="form" id="r-form">${this.fields()}</div>${CFG.firma?'':'<p class="small muted" style="margin:0">Consejo: guarda tu nombre en el Cuartel general para que aparezca en la firma.</p>'}</section><section class="out" id="r-out"></section></div></div>`;
+      <div class="stack"><section class="panel stack"><h3>${esc(T.name)}</h3><div class="form" id="r-form">${this.fields()}</div>${CFG.firma?'':'<p class="small muted" style="margin:0">Consejo: guarda tu nombre en Ajustes para que aparezca en la firma.</p>'}</section><section class="out" id="r-out"></section></div></div>`;
     this.output();
   },
   fields(){
@@ -2225,14 +2242,15 @@ function xmlEsc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'
 function wRun(text,o){o=o||{};const rp=(o.b?'<w:b/>':'')+(o.i?'<w:i/>':'')+(o.sz?`<w:sz w:val="${o.sz}"/><w:szCs w:val="${o.sz}"/>`:'')+(o.color?`<w:color w:val="${o.color}"/>`:'');
   return String(text).split('\n').map((t,i)=>(i?'<w:r><w:br/></w:r>':'')+`<w:r>${rp?`<w:rPr>${rp}</w:rPr>`:''}<w:t xml:space="preserve">${xmlEsc(t)}</w:t></w:r>`).join('')}
 function wPara(runs,o){o=o||{};const pp=(o.style?`<w:pStyle w:val="${o.style}"/>`:'')+(o.keep?'<w:keepNext/>':'')+`<w:spacing w:before="${o.before||0}" w:after="${o.after??160}"/>`+(o.jc?`<w:jc w:val="${o.jc}"/>`:'');return `<w:p><w:pPr>${pp}</w:pPr>${runs}</w:p>`}
-async function buildEscritoDocx(d){
+/* paquete .docx común (estilos, cabecera con logo y pie de la plantilla); o={title,creator,footer,body} */
+async function docxBase(o){
   await lib('zip');
   const zip=new JSZip();
   const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
   const LG=logoBox(1533525,576000),cx=LG?Math.round(LG.w):0,cy=LG?Math.round(LG.h):0;
   zip.file('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="jpeg" ContentType="image/jpeg"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/settings.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"/><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>');
   zip.file('_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>');
-  zip.file('docProps/core.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xmlEsc(d.asunto)}</dc:title><dc:creator>${xmlEsc(d.firma)}</dc:creator><dc:language>es-ES</dc:language></cp:coreProperties>`);
+  zip.file('docProps/core.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xmlEsc(o.title)}</dc:title><dc:creator>${xmlEsc(o.creator)}</dc:creator><dc:language>es-ES</dc:language></cp:coreProperties>`);
   zip.file('word/_rels/document.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/><Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>');
   zip.file('word/settings.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:settings ${W}><w:defaultTabStop w:val="708"/><w:characterSpacingControl w:val="doNotCompress"/></w:settings>`);
   zip.file('word/styles.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${W}><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Source Sans Pro" w:hAnsi="Source Sans Pro" w:eastAsia="Source Sans Pro" w:cs="Arial"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="es-ES"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="160" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>
@@ -2240,12 +2258,23 @@ async function buildEscritoDocx(d){
 <w:style w:type="paragraph" w:styleId="Ttulo1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:keepLines/><w:pBdr><w:bottom w:val="single" w:sz="6" w:space="4" w:color="000000"/></w:pBdr><w:spacing w:before="360" w:after="200"/><w:jc w:val="left"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:rFonts w:ascii="Montserrat" w:hAnsi="Montserrat"/><w:b/><w:caps/><w:color w:val="000000"/><w:sz w:val="26"/><w:szCs w:val="26"/></w:rPr></w:style>
 <w:style w:type="paragraph" w:styleId="Destinatario"><w:name w:val="Destinatario"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="0"/><w:jc w:val="left"/></w:pPr></w:style>
 <w:style w:type="paragraph" w:styleId="Piedepgina"><w:name w:val="footer"/><w:basedOn w:val="Normal"/><w:pPr><w:tabs><w:tab w:val="right" w:pos="8504"/></w:tabs><w:spacing w:after="0"/><w:jc w:val="left"/></w:pPr><w:rPr><w:sz w:val="16"/><w:szCs w:val="16"/><w:color w:val="606263"/></w:rPr></w:style>
-<w:style w:type="paragraph" w:styleId="Encabezado"><w:name w:val="header"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="0"/><w:jc w:val="right"/></w:pPr></w:style></w:styles>`);
+<w:style w:type="paragraph" w:styleId="Encabezado"><w:name w:val="header"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="0"/><w:jc w:val="right"/></w:pPr></w:style>
+<w:style w:type="paragraph" w:styleId="TituloDoc"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:spacing w:before="0" w:after="80"/><w:jc w:val="left"/></w:pPr><w:rPr><w:rFonts w:ascii="Montserrat" w:hAnsi="Montserrat"/><w:b/><w:color w:val="1D1F21"/><w:sz w:val="36"/><w:szCs w:val="36"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Antetitulo"><w:name w:val="Antetitulo"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="60"/><w:jc w:val="left"/></w:pPr><w:rPr><w:b/><w:caps/><w:color w:val="96234A"/><w:spacing w:val="20"/><w:sz w:val="18"/><w:szCs w:val="18"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Ttulo2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="100"/><w:jc w:val="left"/><w:outlineLvl w:val="1"/></w:pPr><w:rPr><w:rFonts w:ascii="Montserrat" w:hAnsi="Montserrat"/><w:b/><w:color w:val="96234A"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Vineta"><w:name w:val="List Bullet"/><w:basedOn w:val="Normal"/><w:pPr><w:tabs><w:tab w:val="left" w:pos="360"/></w:tabs><w:spacing w:after="60"/><w:ind w:left="360" w:hanging="300"/><w:jc w:val="left"/></w:pPr></w:style>
+<w:style w:type="paragraph" w:styleId="Destacado"><w:name w:val="Intense Quote"/><w:basedOn w:val="Normal"/><w:pPr><w:pBdr><w:left w:val="single" w:sz="24" w:space="8" w:color="96234A"/></w:pBdr><w:shd w:val="clear" w:color="auto" w:fill="F5E9ED"/><w:spacing w:before="120" w:after="160"/><w:ind w:left="200" w:right="120"/><w:jc w:val="left"/></w:pPr></w:style>
+</w:styles>`);
   if(LG)zip.file('word/media/logo.jpeg',LG.src.split(',')[1],{base64:true});
   if(LG)zip.file('word/_rels/header1.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo.jpeg"/></Relationships>');
   zip.file('word/header1.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${W}><w:p><w:pPr><w:pStyle w:val="Encabezado"/><w:jc w:val="right"/></w:pPr>${LG?`<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="1" name="Logotipo Universidad Camilo José Cela"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="logo.jpeg"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`:''}</w:p></w:hdr>`);
   const fld=n=>`<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> ${n} </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:t>1</w:t></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r>`;
-  zip.file('word/footer1.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${W}><w:p><w:pPr><w:pStyle w:val="Piedepgina"/></w:pPr>${wRun(d.asunto.length>70?d.asunto.slice(0,67)+'…':d.asunto)}<w:r><w:tab/></w:r>${fld('PAGE')}<w:r><w:t xml:space="preserve"> de </w:t></w:r>${fld('NUMPAGES')}</w:p></w:ftr>`);
+  zip.file('word/footer1.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${W}><w:p><w:pPr><w:pStyle w:val="Piedepgina"/></w:pPr>${wRun(o.footer.length>70?o.footer.slice(0,67)+'…':o.footer)}<w:r><w:tab/></w:r>${fld('PAGE')}<w:r><w:t xml:space="preserve"> de </w:t></w:r>${fld('NUMPAGES')}</w:p></w:ftr>`);
+  zip.file('word/document.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${o.body}<w:sectPr><w:headerReference w:type="default" r:id="rId3"/><w:footerReference w:type="default" r:id="rId4"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1701" w:right="1701" w:bottom="1134" w:left="1701" w:header="708" w:footer="567" w:gutter="0"/><w:cols w:space="708"/></w:sectPr></w:body></w:document>`);
+  return zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+
+async function buildEscritoDocx(d){
   let b='';
   if(d.destNombre||d.destCargo){[d.destNombre,d.destCargo,'Escuela Politécnica Superior de Tecnología y Ciencia','Universidad Camilo José Cela'].filter(Boolean).forEach((l,i)=>{b+=wPara(wRun(l,{b:i===0}),{style:'Destinatario',after:0})});b+=wPara('',{after:120})}
   b+=wPara(wRun('Asunto: '+d.asunto),{style:'Ttulo1'});
@@ -2260,8 +2289,7 @@ async function buildEscritoDocx(d){
   b+=wPara(wRun('Fdo.: '+d.firma),{before:720,after:0,jc:'left'});
   b+=wPara(wRun(d.firmaCargo,{sz:20,color:'606263'}),{after:0,jc:'left'});
   b+=wPara(wRun('Universidad Camilo José Cela',{sz:20,color:'606263'}),{jc:'left'});
-  zip.file('word/document.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${b}<w:sectPr><w:headerReference w:type="default" r:id="rId3"/><w:footerReference w:type="default" r:id="rId4"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1701" w:right="1701" w:bottom="1134" w:left="1701" w:header="708" w:footer="567" w:gutter="0"/><w:cols w:space="708"/></w:sectPr></w:body></w:document>`);
-  return zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  return docxBase({title:d.asunto,creator:d.firma,footer:d.asunto,body:b});
 }
 
 function lc1(t){return t.charAt(0).toLowerCase()+t.slice(1)}
@@ -3459,6 +3487,7 @@ function searchAll(q){
   D.eventos.forEach(e=>add('Eventos',e.nombre,[e.tipo,fmt(e.fecha)].filter(Boolean).join(' · '),{t:'eventos',state:{view:'presupuesto',sel:e.id,draft:null}},[e.nombre,e.tipo,e.descripcion,e.lugar].join(' ')));
   D.inventario.forEach(i=>add('Material del club',i.nombre,[i.categoria,i.ubicacion].filter(Boolean).join(' · '),{t:'eventos',state:{view:'inventario'}},[i.nombre,i.categoria,i.ubicacion,i.notas].join(' ')));
   D.encuestas.forEach(e=>add('Encuestas',e.titulo,fmt(e.fecha),{t:'encuestas',state:{sel:e.id}},e.titulo+' '+(e.preguntas||[]).map(p=>p.texto).join(' ')));
+  D.resumenes.forEach(r=>add('Resúmenes',r.titulo||'Sin título',[r.tipo,fmt(r.fecha),r.lugar].filter(Boolean).join(' · '),{t:'resumenes',state:{sel:r.id}},[r.titulo,r.tipo,r.lugar,r.ponentes,r.breve,r.texto].join(' ')));
   D.enviados.forEach(x=>add('Correos enviados',x.asunto||'(sin asunto)',[x.nombre||x.para,fmt(x.fecha)].filter(Boolean).join(' · '),{t:'asignaturas',state:{view:'fichas',sel:x.asignatura||null}},[x.asunto,x.para,x.nombre,x.cuerpo].join(' ')));
   return H.slice(0,60);
 }
@@ -3541,6 +3570,7 @@ async function buildMemoriaPdf(d,h,anon){
   const Q=D.encuestas.filter(e=>e.fecha>=d&&e.fecha<=h);
   const M=D.enviados.filter(x=>x.fecha>=d&&x.fecha<=h);
   const V=misVotos().filter(x=>x.r.fecha>=d&&x.r.fecha<=h);
+  const RS=D.resumenes.filter(r=>r.fecha>=d&&r.fecha<=h).sort((a,b)=>String(a.fecha).localeCompare(b.fecha));
   const W=await pdfWriter('Memoria de la delegación');
   W.heading('Memoria de la delegación de estudiantes',{before:0});
   W.kv([['Periodo',`Del ${fmtLong(d)} al ${fmtLong(h)}`],['Delegado',CFG.firma||''],['Cargos','Delegado de la Escuela Politécnica Superior de Tecnología y Ciencia; subdelegado del Grado en Ingeniería Robótica e Inteligencia Artificial; delegado de 2º curso'],['Universidad','Universidad Camilo José Cela']]);
@@ -3550,20 +3580,22 @@ async function buildMemoriaPdf(d,h,anon){
    [`${C.length} compromisos de la universidad: ${C.filter(c=>c.estado==='cumplido').length} cumplidos, ${C.filter(c=>c.estado==='pendiente').length} pendientes y ${C.filter(c=>c.estado==='incumplido').length} incumplidos.`],
    [`${E.length} eventos o actividades organizados${fondos?`, con ${money(fondos)} de financiación conseguida`:''}.`],
    [`${Q.length} encuestas a estudiantes con ${Q.reduce((a,e)=>a+(Number(e.respuestas)||0),0)} respuestas.`],
-   [`${M.length} correos y escritos enviados a profesorado y dirección.`]].forEach(([x])=>W.para(x,{lead:'• '}));
+   [`${M.length} correos y escritos enviados a profesorado y dirección.`],
+   ...(RS.length?[[`${RS.length} ${RS.length===1?'charla o actividad resumida':'charlas, conferencias o actividades resumidas'} para los compañeros.`]]:[])].forEach(([x])=>W.para(x,{lead:'• '}));
   if(st.porCat.length){W.heading('Quejas por tipo');const m=Math.max(...st.porCat.map(r=>r[1]));st.porCat.forEach(([k,n])=>W.hbar(k,n,m))}
   if(res.length){W.heading('Problemas resueltos');res.slice().sort((a,b)=>(b.resuelto||0)-(a.resuelto||0)).slice(0,15).forEach(i=>W.para(`${i.titulo}${i.asignatura?' ('+i.asignatura+')':''}${anon?'':(i.origen?' · '+i.origen:'')}`,{lead:'• ',size:10}))}
   if(Rc.length){W.heading('Reuniones');Rc.sort((a,b)=>String(a.fecha).localeCompare(b.fecha)).forEach(r=>W.para(`${fmtLong(r.fecha)} · ${r.titulo}${r.organo?' ('+r.organo+')':''} · ${lines(r.acuerdos).length} acuerdos`,{lead:'• ',size:10}))}
   if(C.length){W.heading('Compromisos de la universidad');['cumplido','pendiente','incumplido'].forEach(s=>{const L=C.filter(c=>c.estado===s);if(L.length){W.sub(s[0].toUpperCase()+s.slice(1)+'s');L.forEach(c=>W.para(`${c.que}${c.quien?' — '+c.quien:''}${c.fecha?' ('+fmt(c.fecha)+')':''}`,{lead:'• ',size:10}))}})}
   if(V.length){W.heading('Votos en órganos colegiados');const cnt={};V.forEach(x=>cnt[x.t.voto]=(cnt[x.t.voto]||0)+1);W.para(Object.entries(cnt).map(([k,n])=>`${k}: ${n}`).join(' · '));V.slice(0,20).forEach(x=>W.para(`${fmt(x.r.fecha)} · ${x.t.titulo}: ${x.t.voto}${x.t.porque?' — '+x.t.porque:''}`,{lead:'• ',size:9.5}))}
   if(E.length){W.heading('Eventos y actividades');E.forEach(e=>{const T=evTotals(e);W.para(`${e.nombre}${e.fecha?' · '+fmtLong(e.fecha):''} · ${e.participantes||0} participantes · presupuesto ${money(T.total)}`,{lead:'• ',size:10})})}
+  if(RS.length){W.heading('Charlas y actividades');RS.forEach(r=>W.para(`${fmtLong(r.fecha)} · ${r.tipo||'Actividad'}: ${r.titulo||'Sin título'}${r.lugar?' ('+r.lugar+')':''}`,{lead:'• ',size:10}))}
   if(Q.length){W.heading('Encuestas');Q.forEach(e=>W.para(`${e.titulo} · ${e.respuestas||0} respuestas · ${fmtLong(e.fecha)}`,{lead:'• ',size:10}))}
   W.gap(8);W.para(`Documento generado el ${fmtLong(today())}${CFG.firma?' por '+CFG.firma:''}.`,{size:9,color:[96,98,99]});
   return W.finish();
 }
 ACT.memGo=async el=>{const d=$('mem-d').value,h=$('mem-h').value;if(!d||!h||d>h){toast('Revisa las fechas.');return}el.disabled=true;try{await saveFile('memoria-delegacion-'+d+'-a-'+h+'.pdf',await buildMemoriaPdf(d,h,$('mem-anon').checked))}catch(e){console.error(e);toast('No se ha podido crear la memoria.')}finally{el.disabled=false}};
 function kitData(anon){
-  const keep=['contactos','org','wiki','asignaturas','horario','inventario','compromisos','evaluaciones','reuniones','eventos','patrocinios'];
+  const keep=['contactos','org','wiki','asignaturas','horario','inventario','compromisos','evaluaciones','reuniones','eventos','patrocinios','resumenes'];
   const out={};const t=today();
   keep.forEach(c=>{out[c]={};D[c].forEach(x=>{const o=Object.assign({},x);delete o.id;out[c][x.id]=o})});
   Object.keys(out.evaluaciones).forEach(k=>{if((out.evaluaciones[k].fecha||'')<t)delete out.evaluaciones[k]});
@@ -3609,7 +3641,7 @@ const BUILD_KIND=typeof BUILD!=='undefined'?BUILD:'claude';
 const LOCALAPI=()=>window.__portalLocal||null;
 const AJ={d:null,pwMsg:'',pwBusy:false,pwOpen:false,sy:{owner:'',repo:'portal-delegado-datos',token:'',pw:''},syMsg:'',syBusy:false,bkEnc:null,bkMsg:'',impTxt:null,impName:'',impNeedPw:false,imp:null,impDatos:null,impMsg:'',impBusy:false,impProg:'',logoMsg:''};
 const AJSIG={};
-const COL_LBL={incidencias:['queja','quejas'],evaluaciones:['examen o entrega','exámenes y entregas'],reuniones:['reunión','reuniones'],tareas:['tarea','tareas'],contactos:['contacto','contactos'],wiki:['entrada de la wiki','entradas de la wiki'],encuestas:['encuesta','encuestas'],eventos:['evento','eventos'],patrocinios:['patrocinio','patrocinios'],org:['persona del organigrama','personas del organigrama'],compromisos:['compromiso','compromisos'],enviados:['correo enviado','correos enviados'],asignaturas:['ficha de asignatura','fichas de asignatura'],horario:['clase del horario','clases del horario'],inventario:['material','materiales'],prestamos:['préstamo','préstamos'],participantes:['inscrito','inscritos']};
+const COL_LBL={incidencias:['queja','quejas'],evaluaciones:['examen o entrega','exámenes y entregas'],reuniones:['reunión','reuniones'],tareas:['tarea','tareas'],contactos:['contacto','contactos'],wiki:['entrada de la wiki','entradas de la wiki'],encuestas:['encuesta','encuestas'],eventos:['evento','eventos'],patrocinios:['patrocinio','patrocinios'],org:['persona del organigrama','personas del organigrama'],compromisos:['compromiso','compromisos'],enviados:['correo enviado','correos enviados'],asignaturas:['ficha de asignatura','fichas de asignatura'],horario:['clase del horario','clases del horario'],inventario:['material','materiales'],prestamos:['préstamo','préstamos'],participantes:['inscrito','inscritos'],resumenes:['resumen de charla','resúmenes de charlas']};
 function bkEncOn(){const L=LOCALAPI();return AJ.bkEnc===null?!!(L&&L.hasPassword()):AJ.bkEnc}
 function ajVal(k){if(AJ.d&&k in AJ.d)return AJ.d[k];if(k==='alumnos')return CFG.alumnos||'';return CFG[k]||''}
 function paintAj(){if(tab==='ajustes'&&MODS.ajustes)MODS.ajustes.refresh()}
@@ -3938,6 +3970,384 @@ function fitTabs(){
 {const _rc=renderChrome;renderChrome=function(){_rc();paintHero();const b=$('ajBtn');if(b)b.setAttribute('aria-pressed',String(tab==='ajustes'));fitTabs()}}
 if(LOCALAPI())LOCALAPI().sync.onStatus(()=>{paintHero();paintAj()});
 
+/* ===== Resúmenes de charlas, conferencias y actividades ===== */
+const RS_TIPOS=['Charla','Conferencia','Jornada','Taller','Sesión informativa','Actividad','Visita','Otro'];
+function rsNew(){return {tipo:'Charla',titulo:'',fecha:today(),hora:'',lugar:'',ponentes:'',ambito:filter!=='todos'?filter:'curso',breve:'',texto:''}}
+
+/* ---------- arreglar el texto sin IA: abreviaturas, espacios, signos, mayúsculas y estructura ---------- */
+const RS_URL=/(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+|[\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
+function rsProtect(s,fn){return String(s).split(RS_URL).map((p,i)=>i%2?p:fn(p)).join('')}
+const RS_W='\\p{L}\\p{N}_';
+const RS_ABREV=[['xq|pq|porq','porque'],['q|k','que'],['tmbn|tmb|tb|tambn','también'],['dnd','donde'],['cdo|cnd','cuando'],['xa','para'],['porfa','por favor'],['finde','fin de semana'],['mñn|mñna','mañana'],['msj|mnsj','mensaje'],['dsp|dps','después'],['bn','bien']].map(([a,b])=>[new RegExp(`(^|[^${RS_W}])(${a})(?=$|[^${RS_W}])`,'giu'),b]);
+function rsExpand(t){
+  for(const [re,rep] of RS_ABREV)t=t.replace(re,(m,pre,w,off,str)=>{
+    const before=str.slice(0,off+pre.length).trimEnd().slice(-1),after=str.slice(off+m.length).trimStart().charAt(0);
+    if(/[0-9=+\-*/^<>]/.test(before)||/[0-9=+\-*/^<>(]/.test(after))return m;
+    return pre+(w.charAt(0)===w.charAt(0).toUpperCase()&&w.charAt(0)!==w.charAt(0).toLowerCase()?rep.charAt(0).toUpperCase()+rep.slice(1):rep);
+  });
+  t=t.replace(/(^|[^\p{L}])([xX])\s+ejemplo/gu,(m,a,x)=>a+(x==='X'?'Por':'por')+' ejemplo');
+  t=t.replace(/([\p{L}%])\s+x\s+(?=\p{L}{2,})/gu,'$1 por ');
+  t=t.replace(/([\p{L}\p{N}%])\s+d\s+(?=\p{L}{2,})/gu,'$1 de ');
+  return t;
+}
+function rsFixText(s){
+  return rsProtect(s,p=>{
+    let t=p.replace(/[ \t]+/g,' ');
+    t=rsExpand(t);
+    t=t.replace(/ +([,.;:!?)\]»])/g,'$1').replace(/([¿¡(«]) +/g,'$1');
+    t=t.replace(/([,;])(?=\p{L})/gu,'$1 ');
+    t=t.replace(/([!?])\1+/g,'$1').replace(/\.{3,}/g,'…');
+    return t;
+  }).replace(/\s+/g,' ').trim();
+}
+function rsSentence(t,period){
+  if(!t)return t;
+  const opening=(mark,open)=>{if(t.endsWith(mark)&&!t.includes(open)){const i=Math.max(t.lastIndexOf('. '),t.lastIndexOf('! '),t.lastIndexOf('? '),t.lastIndexOf(': '));t=i>=0?t.slice(0,i+2)+open+t.slice(i+2):open+t}};
+  opening('?','¿');opening('!','¡');
+  t=t.replace(/^([¿¡«"“(]*)(\p{Ll})/u,(m,a,b)=>a+b.toUpperCase()).replace(/([.!?:] [¿¡])(\p{Ll})/gu,(m,a,b)=>a+b.toUpperCase());
+  const endsUrl=(t.match(RS_URL)||[]).some(u=>t.endsWith(u));
+  if(period&&!endsUrl&&/[\p{L}\p{N})»"”]$/u.test(t)&&t.split(/\s+/).length>=4)t+='.';
+  return t;
+}
+function rsClassify(line){
+  const s=line.replace(/\*\*(.+?)\*\*/g,'$1').trim();
+  if(!s)return {t:'blank'};
+  let m;
+  if((m=s.match(/^#{1,4}\s*(.+)$/)))return {t:'h',text:m[1].replace(/:\s*$/,'')};
+  if((m=s.match(/^>\s*(.*)$/)))return {t:'q',text:m[1]};
+  if((m=s.match(/^(\d{1,2})[.)º]\s+(.+)$/)))return {t:'ol',n:Number(m[1]),text:m[2]};
+  if((m=s.match(/^(?:[-–—•·*▪►➤✓✔]|[a-z]\))\s*(.+)$/u)))return {t:'li',text:m[1]};
+  if(s.length<=70&&/:$/.test(s)&&!/:\s*\S/.test(s.slice(0,-1)))return {t:'h',text:s.slice(0,-1).trim()};
+  const letters=s.replace(/[^\p{L}]/gu,'');
+  if(letters.length>=4&&s.length<=70&&letters===letters.toUpperCase()&&/\p{Lu}/u.test(letters)&&!/[.!?]$/.test(s))return {t:'h',text:s};
+  if((m=s.match(/^(\p{L}[\p{L} .º/]{0,24}):\s+(.+)$/u))&&m[1].trim().split(/\s+/).length<=3&&!/^(https?|www)$/i.test(m[1]))return {t:'kv',k:m[1].trim(),text:m[2]};
+  return {t:'p',text:s};
+}
+function rsParse(text){
+  const out=[];let prev=null;
+  String(text||'').replace(/\r/g,'').split('\n').forEach(line=>{
+    const c=rsClassify(line);
+    if(c.t==='blank'){prev=null;return}
+    if(c.t==='p'&&prev&&(prev.t==='p'||prev.t==='li')&&/^\s+\S/.test(line)&&!/[.!?:;…]$/.test(prev.text)){prev.text+=' '+c.text;return}
+    out.push(c);prev=c;
+  });
+  return out;
+}
+function rsArreglar(text){
+  const B=rsParse(text);let out='',last=null;
+  for(const b of B){
+    const txt=rsSentence(rsFixText(b.text),b.t==='p'||b.t==='q');
+    let line;
+    if(b.t==='h')line='# '+rsSentence(rsFixText(b.text),false).replace(/[.:]$/,'');
+    else if(b.t==='li')line='- '+txt;
+    else if(b.t==='ol')line=b.n+'. '+txt;
+    else if(b.t==='kv')line=rsSentence(rsFixText(b.k),false)+': '+rsFixText(b.text);
+    else if(b.t==='q')line='> '+txt;
+    else line=txt;
+    const listy=t=>t==='li'||t==='ol'||t==='kv';
+    if(last!==null)out+=last==='h'?'\n':(b.t==='h'||!(listy(b.t)&&listy(last))&&!(b.t===last&&b.t!=='p'))?'\n\n':'\n';
+    out+=line;last=b.t;
+  }
+  return out;
+}
+function rsArreglarLinea(t){return rsSentence(rsFixText(t),true)}
+
+/* ---------- modelo para todos los formatos ---------- */
+const RS_MES='enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre';
+const RS_FECHA=new RegExp(`(^|[^\\p{L}\\p{N}])(\\d{1,2}\\s+de\\s+(${RS_MES})|\\d{1,2}/\\d{1,2}(/\\d{2,4})?|(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\\s+\\d{1,2})`,'iu');
+function rsModel(d){
+  const blocks=rsParse(d.texto).map(b=>Object.assign({},b,{text:b.text.trim()}));
+  const fechas=[],enl=[];
+  blocks.forEach(b=>{const t=(b.k?b.k+': ':'')+b.text;
+    if(b.t!=='h'&&RS_FECHA.test(t)&&fechas.length<8){const s=t.length>170?t.slice(0,167)+'…':t;if(!fechas.includes(s))fechas.push(s)}
+    (t.match(RS_URL)||[]).forEach(u=>{u=u.replace(/[.,;:!?)\]»]+$/,'');if(!enl.includes(u)&&enl.length<10)enl.push(u)})});
+  const cargo=AMB[d.ambito]?AMB[d.ambito].firma:'';
+  const meta=[d.fecha?fmtLong(d.fecha)+(d.hora?', '+d.hora:''):'',d.lugar||'',d.ponentes?'Con '+d.ponentes:''].filter(Boolean);
+  const heads=blocks.filter(b=>b.t==='h').map(b=>norm(b.text)).join(' | ');
+  const pie=CFG.firma?`Resumen elaborado por ${CFG.firma}${cargo?', '+lc1(cargo):''}, el ${fmtLong(today())}.`:`Resumen elaborado${cargo?' por el '+lc1(cargo):''} el ${fmtLong(today())}.`;
+  return {blocks,fechas:blocks.length>=4&&!/plazo|fecha|calendario|cuando/.test(heads)?fechas:[],enlaces:/enlace|contacto|informacion|info\b|web/.test(heads)?[]:enl,meta,firma:CFG.firma||'',cargo,pie};
+}
+function rsLinkify(s){return esc(s).replace(/(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)/g,u=>{const clean=u.replace(/[.,;:!?)]+$/,''),rest=u.slice(clean.length);return `<a href="${clean.startsWith('www.')?'https://'+clean:clean}" target="_blank" rel="noopener noreferrer">${clean}</a>${rest}`})}
+function rsBlocksHTML(blocks){
+  let h='',list=null;
+  const close=()=>{if(list){h+=`</${list}>`;list=null}};
+  for(const b of blocks){
+    if(b.t==='li'){if(list!=='ul'){close();h+='<ul>';list='ul'}h+=`<li>${rsLinkify(b.text)}</li>`;continue}
+    if(b.t==='ol'){if(list!=='ol'){close();h+=`<ol start="${b.n||1}">`;list='ol'}h+=`<li>${rsLinkify(b.text)}</li>`;continue}
+    close();
+    if(b.t==='h')h+=`<h5>${esc(b.text)}</h5>`;
+    else if(b.t==='kv')h+=`<p><b>${esc(b.k)}:</b> ${rsLinkify(b.text)}</p>`;
+    else if(b.t==='q')h+=`<div class="callout">${rsLinkify(b.text)}</div>`;
+    else h+=`<p>${rsLinkify(b.text)}</p>`;
+  }
+  close();return h;
+}
+function rsPaperHTML(d){
+  const m=rsModel(d),lg=docLogo();
+  return `<div class="paper rpaper">${lg?`<div class="logo"><img src="${lg.src}" alt="Logo"></div>`:''}<div class="ante">${esc(d.tipo||'Resumen')}</div><div class="rt">${esc(d.titulo||'Sin título')}</div>${m.meta.length?`<div class="rmeta">${esc(m.meta.join(' · '))}</div>`:''}
+    ${d.breve?`<div class="callout"><b>En pocas palabras</b>${rsLinkify(d.breve)}</div>`:''}
+    ${m.blocks.length?rsBlocksHTML(m.blocks):'<p class="meta">Aquí verás el resumen maquetado mientras escribes tus apuntes.</p>'}
+    ${m.fechas.length?`<div class="rbox"><b>Fechas y plazos</b><ul>${m.fechas.map(f=>`<li>${rsLinkify(f)}</li>`).join('')}</ul></div>`:''}
+    ${m.enlaces.length?`<div class="rbox"><b>Enlaces y contactos</b><ul>${m.enlaces.map(u=>`<li>${rsLinkify(u)}</li>`).join('')}</ul></div>`:''}
+    <div class="firma">${esc(m.pie)}</div></div>`;
+}
+function rsWhatsApp(d){
+  const m=rsModel(d);let t=`📌 *${d.titulo||d.tipo||'Resumen'}*\n`;
+  const info=[d.tipo,d.fecha?'🗓️ '+fmtLong(d.fecha)+(d.hora?', '+d.hora:''):'',d.lugar?'📍 '+d.lugar:''].filter(Boolean);
+  if(info.length)t+=info.join(' · ')+'\n';
+  if(d.ponentes)t+='🎤 '+d.ponentes+'\n';
+  if(d.breve)t+=`\n_${d.breve}_\n`;
+  let prev='';
+  for(const b of m.blocks){
+    const nl=(prev==='h'||b.t==='h')?'':(prev&&prev!==b.t&&!(['li','ol','kv'].includes(prev)&&['li','ol','kv'].includes(b.t)))?'\n':'';
+    if(b.t==='h')t+=`\n*${b.text}*\n`;
+    else if(b.t==='li')t+=nl+'• '+b.text+'\n';
+    else if(b.t==='ol')t+=nl+b.n+'. '+b.text+'\n';
+    else if(b.t==='kv')t+=nl+`*${b.k}:* ${b.text}\n`;
+    else if(b.t==='q')t+=`\n💡 ${b.text}\n`;
+    else t+=`\n${b.text}\n`;
+    prev=b.t;
+  }
+  if(m.fechas.length)t+='\n📅 *Fechas y plazos*\n'+m.fechas.map(f=>'• '+f).join('\n')+'\n';
+  if(m.enlaces.length)t+='\n🔗 *Enlaces*\n'+m.enlaces.map(u=>'• '+u).join('\n')+'\n';
+  return t.replace(/\n{3,}/g,'\n\n').trim();
+}
+function rsMailText(d){
+  const m=rsModel(d);let t=`${d.tipo||'Resumen'}: ${d.titulo||''}\n`;
+  if(m.meta.length)t+=m.meta.join(' · ')+'\n';
+  if(d.breve)t+=`\nEn pocas palabras: ${d.breve}\n`;
+  for(const b of m.blocks){
+    if(b.t==='h')t+=`\n${b.text.toUpperCase()}\n`;
+    else if(b.t==='li')t+=`- ${b.text}\n`;
+    else if(b.t==='ol')t+=`${b.n}. ${b.text}\n`;
+    else if(b.t==='kv')t+=`${b.k}: ${b.text}\n`;
+    else t+=`\n${b.text}\n`;
+  }
+  if(m.fechas.length)t+='\nFECHAS Y PLAZOS\n'+m.fechas.map(f=>'- '+f).join('\n')+'\n';
+  if(m.enlaces.length)t+='\nENLACES Y CONTACTOS\n'+m.enlaces.map(u=>'- '+u).join('\n')+'\n';
+  t+=`\n${CFG.firma||''}${m.cargo?'\n'+m.cargo:''}`;
+  return 'Asunto: Resumen: '+(d.titulo||d.tipo||'')+'\n\n'+t.replace(/\n{3,}/g,'\n\n').trim();
+}
+
+/* ---------- PDF y Word con la plantilla ---------- */
+const RS_WIN='€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ';
+function pdfSafe(s){return String(s??'').replace(/[→⇒➜➤►]/g,'->').replace(/[✓✔☑]/g,'-').replace(/[^\x00-\xFF]/g,c=>RS_WIN.includes(c)?c:'').replace(/ {2,}/g,' ').trim()}
+const rsLh=sz=>sz*.3528*1.42;
+function rsBox(W,title,items,o){
+  o=o||{};const pdf=W.pdf,pad=3.5,sz=o.size||10,bar=o.bar?2.2:0,w=W.TW,x=W.ML+pad+bar;
+  pdf.setFont('helvetica',o.italic?'italic':'normal');pdf.setFontSize(sz);
+  const rows=[];items.forEach(it=>pdf.splitTextToSize((items.length>1?'•  ':'')+pdfSafe(it),w-2*pad-bar).forEach(l=>rows.push(l)));
+  const th=title?rsLh(8.5)+1.2:0,h=pad*2+th+rows.length*rsLh(sz);
+  W.ensure(Math.min(h,230));const y=W.y;
+  const f=o.fill||[242,242,242];pdf.setFillColor(f[0],f[1],f[2]);pdf.rect(W.ML,y,w,h,'F');
+  if(o.bar){pdf.setFillColor(o.bar[0],o.bar[1],o.bar[2]);pdf.rect(W.ML,y,1.4,h,'F')}
+  let yy=y+pad;
+  if(title){pdf.setFont('helvetica','bold');pdf.setFontSize(8.5);const tc=o.tc||[96,98,99];pdf.setTextColor(tc[0],tc[1],tc[2]);pdf.text(pdfSafe(title).toUpperCase(),x,yy+rsLh(8.5)*.75);yy+=th}
+  pdf.setFont('helvetica',o.italic?'italic':'normal');pdf.setFontSize(sz);pdf.setTextColor(29,31,33);
+  rows.forEach(l=>{pdf.text(l,x,yy+rsLh(sz)*.75);yy+=rsLh(sz)});
+  W.y=y+h+4;
+}
+function rsLi(W,lead,text){const pdf=W.pdf,sz=10.5,ind=6;pdf.setFont('helvetica','normal');pdf.setFontSize(sz);const L=pdf.splitTextToSize(pdfSafe(text),W.TW-ind);L.forEach((l,i)=>{W.ensure(rsLh(sz));pdf.setTextColor(29,31,33);if(i===0){pdf.setFont('helvetica','bold');pdf.setTextColor(150,35,74);pdf.text(lead,W.ML+1,W.y+rsLh(sz)*.75);pdf.setFont('helvetica','normal');pdf.setTextColor(29,31,33)}pdf.text(l,W.ML+ind,W.y+rsLh(sz)*.75);W.y+=rsLh(sz)});W.y+=1.2}
+async function buildResumenPdf(d){
+  const m=rsModel(d);const W=await pdfWriter('Resumen: '+(d.titulo||d.tipo||''));const pdf=W.pdf;
+  pdf.setFont('helvetica','bold');pdf.setFontSize(8.5);pdf.setTextColor(150,35,74);pdf.text(pdfSafe((d.tipo||'Resumen')).toUpperCase(),W.ML,W.y+3);W.y+=6;
+  pdf.setFontSize(17);pdf.setTextColor(29,31,33);const T=pdf.splitTextToSize(pdfSafe(d.titulo||'Resumen'),W.TW);W.ensure(T.length*rsLh(17));T.forEach(l=>{pdf.text(l,W.ML,W.y+rsLh(17)*.75);W.y+=rsLh(17)});W.y+=1;
+  if(m.meta.length)W.para(pdfSafe(m.meta.join(' · ')),{size:9.5,color:[96,98,99],after:4});
+  if(d.breve)rsBox(W,'En pocas palabras',[d.breve],{fill:[245,233,237],bar:[150,35,74],tc:[150,35,74],size:10.5});
+  for(const b of m.blocks){
+    if(b.t==='h'){W.ensure(rsLh(12)+6);W.y+=3;pdf.setFont('helvetica','bold');pdf.setFontSize(12);pdf.setTextColor(150,35,74);pdf.splitTextToSize(pdfSafe(b.text),W.TW).forEach(l=>{pdf.text(l,W.ML,W.y+rsLh(12)*.75);W.y+=rsLh(12)});W.y+=1.5}
+    else if(b.t==='li')rsLi(W,'•',b.text);
+    else if(b.t==='ol')rsLi(W,b.n+'.',b.text);
+    else if(b.t==='kv')W.para(pdfSafe(b.text),{lead:pdfSafe(b.k)+': '});
+    else if(b.t==='q')rsBox(W,'',[b.text],{fill:[245,233,237],bar:[150,35,74],size:10.5});
+    else W.para(pdfSafe(b.text),{justify:true});
+  }
+  if(m.fechas.length)rsBox(W,'Fechas y plazos',m.fechas);
+  if(m.enlaces.length)rsBox(W,'Enlaces y contactos',m.enlaces);
+  W.gap(4);W.para(pdfSafe(m.pie),{size:9,color:[96,98,99]});
+  return W.finish();
+}
+function rsDocxBody(d){
+  const m=rsModel(d);let b='';
+  const li=(lead,t)=>wPara(wRun(lead,{b:true,color:'96234A'})+'<w:r><w:tab/></w:r>'+wRun(t),{style:'Vineta',after:60});
+  b+=wPara(wRun(d.tipo||'Resumen'),{style:'Antetitulo',after:60});
+  b+=wPara(wRun(d.titulo||'Resumen'),{style:'TituloDoc',after:80});
+  if(m.meta.length)b+=wPara(wRun(m.meta.join(' · '),{sz:19,color:'606263'}),{after:200,jc:'left'});
+  if(d.breve)b+=wPara(wRun('En pocas palabras. ',{b:true,color:'96234A'})+wRun(d.breve),{style:'Destacado',before:120,after:200});
+  for(const x of m.blocks){
+    if(x.t==='h')b+=wPara(wRun(x.text),{style:'Ttulo2',before:240,after:100});
+    else if(x.t==='li')b+=li('•',x.text);
+    else if(x.t==='ol')b+=li(x.n+'.',x.text);
+    else if(x.t==='kv')b+=wPara(wRun(x.k+': ',{b:true})+wRun(x.text),{after:100,jc:'left'});
+    else if(x.t==='q')b+=wPara(wRun(x.text),{style:'Destacado',before:120,after:160});
+    else b+=wPara(wRun(x.text));
+  }
+  if(m.fechas.length){b+=wPara(wRun('Fechas y plazos'),{style:'Ttulo2',before:240,after:100});m.fechas.forEach(f=>{b+=li('•',f)})}
+  if(m.enlaces.length){b+=wPara(wRun('Enlaces y contactos'),{style:'Ttulo2',before:240,after:100});m.enlaces.forEach(u=>{b+=li('•',u)})}
+  b+=wPara(wRun(m.pie,{sz:18,color:'606263'}),{before:360,jc:'left'});
+  return b;
+}
+function buildResumenDocx(d){return docxBase({title:d.titulo||'Resumen',creator:CFG.firma||'',footer:'Resumen: '+(d.titulo||d.tipo||''),body:rsDocxBody(d)})}
+
+/* ---------- pulir con Claude ---------- */
+function rsPrompt(d){
+  return `Eres el ayudante de un delegado de estudiantes de la Universidad Camilo José Cela. Convierte estos apuntes de una ${String(d.tipo||'charla').toLowerCase()} en un resumen claro y bien redactado para compartir con los compañeros.
+
+Reglas:
+- Español de España, tono cercano pero cuidado, frases cortas.
+- No inventes nada que no esté en los apuntes. Si algo no se entiende, déjalo como está.
+- Corrige la ortografía, las tildes y las abreviaturas (q → que, tmb → también, xq → porque…).
+- Conserva exactamente las fechas, los plazos, las cifras, los nombres, los enlaces y los correos.
+- Agrupa la información en secciones con un título corto.
+
+Responde SOLO con el resumen, en este formato y sin nada más (sin negritas ni asteriscos):
+> Una o dos frases con lo más importante.
+# Título de una sección
+- Un punto
+- Otro punto
+Los párrafos normales van sin ningún símbolo delante.
+
+Datos: ${[d.titulo,d.fecha?fmtLong(d.fecha):'',d.lugar,d.ponentes].filter(Boolean).join(' · ')||'—'}
+
+Apuntes:
+${String(d.texto||'').trim()}`;
+}
+function rsCleanAI(text){
+  let s=String(text||'').replace(/\r/g,'').trim();
+  s=s.replace(/^```[a-z]*\s*$/gim,'').replace(/\*\*(.+?)\*\*/g,'$1').replace(/^#{2,}\s*/gm,'# ').replace(/^\*\s+/gm,'- ').trim();
+  const L=s.split('\n');
+  if(L.length>1&&!/^[#>\-]/.test(L[0])&&/:\s*$/.test(L[0])&&/aquí|resumen|claro|te dejo/i.test(L[0]))L.shift();
+  const breve=[],rest=[];let started=false;
+  L.forEach(l=>{const m=l.match(/^>\s*(.*)$/);if(m&&!started){if(m[1].trim())breve.push(m[1].trim());return}if(l.trim())started=true;if(started)rest.push(l)});
+  return {breve:breve.join(' '),texto:rest.join('\n').replace(/\n{3,}/g,'\n\n').trim()};
+}
+function rsCopySync(text){
+  try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(ta);ta.focus();ta.select();try{ta.setSelectionRange(0,text.length)}catch(e){}const ok=document.execCommand('copy');ta.remove();if(ok)return true}catch(e){}
+  try{if(navigator.clipboard)navigator.clipboard.writeText(text).catch(()=>{});return !!navigator.clipboard}catch(e){return false}
+}
+
+/* ---------- vista ---------- */
+let rsT1=null,rsT2=null;
+MODS.resumenes={
+  state:{sel:null,d:null,dId:null,undo:null,dirty:false,savedAt:0,saving:null,again:false,hand:null},
+  render(root){
+    const st=this.state;
+    if(st.sel){this.editor(root);return}
+    root.innerHTML=`<div class="head"><div><div class="kicker">Resúmenes</div><h2>Charlas, conferencias y <em>actividades</em></h2><p class="lead">Apunta lo que cuentan como te salga y conviértelo en un resumen bien maquetado: PDF o Word con la plantilla de la UCJC y un mensaje listo para el grupo de clase.</p></div><div class="row">${canWrite?'<button class="btn primary" data-act="rsNew">+ Nuevo resumen</button>':''}</div></div><div id="slot-rs"></div>`;
+    this.refresh();
+  },
+  refresh(){
+    const st=this.state;
+    if(st.sel){const there=D.resumenes.some(r=>r.id===st.sel);if(there)st.seen=st.sel;else if(st.seen===st.sel&&!st.saving&&ready()){st.sel=null;st.d=null;st.dId=null;renderAll()}return}
+    const s=$('slot-rs');if(!s)return;if(!ready()){s.innerHTML=loadingHTML();return}
+    const L=vis(D.resumenes).slice().sort((a,b)=>String(b.fecha||'').localeCompare(a.fecha||'')||(b.creado||0)-(a.creado||0));
+    if(!L.length){s.innerHTML=`<div class="list"><div class="empty"><b>Todavía no hay resúmenes</b>Cuando vayas a una charla, una conferencia o una actividad, pulsa «Nuevo resumen» y escribe tus apuntes tal cual. El portal los ordena y te prepara el PDF, el Word y el mensaje para la clase.</div></div>`;return}
+    s.innerHTML='<div class="grid g3">'+L.map(r=>`<button class="subcard" data-act="rsOpen" data-id="${esc(r.id)}"><div class="row small" style="justify-content:space-between"><span class="chip">${esc(r.tipo||'Resumen')}</span><span class="date">${esc(fmt(r.fecha))}</span></div><div class="nm">${esc(r.titulo||'Sin título')}</div><div class="small muted">${esc([r.lugar,r.ponentes].filter(Boolean).join(' · '))}</div><div class="row small">${ambChip(r.ambito)}</div></button>`).join('')+'</div>';
+  },
+  editor(root){
+    const st=this.state;
+    if(!st.d||st.dId!==st.sel){const r=st.sel==='nuevo'?null:D.resumenes.find(x=>x.id===st.sel);st.d=Object.assign(rsNew(),r||{});delete st.d.id;st.dId=st.sel;st.undo=null;st.hand=null;st.dirty=false;st.seen=r?r.id:null}
+    const d=st.d,ai=!!sample;
+    root.innerHTML=`<div class="head"><div><button class="btn ghost sm" data-act="rsBack" style="padding-left:0">← Todos los resúmenes</button><div class="kicker">Resumen de una actividad</div><h2 id="rs-h">${esc(d.titulo||'Nuevo resumen')}</h2></div><div class="row"><span class="small muted" id="rs-saved"></span>${canWrite?'<button class="btn ghost sm danger" data-act="rsDel">Eliminar</button>':''}</div></div>
+      <div class="rsgrid"><section class="panel stack">
+        <div class="form">
+          <label class="f" for="rs-tipo"><span>Tipo</span><select id="rs-tipo" data-rs="tipo">${RS_TIPOS.map(t=>`<option${t===d.tipo?' selected':''}>${t}</option>`).join('')}</select></label>
+          <label class="f" for="rs-amb"><span>Cargo</span><select id="rs-amb" data-rs="ambito">${Object.keys(AMB).map(k=>`<option value="${k}"${k===d.ambito?' selected':''}>${esc(AMB[k].label)}</option>`).join('')}</select></label>
+          <label class="f wide" for="rs-titulo"><span>Título</span><input id="rs-titulo" data-rs="titulo" value="${esc(d.titulo)}" placeholder="Charla informativa Erasmus+ 2027/28"></label>
+          <label class="f" for="rs-fecha"><span>Fecha</span><input id="rs-fecha" type="date" data-rs="fecha" value="${esc(d.fecha)}"></label>
+          <label class="f" for="rs-hora"><span>Hora</span><input id="rs-hora" type="time" data-rs="hora" value="${esc(d.hora)}"></label>
+          <label class="f" for="rs-lugar"><span>Lugar</span><input id="rs-lugar" data-rs="lugar" value="${esc(d.lugar)}" placeholder="Salón de actos"></label>
+          <label class="f" for="rs-pon"><span>Quién la da u organiza</span><input id="rs-pon" data-rs="ponentes" value="${esc(d.ponentes)}" placeholder="Oficina de Relaciones Internacionales"></label>
+          <label class="f wide" for="rs-breve"><span>En pocas palabras (opcional)</span><textarea id="rs-breve" data-rs="breve" rows="2" placeholder="Lo más importante en una o dos frases">${esc(d.breve)}</textarea></label>
+          <label class="f wide" for="rs-texto"><span>Tus apuntes</span><textarea id="rs-texto" data-rs="texto" rows="14" spellcheck="true" lang="es" placeholder="Requisitos:&#10;- tener aprobado el 50 % de los créditos&#10;- nivel B2 de inglés&#10;el plazo acaba el 15 de noviembre&#10;Más info: www.ucjc.edu">${esc(d.texto)}</textarea></label>
+        </div>
+        <p class="small muted" style="margin:0">Escribe como te salga. Si una línea empieza por <b>#</b> es un título y si empieza por <b>-</b> es un punto de una lista.</p>
+        <div class="row"><button class="btn" data-act="rsFix">Arreglar el texto</button><button class="btn" data-act="rsAI" title="${ai?'Claude ordena y redacta tus apuntes aquí mismo':'Se abre Claude con tus apuntes y luego pegas aquí su respuesta'}">Pulir con Claude</button><button class="btn ghost sm" data-act="rsUndo" id="rs-undo"${st.undo?'':' hidden'}>Deshacer</button><span class="small muted" id="rs-msg" role="status"></span></div>
+        <div id="rs-hand"></div>
+      </section>
+      <div class="stack"><div id="rs-paper"></div>
+        <div class="row"><button class="btn primary" data-act="rsPdf">Descargar PDF</button><button class="btn" data-act="rsWord">Descargar Word</button><button class="btn" data-act="rsWa">Copiar para WhatsApp</button><button class="btn" data-act="rsMail">Copiar para correo</button></div>
+      </div></div>`;
+    this.paint();this.paintHand();rsStatus();
+  },
+  paint(){const p=$('rs-paper'),st=this.state;if(p&&st.d)p.innerHTML=rsPaperHTML(st.d)},
+  paintHand(){
+    const box=$('rs-hand'),h=this.state.hand;if(!box)return;
+    if(!h){box.innerHTML='';return}
+    box.innerHTML=`<div class="editor stack" style="margin:0"><b>Pulir con Claude</b><p class="small" style="margin:0">${h.opened?'Se ha abierto Claude en otra pestaña con tus apuntes.':'Abre <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">claude.ai</a> en otra pestaña.'} ${h.copied?'Si no aparecen ahí, pégalos: ya están copiados. ':''}Cuando te responda, copia su respuesta y pégala aquí:</p><textarea id="rs-paste" rows="6" placeholder="Pega aquí la respuesta de Claude"></textarea><div class="row"><button class="btn primary" data-act="rsPaste">Usar este texto</button><button class="btn ghost sm" data-act="rsHandClose">Cancelar</button></div></div>`;
+  }
+};
+function rsMsg(t){const m=$('rs-msg');if(m)m.textContent=t||''}
+function rsStatus(t){const el=$('rs-saved'),st=MODS.resumenes.state;if(!el)return;el.textContent=t||(st.dirty?'Sin guardar…':st.savedAt?'Guardado a las '+hhmm(st.savedAt):'')}
+function rsDirty(){const st=MODS.resumenes.state;st.dirty=true;rsStatus();clearTimeout(rsT1);rsT1=setTimeout(()=>MODS.resumenes.paint(),140);clearTimeout(rsT2);rsT2=setTimeout(()=>rsSave(false),1200)}
+async function rsSave(manual){
+  const st=MODS.resumenes.state;if(!st.d||!canWrite)return false;
+  if(!manual&&!st.dirty)return true;
+  if(!String(st.d.titulo||'').trim()&&!String(st.d.texto||'').trim()){if(manual)toast('Escribe al menos un título o tus apuntes.');return false}
+  if(st.saving){st.again=true;return st.saving}
+  const dref=st.d,isNew=st.sel==='nuevo';st.dirty=false;rsStatus('Guardando…');
+  const prev=isNew?null:D.resumenes.find(x=>x.id===st.sel);
+  const obj=Object.assign({},dref,{actualizado:Date.now(),creado:(prev&&prev.creado)||dref.creado||Date.now()});
+  st.saving=(async()=>{const id=await save('resumenes',isNew?null:st.sel,obj);if(id){dref.creado=obj.creado;if(isNew&&st.d===dref&&st.sel==='nuevo'){st.sel=id;st.dId=id}st.savedAt=Date.now();return true}st.dirty=true;return false})();
+  const ok=await st.saving;st.saving=null;rsStatus();
+  if(st.again){st.again=false;if(st.dirty)return rsSave(false)}
+  return ok;
+}
+document.addEventListener('input',e=>{
+  const el=e.target.closest('[data-rs]');if(!el)return;const st=MODS.resumenes.state;if(!st.d)return;
+  st.d[el.dataset.rs]=el.value;
+  if(el.dataset.rs==='titulo'){const h=$('rs-h');if(h)h.textContent=el.value||'Nuevo resumen'}
+  rsDirty();
+});
+function rsSetText(texto,breve){const st=MODS.resumenes.state;st.d.texto=texto;st.d.breve=breve;const a=$('rs-texto'),b=$('rs-breve'),u=$('rs-undo');if(a)a.value=texto;if(b)b.value=breve;if(u)u.hidden=!st.undo;rsDirty();MODS.resumenes.paint()}
+ACT.rsNew=()=>{const st=MODS.resumenes.state;st.sel='nuevo';st.d=null;st.dId=null;st.savedAt=0;renderAll();setTimeout(()=>{const t=$('rs-titulo');if(t)t.focus()},30)};
+ACT.rsOpen=el=>{const st=MODS.resumenes.state;st.sel=el.dataset.id;st.d=null;st.dId=null;st.savedAt=0;renderAll();window.scrollTo({top:0})};
+ACT.rsBack=async()=>{clearTimeout(rsT2);const st=MODS.resumenes.state;if(st.dirty)await rsSave(false);st.sel=null;st.d=null;st.dId=null;st.hand=null;renderAll()};
+ACT.rsDel=async el=>{
+  if(!armed2(el,'¿Eliminar este resumen? Pulsa otra vez'))return;armed=null;
+  clearTimeout(rsT2);const st=MODS.resumenes.state;const id=st.sel;st.dirty=false;
+  if(st.saving)await st.saving;
+  const real=st.sel!=='nuevo'?st.sel:id;
+  if(real&&real!=='nuevo'&&await removeDoc('resumenes',real))toast('Resumen eliminado');
+  st.sel=null;st.d=null;st.dId=null;st.hand=null;renderAll();
+};
+ACT.rsFix=()=>{
+  const st=MODS.resumenes.state;if(!st.d)return;
+  const t=rsArreglar(st.d.texto||''),b=st.d.breve?rsArreglarLinea(st.d.breve):'';
+  if(t===(st.d.texto||'').trim()&&b===(st.d.breve||'')){rsMsg(st.d.texto?'El texto ya estaba en orden.':'Primero escribe tus apuntes.');return}
+  st.undo={texto:st.d.texto,breve:st.d.breve};rsSetText(t,b);rsMsg('Texto ordenado. Revísalo y, si no te gusta, pulsa Deshacer.');
+};
+ACT.rsUndo=()=>{const st=MODS.resumenes.state;if(!st.undo)return;const u=st.undo;st.undo=null;rsSetText(u.texto,u.breve);rsMsg('Deshecho.')};
+ACT.rsAI=async el=>{
+  const st=MODS.resumenes.state;if(!st.d)return;
+  if(!String(st.d.texto||'').trim()){rsMsg('Primero escribe tus apuntes.');return}
+  const prompt=rsPrompt(st.d);
+  if(sample){
+    const before={texto:st.d.texto,breve:st.d.breve},old=el.textContent;el.disabled=true;el.textContent='Puliendo…';rsMsg('Claude está ordenando tus apuntes…');
+    try{const r=await sample(prompt,{cache:false});const c=rsCleanAI(r.text);
+      if(!c.texto&&!c.breve){rsMsg('Claude no ha devuelto nada. Inténtalo otra vez.');return}
+      st.undo=before;rsSetText(c.texto||before.texto,c.breve||before.breve);rsMsg(r.truncated?'El texto ha quedado cortado: revísalo.':'Pulido. Revísalo y, si no te gusta, pulsa Deshacer.');
+    }catch(e){rsMsg(sampleMsg(e))}
+    finally{if(el.isConnected){el.disabled=false;el.textContent=old}}
+    return;
+  }
+  const copied=rsCopySync(prompt),q=encodeURIComponent(prompt);
+  let w=null;try{w=window.open('https://claude.ai/new'+(q.length<=7000?'?q='+q:''),'_blank');if(w)w.opener=null}catch(e){}
+  st.hand={copied,opened:!!w};MODS.resumenes.paintHand();
+  setTimeout(()=>{const p=$('rs-paste');if(p)p.scrollIntoView({block:'nearest',behavior:'smooth'})},50);
+};
+ACT.rsPaste=()=>{
+  const st=MODS.resumenes.state,p=$('rs-paste');if(!p||!st.d)return;
+  const c=rsCleanAI(p.value);if(!c.texto&&!c.breve){p.focus();return}
+  st.undo={texto:st.d.texto,breve:st.d.breve};st.hand=null;MODS.resumenes.paintHand();
+  rsSetText(c.texto||st.d.texto,c.breve||st.d.breve);rsMsg('Texto pulido aplicado. Si no te gusta, pulsa Deshacer.');
+};
+ACT.rsHandClose=()=>{MODS.resumenes.state.hand=null;MODS.resumenes.paintHand()};
+ACT.rsPdf=async el=>{const d=MODS.resumenes.state.d;if(!d)return;el.disabled=true;try{await saveFile(fileSlug('Resumen '+(d.titulo||d.tipo))+'.pdf',await buildResumenPdf(d))}catch(e){console.error(e);toast('No se ha podido crear el PDF.')}finally{el.disabled=false}};
+ACT.rsWord=async el=>{const d=MODS.resumenes.state.d;if(!d)return;el.disabled=true;try{await saveFile(fileSlug('Resumen '+(d.titulo||d.tipo))+'.docx',await buildResumenDocx(d))}catch(e){console.error(e);toast('No se ha podido crear el Word.')}finally{el.disabled=false}};
+ACT.rsWa=()=>{const d=MODS.resumenes.state.d;if(d)copyText(rsWhatsApp(d))};
+ACT.rsMail=()=>{const d=MODS.resumenes.state.d;if(d)copyText(rsMailText(d))};
+
 /* ===== arranque ===== */
 init();
 
@@ -3952,7 +4362,7 @@ init();
   if(notes.length){const m=document.querySelector('main');if(m)m.insertAdjacentHTML('beforebegin',`<div class="gut" style="padding-top:16px"><div class="wrap">${notes.map(n=>`<div class="banner" style="margin:0 0 8px">${esc(n)}</div>`).join('')}</div></div>`)}
   const foot=document.querySelector('.foot .wrap');
   if(foot)foot.innerHTML=`<div class="stack" style="gap:8px"><div><b style="color:var(--ink)">${web?'Versión web':'Versión para Chrome'} · ${esc(LOCAL_VERSION)}.</b> ${web?'Esta web solo contiene el programa: tus datos se guardan en este navegador y funciona también sin conexión.':'Funciona sin internet y sin Claude. Tus datos se guardan en este navegador de este ordenador.'} La contraseña, la sincronización entre dispositivos y las copias de seguridad están en <a href="#ajustes" data-act="go" data-t="ajustes">Ajustes</a>.</div>
-    <div class="small">Las funciones que usan Claude (mejorar la redacción y el correo con 3 palabras clave) solo están en la versión de Claude. Los enlaces a Gmail, Outlook, GitHub y la web de la UCJC necesitan internet. Panel personal: no es una página oficial de la Universidad Camilo José Cela.</div></div>`;
+    <div class="small">Mejorar la redacción de escritos y correos con Claude solo está en la versión de Claude; en Resúmenes, «Pulir con Claude» te abre Claude en otra pestaña. Los enlaces a Gmail, Outlook, GitHub y la web de la UCJC necesitan internet. Panel personal: no es una página oficial de la Universidad Camilo José Cela.</div></div>`;
 })();
 
 </script>
