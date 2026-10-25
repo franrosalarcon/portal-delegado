@@ -40,7 +40,7 @@
   --bg:#f5f5f5; --surface:#ffffff; --surface-2:#e8e9e9; --line:#d2d2d3; --ink:#1d1f21; --ink-2:#3f4042; --muted:#606263;
   --hero-ink:#ffffff; --on-brand:#ffffff;
   --ok:#2c6e3f; --ok-bg:#e3f0e6; --warn:#8a5a00; --warn-bg:#fdf1cf; --bad:#b3122e; --bad-bg:#fbe4e8;
-  --esc:#96234a; --esc-bg:#f5e9ed; --gra:#3b5f75; --gra-bg:#e3ecf1; --cur:#a2560f; --cur-bg:#fbeedd;
+  --esc:#96234a; --esc-bg:#f5e9ed; --gra:#3b5f75; --gra-bg:#e3ecf1; --cur:#a2560f; --cur-bg:#fbeedd; --dob:#5e4b8b; --dob-bg:#efebf7;
   --heat0:#eef0f1; --heat1:#ffe768; --heat2:#f0a43c; --heat3:#c4243f;
   --sans:"Encode Sans Semi Expanded","Segoe UI",system-ui,-apple-system,sans-serif;
   --serif:"Playfair Display",Georgia,"Times New Roman",serif;
@@ -51,7 +51,7 @@
   --bg:#121315; --surface:#1b1d20; --surface-2:#26292d; --line:#34373c; --ink:#eceded; --ink-2:#c9cacc; --muted:#a3a5a8;
   --hero-ink:#ffffff; --on-brand:#1d0a12;
   --ok:#7fcf95; --ok-bg:#16301f; --warn:#f0c868; --warn-bg:#352a10; --bad:#ff8fa3; --bad-bg:#3a141d;
-  --esc:#e58aac; --esc-bg:#33171f; --gra:#9cc3dc; --gra-bg:#172833; --cur:#f2b277; --cur-bg:#36230f;
+  --esc:#e58aac; --esc-bg:#33171f; --gra:#9cc3dc; --gra-bg:#172833; --cur:#f2b277; --cur-bg:#36230f; --dob:#b9a8e8; --dob-bg:#251f33;
   --heat0:#24272b; --heat1:#8a7a1f; --heat2:#b8701f; --heat3:#c4243f;
   color-scheme:dark}}
 :root[data-theme="dark"]{
@@ -60,7 +60,7 @@
   --bg:#121315; --surface:#1b1d20; --surface-2:#26292d; --line:#34373c; --ink:#eceded; --ink-2:#c9cacc; --muted:#a3a5a8;
   --hero-ink:#ffffff; --on-brand:#1d0a12;
   --ok:#7fcf95; --ok-bg:#16301f; --warn:#f0c868; --warn-bg:#352a10; --bad:#ff8fa3; --bad-bg:#3a141d;
-  --esc:#e58aac; --esc-bg:#33171f; --gra:#9cc3dc; --gra-bg:#172833; --cur:#f2b277; --cur-bg:#36230f;
+  --esc:#e58aac; --esc-bg:#33171f; --gra:#9cc3dc; --gra-bg:#172833; --cur:#f2b277; --cur-bg:#36230f; --dob:#b9a8e8; --dob-bg:#251f33;
   --heat0:#24272b; --heat1:#8a7a1f; --heat2:#b8701f; --heat3:#c4243f;
   color-scheme:dark}
 *{box-sizing:border-box}
@@ -243,6 +243,7 @@ input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);padding:0}
 .seg{display:inline-flex;border:1px solid var(--line)}
 .seg button{appearance:none;border:0;background:var(--surface);color:var(--ink-2);font:600 12px/1 var(--sans);padding:7px 10px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+@media (max-width:640px){.seg{flex-wrap:wrap;max-width:100%}.seg button{flex:1 1 auto}}
 .drop{border:2px dashed var(--line);padding:22px;text-align:center;color:var(--muted);background:var(--surface)}
 .drop.over{border-color:var(--brand);background:var(--brand-50)}
 /* wiki */
@@ -363,6 +364,21 @@ input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);padding:0}
 .hblock.g-inf,.hkey.g-inf{background:var(--gra-bg);border-left-color:var(--gra)}
 .hblock.g-tel,.hkey.g-tel{background:var(--cur-bg);border-left-color:var(--cur)}
 .hblock.own,.hkey.own{background:var(--surface-2);border-left-color:var(--slate)}
+.hblock.g-dob,.hkey.g-dob{background:var(--dob-bg);border-left-color:var(--dob)}
+/* exámenes de la Escuela */
+.gtag{display:inline-flex;align-items:center;font-size:12px;font-weight:600;line-height:1.5;padding:1px 8px;border-left:3px solid var(--line);background:var(--surface-2);color:var(--ink);white-space:nowrap}
+.gtag.g-rob{background:var(--brand-50);border-left-color:var(--brand)}
+.gtag.g-inf{background:var(--gra-bg);border-left-color:var(--gra)}
+.gtag.g-tel{background:var(--cur-bg);border-left-color:var(--cur)}
+.gtag.g-dob{background:var(--dob-bg);border-left-color:var(--dob)}
+.exh{font-variant-numeric:tabular-nums;font-weight:700;min-width:46px;color:var(--ink-2);padding-top:1px}
+.exday{display:flex;flex-direction:column;gap:6px}
+.exday+.exday{margin-top:12px}
+.it.exc{padding:8px 14px}
+.exline{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.it .t a{color:inherit;text-decoration:none}.it .t a:hover{color:var(--brand);text-decoration:underline}
+/* correos enviados */
+.envb{white-space:pre-wrap;margin:8px 0 0;font-size:13px;color:var(--ink-2);background:var(--bg);padding:10px 12px;border-left:3px solid var(--line)}
 div.hblock{cursor:default}
 button.hblock:hover{filter:brightness(.97)}
 .hblock:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
@@ -487,7 +503,7 @@ main .rpaper a:not(.btn){color:#96234a;word-break:break-all}
       <button class="tab" role="tab" data-t="calendario">Calendario <span class="n" id="n-calendario"></span></button>
       <button class="tab" role="tab" data-t="asignaturas">Asignaturas <span class="n" id="n-asignaturas"></span></button>
       <button class="tab" role="tab" data-t="normativa">Normativa</button>
-      <button class="tab" role="tab" data-t="redactar">Redactar</button>
+      <button class="tab" role="tab" data-t="redactar">Redactar <span class="n" id="n-redactar"></span></button>
       <button class="tab" role="tab" data-t="resumenes">Resúmenes</button>
       <button class="tab" role="tab" data-t="actas">Reuniones</button>
       <button class="tab" role="tab" data-t="eventos">Eventos</button>
@@ -1142,7 +1158,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>
 const BUILD="web";
 const LOGO_DEFAULT="";
-const LOCAL_VERSION="5 · 25 de octubre de 2026";
+const LOCAL_VERSION="6 · 25 de octubre de 2026";
 /* ===== núcleo: datos, utilidades, editor genérico ===== */
 const AMB={
   escuela:{label:'Escuela Politécnica',role:'Delegado',full:'Escuela Politécnica Superior de Tecnología y Ciencia',firma:'Delegado de Estudiantes de la Escuela Politécnica Superior de Tecnología y Ciencia'},
@@ -1561,6 +1577,7 @@ MODS.inicio={
       {cls:plz?'bad':'ok',n:plz,txt:plz?`${plz===1?'plazo de notas o revisión incumplido':'plazos de notas o revisiones incumplidos'}`:'Todos los plazos de notas en orden',t:'calendario'},
       {cls:cv?'bad':cp?'warn':'ok',n:cv||cp,txt:cv?`${cv===1?'compromiso vencido':'compromisos vencidos'} de la universidad`:cp?`${cp===1?'compromiso pendiente':'compromisos pendientes'} de la universidad`:'Sin compromisos pendientes',t:'actas',st:{view:'compromisos'}},
       ...(pv?[{cls:'bad',n:pv,txt:`${pv===1?'préstamo de material vencido':'préstamos de material vencidos'}`,t:'eventos',st:{view:'inventario'}}]:[]),
+      ...(()=>{const p=envPendientes().length,e=D.enviados.filter(x=>envEstado(x)==='espera').length;return p||e?[{cls:p?'bad':'warn',n:p||e,txt:p?`${p===1?'correo sin respuesta':'correos sin respuesta'} desde hace más de una semana`:`${e===1?'correo esperando respuesta':'correos esperando respuesta'}`,t:'redactar',st:{view:'enviados'}}]:[]})(),
       {cls:nextR?'warn':'ok',n:nextR?(days(nextR.fecha)):'–',txt:nextR?`${days(nextR.fecha)===1?'día':'días'} para «${nextR.titulo}»`:'Ninguna reunión convocada',t:'actas',id:nextR&&nextR.id}
     ];
     $('slot-alerts').innerHTML='<div class="alerts">'+A.map(a=>`<button class="alert ${a.cls}" data-act="go" data-t="${a.t}"${a.id?` data-id="${esc(a.id)}"`:''}${a.st?` data-state='${esc(JSON.stringify(a.st))}'`:''}><b>${esc(a.n)}</b><span>${esc(a.txt)}</span></button>`).join('')+'</div>';
@@ -1934,6 +1951,7 @@ MODS.redactar={
       else if(f.type==='amb')h+=`<select id="${id}" data-rf="${f.k}">${Object.keys(AMB).map(k=>`<option value="${k}"${k===val?' selected':''}>${AMB[k].role} · ${esc(AMB[k].label)}</option>`).join('')}</select>`;
       else if(f.type==='asig')h+=`<input id="${id}" data-rf="${f.k}" list="dl-asig2" value="${esc(val)}" placeholder="Elige o escribe"><datalist id="dl-asig2">${asignaturas().map(a=>`<option value="${esc(a)}">`).join('')}</datalist>`;
       else if(f.type==='evaluacion'){const L=D.evaluaciones.slice().sort((a,b)=>String(a.fecha).localeCompare(b.fecha));h+=`<select id="${id}" data-rf="${f.k}"><option value="">${L.length?'Elige una prueba del calendario':'Añade pruebas en el Calendario'}</option>${L.map(e=>`<option value="${esc(e.id)}"${e.id===val?' selected':''}>${esc(fmt(e.fecha))} · ${esc(evLabel(e))}</option>`).join('')}</select>`}
+      else if(f.type==='enviado'){const L=D.enviados.filter(x=>envEspera(x)&&!x.respondido).sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));h+=`<select id="${id}" data-rf="${f.k}"><option value="">${L.length?'Elige el correo':'No hay correos esperando respuesta'}</option>${L.map(x=>`<option value="${esc(x.id)}"${x.id===val?' selected':''}>${esc(fmt(x.fecha))} · ${esc(x.nombre||x.para||'')} · ${esc(x.asunto||'(sin asunto)')}</option>`).join('')}</select>`}
       else if(f.type==='reunion'){const L=D.reuniones.slice().sort((a,b)=>String(b.fecha).localeCompare(a.fecha));h+=`<select id="${id}" data-rf="${f.k}"><option value="">${L.length?'Elige una reunión':'Añade reuniones en Actas'}</option>${L.map(r=>`<option value="${esc(r.id)}"${r.id===val?' selected':''}>${esc(fmt(r.fecha))} · ${esc(r.titulo)}</option>`).join('')}</select>`}
       else if(f.type==='select')h+=`<select id="${id}" data-rf="${f.k}">${f.opts.map(o=>{const[k,l]=Array.isArray(o)?o:[o,o];return `<option value="${esc(k)}"${k===val?' selected':''}>${esc(l)}</option>`}).join('')}</select>`;
       else if(f.type==='textarea')h+=`<textarea id="${id}" data-rf="${f.k}" rows="${f.rows||3}" placeholder="${esc(f.ph||'')}">${esc(val)}</textarea>`;
@@ -1970,6 +1988,7 @@ function rUpdate(el){
   v[k]=el.value;
   if(k==='dest'&&el.value){const c=contact(el.value);const a=$('r-asig');if(c&&a&&(c.asignaturas||[]).length&&!c.asignaturas.includes(a.value)){a.value=c.asignaturas[0];v.asig=a.value}}
   if(k==='asig'&&el.value){const d=$('r-dest');if(d&&!d.value){const p=profeDe(el.value);if(p&&[...d.options].some(o=>o.value===p.id)){d.value=p.id;v.dest=p.id}}}
+  if(k==='orig'&&el.value){const o=D.enviados.find(x=>x.id===el.value);const c=o&&contactoDeCorreo(o.para);const d=$('r-dest');if(c&&d&&[...d.options].some(op=>op.value===c.id)){d.value=c.id;v.dest=c.id}}
   if(k==='ev'&&el.value){const ev=D.evaluaciones.find(e=>e.id===el.value);const d=$('r-dest');if(ev&&d){const p=profeDe(ev.asignatura);if(p&&[...d.options].some(o=>o.value===p.id)){d.value=p.id;v.dest=p.id}}}
   clearTimeout(rTimer);rTimer=setTimeout(()=>MODS.redactar.output(),180);
 }
@@ -2904,6 +2923,11 @@ ACT.minutaActa=async()=>{
 
 ACT.liveVoto=el=>{const dt=MODS.actas.state.dt,i=Number(el.dataset.i);dt.temas[i].voto=dt.temas[i].voto===el.dataset.v?'':el.dataset.v;$$(`[data-act="liveVoto"][data-i="${i}"]`).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===dt.temas[i].voto)));liveSave(dt)};
 
+/* Calendarios oficiales de exámenes 2026-2027 de la Politécnica (generado por exa/parse_exa.py a partir de los PDF). */
+const EXAM_CURSO='2026-2027';
+const EXAMENES=[["robotica",1,1,"ene","2027-01-11","09:00","","rob-88000","Fundamentos físicos","ex"],["robotica",1,1,"ext1","2027-06-15","09:00","","rob-88000","Fundamentos físicos","ex"],["robotica",1,1,"ene","2027-01-13","09:00","","rob-88001","Fundamentos de programación","ex"],["robotica",1,1,"ext1","2027-06-17","09:00","","rob-88001","Fundamentos de programación","ex"],["robotica",1,1,"ene","2027-01-15","09:00","","rob-88002","Física para robótica","ex"],["robotica",1,1,"ext1","2027-06-21","09:00","","rob-88002","Física para robótica","ex"],["robotica",1,1,"ene","2027-01-19","09:00","","rob-88003","Fundamentos de gestión empresarial","ex"],["robotica",1,1,"ext1","2027-06-23","09:00","","rob-88003","Fundamentos de gestión empresarial","ex"],["robotica",1,1,"ene","2027-01-21","09:00","","rob-88004","Tecnología de computadores","ex"],["robotica",1,1,"ext1","2027-06-25","09:00","","rob-88004","Tecnología de computadores","ex"],["robotica",1,2,"may","2027-05-17","09:00","","rob-88005","Programación","ex"],["robotica",1,2,"ext2","2027-06-14","09:00","","rob-88005","Programación","ex"],["robotica",1,2,"may","2027-05-19","09:00","","rob-88006","Álgebra lineal","ex"],["robotica",1,2,"ext2","2027-06-16","09:00","","rob-88006","Álgebra lineal","ex"],["robotica",1,2,"may","2027-05-21","09:00","","rob-88007","Estructura de computadores","ex"],["robotica",1,2,"ext2","2027-06-18","09:00","","rob-88007","Estructura de computadores","ex"],["robotica",1,2,"may","2027-05-25","09:00","","rob-88008","Fundamentos de sistemas operativos","ex"],["robotica",1,2,"ext2","2027-06-22","09:00","","rob-88008","Fundamentos de sistemas operativos","ex"],["robotica",1,2,"may","2027-05-27","09:00","","rob-88009","Cálculo y métodos numéricos","ex"],["robotica",1,2,"ext2","2027-06-24","09:00","","rob-88009","Cálculo y métodos numéricos","ex"],["robotica",2,1,"ene","2027-01-08","11:00","","rob-88010","Redes de computadores","ex"],["robotica",2,1,"ext1","2027-06-14","11:00","","rob-88010","Redes de computadores","ex"],["robotica",2,1,"ene","2027-01-12","11:00","","rob-88011","Fundamentos de automática","ex"],["robotica",2,1,"ext1","2027-06-16","11:00","","rob-88011","Fundamentos de automática","ex"],["robotica",2,1,"ene","2027-01-14","11:00","","rob-88012","Estadística","ex"],["robotica",2,1,"ext1","2027-06-18","11:00","","rob-88012","Estadística","ex"],["robotica",2,1,"ene","2027-01-18","11:00","","rob-88013","Sensores y actuadores","ex"],["robotica",2,1,"ext1","2027-06-22","11:00","","rob-88013","Sensores y actuadores","ex"],["robotica",2,1,"ene","2027-01-20","11:00","","rob-88014","Señales y sistemas","ex"],["robotica",2,1,"ext1","2027-06-24","11:00","","rob-88014","Señales y sistemas","ex"],["robotica",2,2,"may","2027-05-18","11:00","","rob-88015","Arquitectura de Computadores","ex"],["robotica",2,2,"ext2","2027-06-15","11:00","","rob-88015","Arquitectura de Computadores","ex"],["robotica",2,2,"may","2027-05-20","11:00","","rob-88016","Fundamentos de Bases de Datos","ex"],["robotica",2,2,"ext2","2027-06-17","11:00","","rob-88016","Fundamentos de Bases de Datos","ex"],["robotica",2,2,"may","2027-05-24","11:00","","rob-88017","Estructura de Datos","ex"],["robotica",2,2,"ext2","2027-06-21","11:00","","rob-88017","Estructura de Datos","ex"],["robotica",2,2,"may","2027-05-26","11:00","","rob-88018","Ingeniería y Sistemas de Control","ex"],["robotica",2,2,"ext2","2027-06-23","11:00","","rob-88018","Ingeniería y Sistemas de Control","ex"],["robotica",2,2,"may","2027-05-28","11:00","","rob-88019","Aspectos Profesionales de la Robótica","ex"],["robotica",2,2,"ext2","2027-06-25","11:00","","rob-88019","Aspectos Profesionales de la Robótica","ex"],["robotica",3,1,"ene","2027-01-12","13:00","","rob-88020","Administración y Servicios de Sistemas Operativos","ex"],["robotica",3,1,"ext1","2027-06-16","13:00","","rob-88020","Administración y Servicios de Sistemas Operativos","ex"],["robotica",3,1,"ene","2027-01-11","13:00","","rob-88021","Modelado y simulación robótica","ex"],["robotica",3,1,"ext1","2027-06-17","13:00","","rob-88021","Modelado y simulación robótica","ex"],["robotica",3,1,"ene","2027-01-15","13:00","","rob-88022","Introducción a la Inteligencia Artificial","ex"],["robotica",3,1,"ext1","2027-06-21","13:00","","rob-88022","Introducción a la Inteligencia Artificial","ex"],["robotica",3,1,"ene","2027-01-18","13:00","","rob-88023","Sistemas Distribuidos","ex"],["robotica",3,1,"ext1","2027-06-22","13:00","","rob-88023","Sistemas Distribuidos","ex"],["robotica",3,1,"ene","2027-01-21","13:00","","rob-88024","Sistemas Empotrados en Tiempo Real","ex"],["robotica",3,1,"ext1","2027-06-25","13:00","","rob-88024","Sistemas Empotrados en Tiempo Real","ex"],["robotica",3,2,"may","2027-05-17","13:00","","rob-88025","Robótica Móvil","ex"],["robotica",3,2,"ext2","2027-06-14","13:00","","rob-88025","Robótica Móvil","ex"],["robotica",3,2,"may","2027-05-20","13:00","","rob-88026","Robótica Industrial","ex"],["robotica",3,2,"ext2","2027-06-16","13:00","","rob-88026","Robótica Industrial","ex"],["robotica",3,2,"may","2027-05-21","13:00","","rob-88027","Fundamentos de Aprendizaje Automático","ex"],["robotica",3,2,"ext2","2027-06-18","13:00","","rob-88027","Fundamentos de Aprendizaje Automático","ex"],["robotica",3,2,"may","2027-05-25","13:00","","rob-88028","Desarrollo de Software de Sistemas","ex"],["robotica",3,2,"ext2","2027-06-22","13:00","","rob-88028","Desarrollo de Software de Sistemas","ex"],["robotica",3,2,"may","2027-05-27","13:00","","rob-88029","Planificación y sistemas robóticos cooperativos","ex"],["robotica",3,2,"ext2","2027-06-24","13:00","","rob-88029","Planificación y sistemas robóticos cooperativos","ex"],["robotica",4,1,"ene","2027-01-14","16:00","","rob-88030","Sistemas de Percepción","ex"],["robotica",4,1,"ext1","2027-06-22","16:00","","rob-88030","Sistemas de Percepción","ex"],["robotica",4,1,"ene","2027-01-13","16:00","","rob-88031","Robótica de Servicio","ex"],["robotica",4,1,"ext1","2027-06-17","16:00","","rob-88031","Robótica de Servicio","ex"],["robotica",4,1,"ene","2027-01-15","16:00","","rob-88032","Inteligencia Artificial en Robótica I","ex"],["robotica",4,1,"ext1","2027-06-21","16:00","","rob-88032","Inteligencia Artificial en Robótica I","ex"],["robotica",4,1,"ene","2027-01-18","16:00","","rob-88033","Arquitecturas de Software para Robótica","ex"],["robotica",4,1,"ext1","2027-06-23","16:00","","rob-88033","Arquitecturas de Software para Robótica","ex"],["robotica",4,1,"ene","2027-01-22","16:00","","rob-88034","Inteligencia Artificial en Robótica II","ex"],["robotica",4,1,"ext1","2027-06-25","16:00","","rob-88034","Inteligencia Artificial en Robótica II","ex"],["robotica",4,2,"may","2027-05-17","16:00","","rob-88035","Inteligencia Artificial Escalable y Distribuida","ex"],["robotica",4,2,"ext2","2027-06-15","18:00","","rob-88035","Inteligencia Artificial Escalable y Distribuida","ex"],["robotica",4,2,"may","2027-05-20","16:00","","rob-88036","Diseño de Software Seguro y Fiable","ex"],["robotica",4,2,"ext2","2027-06-18","18:00","","rob-88036","Diseño de Software Seguro y Fiable","ex"],["robotica",4,2,"may","2027-06-21","23:59","PRANET","rob-88037","Prácticas Externas","ent"],["robotica",4,2,"ext2","2027-07-23","23:59","PRANET","rob-88037","Prácticas Externas","ent"],["robotica",4,2,"may","2027-06-30","23:59","METANET","rob-88038","Trabajo Fin de Grado","ent"],["robotica",4,2,"ext2","2027-09-12","23:59","METANET","rob-88038","Trabajo Fin de Grado","ent"],["informatica",1,1,"ene","2027-01-08","09:00","","inf-76001","Fundamentos Físicos de la Informática","ex"],["informatica",1,1,"ext1","2027-06-14","09:00","","inf-76001","Fundamentos Físicos de la Informática","ex"],["informatica",1,1,"ene","2027-01-12","09:00","","inf-76002","Fundamentos de Programación","ex"],["informatica",1,1,"ext1","2027-06-16","09:00","","inf-76002","Fundamentos de Programación","ex"],["informatica",1,1,"ene","2027-01-14","09:00","","inf-76003","Taller de Programación","ex"],["informatica",1,1,"ext1","2027-06-18","09:00","","inf-76003","Taller de Programación","ex"],["informatica",1,1,"ene","2027-01-18","09:00","","inf-76004","Fundamentos de Gestión Empresarial","ex"],["informatica",1,1,"ext1","2027-06-22","09:00","","inf-76004","Fundamentos de Gestión Empresarial","ex"],["informatica",1,1,"ene","2027-01-20","09:00","","inf-76005","Tecnología de Computadores","ex"],["informatica",1,1,"ext1","2027-06-24","09:00","","inf-76005","Tecnología de Computadores","ex"],["informatica",1,2,"may","2027-05-18","09:00","","inf-76006","Programación","ex"],["informatica",1,2,"ext2","2027-06-15","09:00","","inf-76006","Programación","ex"],["informatica",1,2,"may","2027-05-20","09:00","","inf-76007","Álgebra Lineal","ex"],["informatica",1,2,"ext2","2027-06-17","09:00","","inf-76007","Álgebra Lineal","ex"],["informatica",1,2,"may","2027-05-24","09:00","","inf-76008","Estructura de Computadores","ex"],["informatica",1,2,"ext2","2027-06-21","09:00","","inf-76008","Estructura de Computadores","ex"],["informatica",1,2,"may","2027-05-26","09:00","","inf-76009","Fundamentos de Sistemas Operativos","ex"],["informatica",1,2,"ext2","2027-06-23","09:00","","inf-76009","Fundamentos de Sistemas Operativos","ex"],["informatica",1,2,"may","2027-05-28","09:00","","inf-76010","Cálculo y Métodos Numéricos","ex"],["informatica",1,2,"ext2","2027-06-25","09:00","","inf-76010","Cálculo y Métodos Numéricos","ex"],["informatica",2,1,"ene","2027-01-11","11:00","","inf-76011","Redes de Computadores","ex"],["informatica",2,1,"ext1","2027-06-15","13:00","","inf-76011","Redes de Computadores","ex"],["informatica",2,1,"ene","2027-01-13","11:00","","inf-76012","Arquitectura de Computadores","ex"],["informatica",2,1,"ext1","2027-06-17","13:00","","inf-76012","Arquitectura de Computadores","ex"],["informatica",2,1,"ene","2027-01-15","11:00","","inf-76013","Estadística","ex"],["informatica",2,1,"ext1","2027-06-21","13:00","","inf-76013","Estadística","ex"],["informatica",2,1,"ene","2027-01-19","11:00","","inf-76014","Lógica, Algoritmia y Computación","ex"],["informatica",2,1,"ext1","2027-06-23","13:00","","inf-76014","Lógica, Algoritmia y Computación","ex"],["informatica",2,1,"ene","2027-01-21","11:00","","inf-76015","Matemática Discreta","ex"],["informatica",2,1,"ext1","2027-06-25","13:00","","inf-76015","Matemática Discreta","ex"],["informatica",2,2,"may","2027-05-17","11:00","","inf-76016","Redes y Sistemas Web","ex"],["informatica",2,2,"ext2","2027-06-14","13:00","","inf-76016","Redes y Sistemas Web","ex"],["informatica",2,2,"may","2027-05-19","11:00","","inf-76017","Fundamentos de Bases de Datos","ex"],["informatica",2,2,"ext2","2027-06-16","13:00","","inf-76017","Fundamentos de Bases de Datos","ex"],["informatica",2,2,"may","2027-05-21","11:00","","inf-76018","Estructura de Datos","ex"],["informatica",2,2,"ext2","2027-06-18","13:00","","inf-76018","Estructura de Datos","ex"],["informatica",2,2,"may","2027-05-25","11:00","","inf-76019","Interacción Persona-Ordenador","ex"],["informatica",2,2,"ext2","2027-06-22","13:00","","inf-76019","Interacción Persona-Ordenador","ex"],["informatica",2,2,"may","2027-05-27","11:00","","inf-76020","Fundamentos de Ingeniería de Software","ex"],["informatica",2,2,"ext2","2027-06-24","13:00","","inf-76020","Fundamentos de Ingeniería de Software","ex"],["informatica",3,1,"ene","2027-01-11","13:00","","inf-76021","Administración y Servicios de Sistemas Operativos","ex"],["informatica",3,1,"ext1","2027-06-14","11:00","","inf-76021","Administración y Servicios de Sistemas Operativos","ex"],["informatica",3,1,"ene","2027-01-13","13:00","","inf-76022","Gestión de Proyectos Software","ex"],["informatica",3,1,"ext1","2027-06-16","11:00","","inf-76022","Gestión de Proyectos Software","ex"],["informatica",3,1,"ene","2027-01-18","13:00","","inf-76023","Introducción a la Inteligencia Artificial","ex"],["informatica",3,1,"ext1","2027-06-18","11:00","","inf-76023","Introducción a la Inteligencia Artificial","ex"],["informatica",3,1,"ene","2027-01-20","13:00","","inf-76024","Sistemas Distribuidos","ex"],["informatica",3,1,"ext1","2027-06-22","11:00","","inf-76024","Sistemas Distribuidos","ex"],["informatica",3,1,"ene","2027-01-22","13:00","","inf-76025","Lenguajes y Paradigmas","ex"],["informatica",3,1,"ext1","2027-06-24","11:00","","inf-76025","Lenguajes y Paradigmas","ex"],["informatica",3,2,"may","2027-05-18","13:00","","inf-76026","Bases de Datos Avanzadas","ex"],["informatica",3,2,"ext2","2027-06-15","11:00","","inf-76026","Bases de Datos Avanzadas","ex"],["informatica",3,2,"may","2027-05-20","13:00","","inf-76027","Aspectos Profesionales de la Informática","ex"],["informatica",3,2,"ext2","2027-06-17","11:00","","inf-76027","Aspectos Profesionales de la Informática","ex"],["informatica",3,2,"may","2027-05-24","13:00","","inf-76028","Fundamentos de Aprendizaje Automático","ex"],["informatica",3,2,"ext2","2027-06-21","11:00","","inf-76028","Fundamentos de Aprendizaje Automático","ex"],["informatica",3,2,"may","2027-05-26","13:00","","inf-76030","Desarrollo de Software Avanzado","ex"],["informatica",3,2,"ext2","2027-06-23","11:00","","inf-76030","Desarrollo de Software Avanzado","ex"],["informatica",3,2,"may","2027-05-28","13:00","","inf-76031","Ingeniería de Requisitos y Calidad del Software","ex"],["informatica",3,2,"ext2","2027-06-25","11:00","","inf-76031","Ingeniería de Requisitos y Calidad del Software","ex"],["informatica",3,2,"may","2027-05-17","13:00","","inf-76038","Desarrollo de Software de Sistemas","ex"],["informatica",3,2,"ext2","2027-06-23","13:00","","inf-76038","Desarrollo de Software de Sistemas","ex"],["informatica",3,2,"may","2027-05-19","13:00","","inf-76039","Gestión de Procesos e Infraestructura DevOps","ex"],["informatica",3,2,"ext2","2027-06-25","13:00","","inf-76039","Gestión de Procesos e Infraestructura DevOps","ex"],["informatica",4,1,"ene","2027-01-08","16:00","","inf-76033","Arquitectura Software","ex"],["informatica",4,1,"ext1","2027-06-14","16:00","","inf-76033","Arquitectura Software","ex"],["informatica",4,1,"ene","2027-01-12","16:00","","inf-76034","Integración de Aplicaciones","ex"],["informatica",4,1,"ext1","2027-06-16","16:00","","inf-76034","Integración de Aplicaciones","ex"],["informatica",4,1,"ene","2027-01-14","16:00","","inf-76035","Desarrollo Multiplataforma","ex"],["informatica",4,1,"ext1","2027-06-18","16:00","","inf-76035","Desarrollo Multiplataforma","ex"],["informatica",4,1,"ene","2027-01-19","16:00","","inf-76036","Desarrollo de Servidor y Big Data","ex"],["informatica",4,1,"ext1","2027-06-22","16:00","","inf-76036","Desarrollo de Servidor y Big Data","ex"],["informatica",4,1,"ene","2027-01-21","16:00","","inf-76037","Soluciones y Despliegue en la Nube","ex"],["informatica",4,1,"ext1","2027-06-24","16:00","","inf-76037","Soluciones y Despliegue en la Nube","ex"],["informatica",4,1,"ene","2027-01-11","16:00","","x:Despliegue y Automatización","Despliegue y Automatización","ex"],["informatica",4,1,"ext1","2027-06-15","16:00","","x:Despliegue y Automatización","Despliegue y Automatización","ex"],["informatica",4,1,"ene","2027-01-13","16:00","","x:Desarrollo de Front-End","Desarrollo de Front-End","ex"],["informatica",4,1,"ext1","2027-06-17","16:00","","x:Desarrollo de Front-End","Desarrollo de Front-End","ex"],["informatica",4,1,"ene","2027-01-15","16:00","","x:Diseño y Despliegue de Aplicaciones Multiplataforma","Diseño y Despliegue de Aplicaciones Multiplataforma","ex"],["informatica",4,1,"ext1","2027-06-21","16:00","","x:Diseño y Despliegue de Aplicaciones Multiplataforma","Diseño y Despliegue de Aplicaciones Multiplataforma","ex"],["informatica",4,1,"ene","2027-01-18","16:00","","x:Contenedores, Virtualización y Escalabilidad","Contenedores, Virtualización y Escalabilidad","ex"],["informatica",4,1,"ext1","2027-06-23","16:00","","x:Contenedores, Virtualización y Escalabilidad","Contenedores, Virtualización y Escalabilidad","ex"],["informatica",4,1,"ene","2027-01-22","16:00","","x:Despliegue y Monitorización en la Nube","Despliegue y Monitorización en la Nube","ex"],["informatica",4,1,"ext1","2027-06-25","16:00","","x:Despliegue y Monitorización en la Nube","Despliegue y Monitorización en la Nube","ex"],["informatica",4,2,"may","2027-05-19","16:00","","x:Diseño de Software Seguro y Fiable","Diseño de Software Seguro y Fiable","ex"],["informatica",4,2,"ext2","2027-06-15","18:00","","x:Diseño de Software Seguro y Fiable","Diseño de Software Seguro y Fiable","ex"],["informatica",4,2,"may","2027-05-21","16:00","","inf-76040","Ciberseguridad en Redes y Aplicaciones","ex"],["informatica",4,2,"ext2","2027-06-22","18:00","","inf-76040","Ciberseguridad en Redes y Aplicaciones","ex"],["informatica",4,2,"may","2027-06-21","23:59","PRANET","inf-76046","Prácticas Externas I y II","ent"],["informatica",4,2,"ext2","2027-07-23","23:59","PRANET","inf-76046","Prácticas Externas I y II","ent"],["informatica",4,2,"may","2027-06-30","23:59","METANET","inf-76029","Trabajo Fin de Grado","ent"],["informatica",4,2,"ext2","2027-09-12","23:59","METANET","inf-76029","Trabajo Fin de Grado","ent"],["telematica",1,1,"ene","2027-01-11","09:00","","tel-99970","Álgebra Lineal y Matemática Discreta","ex"],["telematica",1,1,"ext1","2027-06-15","09:00","","tel-99970","Álgebra Lineal y Matemática Discreta","ex"],["telematica",1,1,"ene","2027-01-13","09:00","","tel-99971","Cálculo I","ex"],["telematica",1,1,"ext1","2027-06-17","09:00","","tel-99971","Cálculo I","ex"],["telematica",1,1,"ene","2027-01-15","09:00","","tel-99972","Electrónica I","ex"],["telematica",1,1,"ext1","2027-06-21","09:00","","tel-99972","Electrónica I","ex"],["telematica",1,1,"ene","2027-01-19","09:00","","tel-99973","Fundamentos de la Programación","ex"],["telematica",1,1,"ext1","2027-06-23","09:00","","tel-99973","Fundamentos de la Programación","ex"],["telematica",1,1,"ene","2027-01-21","09:00","","tel-99974","Teoría y Análisis de Circuitos Lineales","ex"],["telematica",1,1,"ext1","2027-06-25","09:00","","tel-99974","Teoría y Análisis de Circuitos Lineales","ex"],["telematica",1,2,"may","2027-05-17","09:00","","tel-99975","Cálculo II","ex"],["telematica",1,2,"ext2","2027-06-14","09:00","","tel-99975","Cálculo II","ex"],["telematica",1,2,"may","2027-05-19","09:00","","tel-99976","Física","ex"],["telematica",1,2,"ext2","2027-06-16","09:00","","tel-99976","Física","ex"],["telematica",1,2,"may","2027-05-21","09:00","","tel-99977","Electrónica II","ex"],["telematica",1,2,"ext2","2027-06-18","09:00","","tel-99977","Electrónica II","ex"],["telematica",1,2,"may","2027-05-25","09:00","","tel-99978","Fundamentos de Gestión Empresarial","ex"],["telematica",1,2,"ext2","2027-06-22","09:00","","tel-99978","Fundamentos de Gestión Empresarial","ex"],["telematica",1,2,"may","2027-05-27","09:00","","tel-99979","Programación de Aplicaciones","ex"],["telematica",1,2,"ext2","2027-06-24","09:00","","tel-99979","Programación de Aplicaciones","ex"],["doble",1,1,"ene","2027-01-11","09:00","","rob-88000","Fundamentos físicos","ex"],["doble",1,1,"ext1","2027-06-15","09:00","","rob-88000","Fundamentos físicos","ex"],["doble",1,1,"ene","2027-01-13","09:00","","rob-88001","Fundamentos de programación","ex"],["doble",1,1,"ext1","2027-06-17","09:00","","rob-88001","Fundamentos de programación","ex"],["doble",1,1,"ene","2027-01-15","09:00","","rob-88002","Física para robótica","ex"],["doble",1,1,"ext1","2027-06-21","09:00","","rob-88002","Física para robótica","ex"],["doble",1,1,"ene","2027-01-19","09:00","","rob-88003","Fundamentos de gestión empresarial","ex"],["doble",1,1,"ext1","2027-06-23","09:00","","rob-88003","Fundamentos de gestión empresarial","ex"],["doble",1,1,"ene","2027-01-21","09:00","","rob-88004","Tecnología de computadores","ex"],["doble",1,1,"ext1","2027-06-25","09:00","","rob-88004","Tecnología de computadores","ex"],["doble",1,1,"ene","2027-01-14","09:00","","inf-76003","Taller de Programación","ex"],["doble",1,1,"ext1","2027-06-18","09:00","","inf-76003","Taller de Programación","ex"],["doble",1,2,"may","2027-05-17","09:00","","rob-88005","Programación","ex"],["doble",1,2,"ext2","2027-06-14","09:00","","rob-88005","Programación","ex"],["doble",1,2,"may","2027-05-19","09:00","","rob-88006","Álgebra lineal","ex"],["doble",1,2,"ext2","2027-06-16","09:00","","rob-88006","Álgebra lineal","ex"],["doble",1,2,"may","2027-05-21","09:00","","rob-88007","Estructura de computadores","ex"],["doble",1,2,"ext2","2027-06-18","09:00","","rob-88007","Estructura de computadores","ex"],["doble",1,2,"may","2027-05-25","09:00","","rob-88008","Fundamentos de sistemas operativos","ex"],["doble",1,2,"ext2","2027-06-22","09:00","","rob-88008","Fundamentos de sistemas operativos","ex"],["doble",1,2,"may","2027-05-27","09:00","","rob-88009","Cálculo y métodos numéricos","ex"],["doble",1,2,"ext2","2027-06-24","09:00","","rob-88009","Cálculo y métodos numéricos","ex"],["doble",1,2,"may","2027-05-25","11:00","","inf-76019","Interacción Persona-Ordenador","ex"],["doble",1,2,"ext2","2027-06-22","13:00","","inf-76019","Interacción Persona-Ordenador","ex"],["doble",2,1,"ene","2027-01-08","11:00","","rob-88010","Redes de computadores","ex"],["doble",2,1,"ext1","2027-06-14","11:00","","rob-88010","Redes de computadores","ex"],["doble",2,1,"ene","2027-01-12","11:00","","rob-88011","Fundamentos de automática","ex"],["doble",2,1,"ext1","2027-06-16","11:00","","rob-88011","Fundamentos de automática","ex"],["doble",2,1,"ene","2027-01-14","11:00","","rob-88012","Estadística","ex"],["doble",2,1,"ext1","2027-06-18","11:00","","rob-88012","Estadística","ex"],["doble",2,1,"ene","2027-01-18","11:00","","rob-88013","Sensores y actuadores","ex"],["doble",2,1,"ext1","2027-06-22","11:00","","rob-88013","Sensores y actuadores","ex"],["doble",2,1,"ene","2027-01-20","11:00","","rob-88014","Señales y sistemas","ex"],["doble",2,1,"ext1","2027-06-24","11:00","","rob-88014","Señales y sistemas","ex"],["doble",2,1,"ene","2027-01-21","11:00","","inf-76015","Matemática Discreta","ex"],["doble",2,1,"ext1","2027-06-25","13:00","","inf-76015","Matemática Discreta","ex"],["doble",2,2,"may","2027-05-18","11:00","","rob-88015","Arquitectura de Computadores","ex"],["doble",2,2,"ext2","2027-06-15","11:00","","rob-88015","Arquitectura de Computadores","ex"],["doble",2,2,"may","2027-05-24","11:00","","rob-88017","Estructura de Datos","ex"],["doble",2,2,"ext2","2027-06-21","11:00","","rob-88017","Estructura de Datos","ex"],["doble",2,2,"may","2027-05-26","11:00","","rob-88018","Ingeniería y Sistemas de Control","ex"],["doble",2,2,"ext2","2027-06-23","11:00","","rob-88018","Ingeniería y Sistemas de Control","ex"],["doble",2,2,"may","2027-05-28","11:00","","rob-88019","Aspectos Profesionales de la Robótica","ex"],["doble",2,2,"ext2","2027-06-25","11:00","","rob-88019","Aspectos Profesionales de la Robótica","ex"],["doble",2,2,"may","2027-05-17","11:00","","inf-76016","Redes y Sistemas Web","ex"],["doble",2,2,"ext2","2027-06-14","13:00","","inf-76016","Redes y Sistemas Web","ex"],["doble",2,2,"may","2027-05-27","11:00","","inf-76020","Fundamentos de Ingeniería del Software","ex"],["doble",2,2,"ext2","2027-06-24","13:00","","inf-76020","Fundamentos de Ingeniería del Software","ex"],["doble",3,1,"ene","2027-01-12","13:00","","rob-88021","Modelado y simulación robótica","ex"],["doble",3,1,"ext1","2027-06-17","13:00","","rob-88021","Modelado y simulación robótica","ex"],["doble",3,1,"ene","2027-01-19","11:00","","inf-76014","Lógica, Algoritmia y Computación","ex"],["doble",3,1,"ext1","2027-06-23","13:00","","inf-76014","Lógica, Algoritmia y Computación","ex"],["doble",3,1,"ene","2027-01-13","13:00","","inf-76022","Gestión de Proyectos Software","ex"],["doble",3,1,"ext1","2027-06-16","11:00","","inf-76022","Gestión de Proyectos Software","ex"],["doble",3,1,"ene","2027-01-15","13:00","","rob-88022","Introducción a la Inteligencia Artificial","ex"],["doble",3,1,"ext1","2027-06-21","13:00","","rob-88022","Introducción a la Inteligencia Artificial","ex"],["doble",3,1,"ene","2027-01-18","13:00","","rob-88023","Sistemas Distribuidos","ex"],["doble",3,1,"ext1","2027-06-22","13:00","","rob-88023","Sistemas Distribuidos","ex"],["doble",3,1,"ene","2027-01-22","13:00","","inf-76025","Lenguajes y Paradigmas","ex"],["doble",3,1,"ext1","2027-06-24","11:00","","inf-76025","Lenguajes y Paradigmas","ex"],["doble",3,2,"may","2027-05-18","13:00","","inf-76026","Bases de Datos Avanzadas","ex"],["doble",3,2,"ext2","2027-06-15","11:00","","inf-76026","Bases de Datos Avanzadas","ex"],["doble",3,2,"may","2027-05-17","13:00","","rob-88025","Robótica Móvil","ex"],["doble",3,2,"ext2","2027-06-14","13:00","","rob-88025","Robótica Móvil","ex"],["doble",3,2,"may","2027-05-21","13:00","","rob-88027","Fundamentos de Aprendizaje Automático","ex"],["doble",3,2,"ext2","2027-06-18","13:00","","rob-88027","Fundamentos de Aprendizaje Automático","ex"],["doble",3,2,"may","2027-05-20","11:00","","rob-88016","Fundamentos de Bases de Datos","ex"],["doble",3,2,"ext2","2027-06-17","11:00","","rob-88016","Fundamentos de Bases de Datos","ex"],["doble",3,2,"may","2027-05-25","13:00","","rob-88028","Desarrollo de Software de Sistemas","ex"],["doble",3,2,"ext2","2027-06-22","13:00","","rob-88028","Desarrollo de Software de Sistemas","ex"],["doble",3,2,"may","2027-05-27","13:00","","rob-88029","Planificación y sistemas robóticos cooperativos","ex"],["doble",3,2,"ext2","2027-06-24","13:00","","rob-88029","Planificación y sistemas robóticos cooperativos","ex"],["doble",4,1,"ene","2027-01-14","16:00","","rob-88030","Sistemas de Percepción","ex"],["doble",4,1,"ext1","2027-06-22","16:00","","rob-88030","Sistemas de Percepción","ex"],["doble",4,1,"ene","2027-01-15","16:00","","rob-88032","Inteligencia Artificial en Robótica I","ex"],["doble",4,1,"ext1","2027-06-21","16:00","","rob-88032","Inteligencia Artificial en Robótica I","ex"],["doble",4,1,"ene","2027-01-11","16:00","","x:Despliegue y Automatización","Despliegue y Automatización","ex"],["doble",4,1,"ext1","2027-06-15","16:00","","x:Despliegue y Automatización","Despliegue y Automatización","ex"],["doble",4,1,"ene","2027-01-13","16:00","","x:Desarrollo de Front-End","Desarrollo de Front-End","ex"],["doble",4,1,"ext1","2027-06-17","16:00","","x:Desarrollo de Front-End","Desarrollo de Front-End","ex"],["doble",4,1,"ene","2027-01-21","13:00","","rob-88024","Sistemas Empotrados en Tiempo Real","ex"],["doble",4,1,"ext1","2027-06-25","13:00","","rob-88024","Sistemas Empotrados en Tiempo Real","ex"],["doble",4,1,"ene","2027-01-12","13:00","","rob-88020","Administración y Servicios de Sistemas Operativos","ex"],["doble",4,1,"ext1","2027-06-16","13:00","","rob-88020","Administración y Servicios de Sistemas Operativos","ex"],["doble",4,2,"may","2027-05-17","16:00","","rob-88035","Inteligencia Artificial Escalable y Distribuida","ex"],["doble",4,2,"ext2","2027-06-15","18:00","","rob-88035","Inteligencia Artificial Escalable y Distribuida","ex"],["doble",4,2,"may","2027-05-20","16:00","","rob-88036","Diseño de Software Seguro y Fiable","ex"],["doble",4,2,"ext2","2027-06-18","18:00","","rob-88036","Diseño de Software Seguro y Fiable","ex"],["doble",4,2,"may","2027-05-21","16:00","","inf-76040","Ciberseguridad en Redes y Aplicaciones","ex"],["doble",4,2,"ext2","2027-06-22","18:00","","inf-76040","Ciberseguridad en Redes y Aplicaciones","ex"],["doble",4,2,"may","2027-05-20","13:00","","rob-88026","Robótica Industrial","ex"],["doble",4,2,"ext2","2027-06-16","13:00","","rob-88026","Robótica Industrial","ex"],["doble",4,2,"may","2027-05-19","13:00","","inf-76039","Gestión de Procesos e Infraestructura DevOps","ex"],["doble",4,2,"ext2","2027-06-25","13:00","","inf-76039","Gestión de Procesos e Infraestructura DevOps","ex"]];
+const EXAM_NOTAS={"robotica":"Defensas del TFG: semana del 5 al 9 de julio de 2027 (convocatoria ordinaria) y semana del 20 al 24 de septiembre de 2027 (extraordinaria).","informatica":"Defensas del TFG: semana del 5 al 9 de julio de 2027 (convocatoria ordinaria) y semana del 20 al 24 de septiembre de 2027 (extraordinaria)."};
+
 /* ===== Guías docentes y horarios 2026-2027 de los grados de la Escuela Politécnica (generado por plan/build_guias.py, no editar a mano) ===== */
 const GUIAS_CURSO='2026-2027';
 const GUIAS_GRADO={"robotica": "Grado en Ingeniería Robótica e Inteligencia Artificial", "informatica": "Grado en Ingeniería Informática", "telematica": "Grado en Ingeniería Telemática"};
@@ -3335,13 +3359,13 @@ MODS.asignaturas={
       <div class="grid g2w">${g?this.guiaPanel(g,pr):''}
       ${own?`<section class="panel stack"><div class="row" style="justify-content:space-between"><h3>Exámenes y entregas</h3>${canWrite?`<button class="btn sm" data-act="newItem" data-col="evaluaciones" data-prefill='${esc(JSON.stringify({asignatura:n}))}'>+ Añadir</button>`:''}</div>
         ${ev.length?'<div class="list">'+ev.map(e=>{const P=evalPlazos(e);return `<div class="it"><div class="main"><div class="t"><span class="status-dot ${P.worst==='bad'?'bad':P.worst==='warn'?'warn':''}"></span>${esc(e.tipo||'Prueba')}${e.titulo?' · '+esc(e.titulo):''}</div><div class="m"><span class="date">${esc(fmt(e.fecha))}</span>${e.hora?`<span>${esc(e.hora)}</span>`:''}${e.peso?`<span>${esc(e.peso)} %</span>`:''}${P.items.filter(x=>x.s==='bad').map(x=>`<span class="late">${esc(x.lbl)}</span>`).join('')}</div></div>${e.fecha>=today()?`<a class="btn ghost sm" href="${esc(gcalLink(`${e.tipo||'Prueba'}: ${n}`,e.fecha,e.hora,120))}" target="_blank" rel="noopener">Google Calendar</a>`:''}${canWrite?`<button class="btn ghost sm" data-act="edit" data-col="evaluaciones" data-id="${esc(e.id)}">Editar</button>`:''}</div>`}).join('')+'</div>':'<p class="small muted" style="margin:0">Sin exámenes ni entregas apuntados.</p>'}
-        ${g?this.fechasGuia(g):''}</section>${g?'</div><div class="grid g2">':''}
+        ${exFichaHTML(k)}${g?this.fechasGuia(g):''}</section>${g?'</div><div class="grid g2">':''}
       <section class="panel stack"><div class="row" style="justify-content:space-between"><h3>Quejas</h3>${canWrite?`<button class="btn sm" data-act="go" data-t="incidencias" data-state='${esc(JSON.stringify({newPrefill:{asignatura:n,ambito:'curso'}}))}'>+ Nueva queja</button>`:''}</div>
         ${inc.length?'<div class="list">'+inc.map(i=>`<div class="it click" data-act="go" data-t="incidencias" data-id="${esc(i.id)}"><div class="main"><div class="t">${esc(i.titulo)}</div><div class="m"><span class="chip">${esc(KLABEL[i.columna]||'Nueva queja')}</span>${i.urgente?'<span class="chip urg">Urgente</span>':''}</div></div></div>`).join('')+'</div>':'<p class="small muted" style="margin:0">Ninguna queja sobre esta asignatura.</p>'}</section>
       ${this.horPanel(k,g,true,hor)}
-      <section class="panel stack"><h3>Correos enviados</h3>${env.length?'<div class="list">'+env.slice(0,12).map(x=>`<details class="it" style="display:block"><summary style="cursor:pointer"><b>${esc(x.asunto||'(sin asunto)')}</b> <span class="small muted">· ${esc(fmt(x.fecha))}${x.plantilla?' · '+esc(x.plantilla):''}</span></summary><p class="small" style="white-space:pre-wrap;margin:8px 0 0">${esc(x.cuerpo||'')}</p></details>`).join('')+'</div>':'<p class="small muted" style="margin:0">Cuando redactes un correo, pulsa «Registrar como enviado» y aparecerá aquí.</p>'}
+      <section class="panel stack"><h3>Correos enviados</h3>${env.length?'<div class="list">'+env.slice(0,12).map(envItemHTML).join('')+'</div>':'<p class="small muted" style="margin:0">Cuando redactes un correo, pulsa «Registrar como enviado» y aparecerá aquí. Si en una semana no te contestan, el portal te avisa.</p>'}
         ${com.length?`<h3 style="margin-top:8px">Compromisos</h3><div class="list">${com.map(c=>`<div class="it"><div class="main"><div class="t">${esc(c.que)}</div><div class="m"><span class="chip ${c.estado==='cumplido'?'ok':c.estado==='incumplido'?'bad':'warn'}">${esc(c.estado)}</span>${c.fecha?`<span class="date">${esc(fmt(c.fecha))}</span>`:''}</div></div></div>`).join('')}</div>`:''}</section>`
-      :`<div class="stack"><section class="panel stack"><h3>Exámenes, quejas y correos</h3><p class="small muted" style="margin:0">Hay una asignatura con el mismo nombre en tu grado. Lo que tengas apuntado como «${esc(n)}» (exámenes, quejas, horario y correos) sale en <a href="#asignaturas" data-act="asOpen" data-k="${esc(pref.id)}">su ficha de ${esc(GCORTO[pref.g])}</a>.</p>${g?this.fechasGuia(g):''}</section>${this.horPanel(k,g,false,[])}</div>`}
+      :`<div class="stack"><section class="panel stack"><h3>Exámenes, quejas y correos</h3><p class="small muted" style="margin:0">Hay una asignatura con el mismo nombre en tu grado. Lo que tengas apuntado como «${esc(n)}» (exámenes, quejas, horario y correos) sale en <a href="#asignaturas" data-act="asOpen" data-k="${esc(pref.id)}">su ficha de ${esc(GCORTO[pref.g])}</a>.</p>${exFichaHTML(k)}${g?this.fechasGuia(g):''}</section>${this.horPanel(k,g,false,[])}</div>`}
     </div></div>`;
   },
   /* horario oficial de la asignatura (y lo que hayas apuntado tú) */
@@ -3461,12 +3485,20 @@ ACT.horCopy=()=>{const st=MODS.asignaturas.state,s=st.hsem||semActual(),m=miPlan
 /* registro de correos enviados desde Redactar */
 ACT.mailSent=async()=>{
   const R=MODS.redactar,v=R.values(),m=R.cur&&R.cur.mail;if(!m)return;
+  /* un recordatorio no es un correo nuevo: se apunta en el original y vuelve a contar una semana */
+  if(R.state.tpl==='recordatorio'){
+    const o=D.enviados.find(x=>x.id===v.orig);if(!o){toast('Elige primero el correo sin respuesta');return}
+    const rec=envRecs(o);if(rec[rec.length-1]===today()){toast('Este recordatorio ya estaba registrado hoy');return}
+    if(await patch('enviados',o.id,{recordatorios:rec.concat([today()])}))toast('Recordatorio registrado: el portal vuelve a contar una semana');
+    return;
+  }
   const ev=v.ev?D.evaluaciones.find(e=>e.id===v.ev):null;
   const c=v.dest?contact(v.dest):null;
   const asig=v.asig||(ev&&ev.asignatura)||(c&&(c.asignaturas||[])[0])||'';
   const subj=($('m-subj')&&$('m-subj').textContent!=='—')?$('m-subj').textContent:(m.subject||'');
-  const id=await save('enviados',null,{fecha:today(),para:m.to||'',nombre:c?(c.nombreCompleto||c.nombre):'',asunto:subj,plantilla:TPLS[R.state.tpl].name,asignatura:asig,cuerpo:String($('m-body').value||'').slice(0,4000),creado:Date.now()});
-  if(id)toast('Registrado en Correos enviados');
+  const espera=!SIN_RESP_TPL.has(TPLS[R.state.tpl].name);
+  const id=await save('enviados',null,{fecha:today(),para:m.to||'',nombre:c?(c.nombreCompleto||c.nombre):'',asunto:subj,plantilla:TPLS[R.state.tpl].name,asignatura:asig,cuerpo:String($('m-body').value||'').slice(0,4000),espera,respondido:'',recordatorios:[],creado:Date.now()});
+  if(id)toast(espera?'Registrado. Si en una semana no te contestan, el portal te avisará.':'Registrado en Correos enviados');
 };
 (function(){
   const R=MODS.redactar,_o=R.output;
@@ -3789,6 +3821,8 @@ function searchAll(q){
   D.encuestas.forEach(e=>add('Encuestas',e.titulo,fmt(e.fecha),{t:'encuestas',state:{sel:e.id}},e.titulo+' '+(e.preguntas||[]).map(p=>p.texto).join(' ')));
   D.resumenes.forEach(r=>add('Resúmenes',r.titulo||'Sin título',[r.tipo,fmt(r.fecha),r.lugar].filter(Boolean).join(' · '),{t:'resumenes',state:{sel:r.id}},[r.titulo,r.tipo,r.lugar,r.ponentes,r.breve,r.texto].join(' ')));
   D.enviados.forEach(x=>add('Correos enviados',x.asunto||'(sin asunto)',[x.nombre||x.para,fmt(x.fecha)].filter(Boolean).join(' · '),{t:'asignaturas',state:{view:'fichas',sel:x.asignatura||null}},[x.asunto,x.para,x.nombre,x.cuerpo].join(' ')));
+  EXS.forEach(x=>{if(x.g==='doble'&&guia(x.k)&&EXS.some(y=>y.g===guia(x.k).g&&y.k===x.k&&y.conv===x.conv&&y.f===x.f&&y.h===x.h))return;
+    add('Exámenes oficiales',x.nombre,`${fmt(x.f)} · ${x.t==='ent'?'hasta las 23:59':x.h} · ${exCurso(x)} · ${EX_CONV[x.conv]}`,{t:'calendario',state:{view:'escuela'},ex:x},['examen examenes',x.nombre,x.n,exCurso(x),EX_CONV[x.conv],fmtLong(x.f)].join(' '))});
   return H.slice(0,60);
 }
 function cmdkOpen(){
@@ -3811,6 +3845,7 @@ function cmdkGo(i){
   const x=CMDK.hits[i];if(!x)return;cmdkClose();
   const st=x.go.state||null;
   if(x.go.t==='asignaturas'&&st&&!st.sel)st.sel=null;
+  if(x.go.ex){EXV.per=x.go.ex.per;EXV.g='todos';EXV.c=0;EXV.q=x.go.ex.nombre}
   if(x.go.hv){HV.view='prof';HV.prof=x.go.hv;if(!clasesProf(x.go.hv,hvSem()).length&&clasesProf(x.go.hv,hvSem()===1?2:1).length)HV.sem=hvSem()===1?2:1}
   setTab(x.go.t,{open:x.go.id||null,state:st});
   if(x.go.t==='normativa')setTimeout(()=>{const o=$('n-out');if(o)o.scrollIntoView({block:'start',behavior:'smooth'})},50);
@@ -4843,6 +4878,193 @@ ACT.hvCopy=el=>{
   for(let d=1;d<=5;d++){const X=L.filter(x=>x.d===d).sort((a,b)=>hmin(a.a)-hmin(b.a));if(X.length)out.push(`*${DIA_N[d]}*\n`+X.map(x=>`• ${x.a}–${x.b} ${x.n} (${cursoTxt(x.g,x.c)})${aulaDe(x)?' · '+aulaTxt(aulaDe(x)):''}`).join('\n'))}
   copyText(`🗓️ *Horario de ${p.n} · ${s===1?'1.er':'2.º'} semestre*\n\n${out.join('\n\n')}\n\nSolo sus clases en la Politécnica (horarios oficiales ${GUIAS_CURSO}).`);
 };
+
+/* ===== Exámenes oficiales de la Escuela (calendarios 2026-2027): todos los cursos y grados, por días, y tus exámenes ===== */
+const EX_GRADO={robotica:'Robótica e IA',informatica:'Informática',telematica:'Telemática',doble:'Doble grado'};
+const EX_CONV={ene:'ordinaria de enero',may:'ordinaria de mayo',ext1:'extraordinaria del 1.er semestre',ext2:'extraordinaria del 2.º semestre'};
+const EX_PER=[['ene','Enero','ordinaria del 1.er semestre'],['may','Mayo','ordinaria del 2.º semestre'],['jun','Junio','extraordinarias']];
+GCLS.doble='g-dob';
+const EXS=EXAMENES.map(([g,c,s,conv,f,h,a,k,n,t],i)=>{const gu=guia(k);return {i,g,c,s,conv,f,h,a,k,n,nombre:gu?gu.n:n,t,per:conv==='ene'||conv==='may'?conv:'jun'}});
+function exCurso(x){return x.g==='doble'?`${x.c}º del doble grado`:`${x.c}º ${GCORTO[x.g]}`}
+function exTag(x){return `<span class="gtag ${GCLS[x.g]}">${esc(exCurso(x))}</span>`}
+function exPerHoy(){const t=today();return (EX_PER.find(([p])=>EXS.some(x=>x.per===p&&x.t==='ex'&&x.f>=t))||EX_PER[0])[0]}
+const EXV={g:'todos',c:0,per:null,q:''};
+function exPasa(x){return (EXV.g==='todos'||x.g===EXV.g)&&(!EXV.c||x.c===EXV.c)}
+
+/* ---------- tus exámenes ---------- */
+function exMios(){const K=new Set(misKeys());return EXS.filter(x=>K.has(x.k)&&(guia(x.k)?x.g===guia(x.k).g:x.g!=='doble')).sort((a,b)=>(a.f+a.h).localeCompare(b.f+b.h))}
+function exEnCal(x){return D.evaluaciones.some(e=>norm(e.asignatura)===norm(x.nombre)&&e.fecha===x.f)}
+function exDeAsig(k){const g=guia(k);return EXS.filter(x=>x.k===k&&(g?x.g===g.g:x.g!=='doble')).sort((a,b)=>(a.f+a.h).localeCompare(b.f+b.h))}
+function exBtn(x){return exEnCal(x)?'<span class="chip ok">En tu calendario</span>':canWrite?`<button class="btn ghost sm" data-act="exAdd" data-i="${x.i}">Añadir</button>`:''}
+/* en la ficha de cada asignatura: sus fechas oficiales */
+function exFichaHTML(k){
+  const L=exDeAsig(k);if(!L.length)return '';
+  return `<div class="stack" style="gap:6px"><div class="kicker">Examen oficial · calendario ${esc(EXAM_CURSO)}</div><div class="list">${L.map(x=>`<div class="it"><span class="exh">${esc(x.t==='ent'?'23:59':x.h)}</span><div class="main"><div class="t">${esc(fmtDay(x.f))}</div><div class="m"><span>${esc(x.t==='ent'?'Entrega · '+EX_CONV[x.conv]:EX_CONV[x.conv])}</span>${x.a?`<span>${esc(x.a)}</span>`:''}</div></div>${exBtn(x)}</div>`).join('')}</div></div>`;
+}
+async function exAdd(x){
+  if(exEnCal(x))return false;
+  const now=Date.now();
+  return !!await save('evaluaciones',null,{asignatura:x.nombre,tipo:x.t==='ent'?'Entrega':'Examen',titulo:x.t==='ent'?`Entrega (convocatoria ${EX_CONV[x.conv]})`:`Examen final · convocatoria ${EX_CONV[x.conv]}`,fecha:x.f,hora:x.t==='ent'?'23:59':x.h,peso:'',notasPub:'',revision:'',definitivas:'',notas:`Fecha del calendario oficial de exámenes ${EXAM_CURSO} de la Escuela${x.a?' · '+x.a:''}.`,creado:now,actualizado:now});
+}
+
+/* ---------- vista ---------- */
+function exRender(root){
+  if(!EXV.per)EXV.per=exPerHoy();
+  const cs=EXV.g==='todos'?[1,2,3,4]:[...new Set(EXS.filter(x=>x.g===EXV.g).map(x=>x.c))].sort();
+  if(EXV.c&&!cs.includes(EXV.c))EXV.c=0;
+  root.innerHTML=`<div class="head"><div><div class="kicker">Calendario · exámenes oficiales ${esc(EXAM_CURSO)}</div><h2>Exámenes de <em>la Escuela</em></h2><p class="lead">Las fechas oficiales de Robótica e IA, Informática, Telemática y el doble grado, día a día. Filtra por grado y curso, busca una asignatura y añade las tuyas a tu calendario.</p></div>
+    <div class="row"><div class="seg" role="group" aria-label="Vista">${calSegs('escuela')}</div></div></div>
+    <div class="asfil"><div class="seg" role="group" aria-label="Grado"><button data-act="exG" data-v="todos" aria-pressed="${EXV.g==='todos'}">Todos</button>${Object.keys(EX_GRADO).map(g=>`<button data-act="exG" data-v="${g}" aria-pressed="${EXV.g===g}">${esc(EX_GRADO[g])}</button>`).join('')}</div>
+      ${cs.length>1?`<div class="seg" role="group" aria-label="Curso"><button data-act="exC" data-v="0" aria-pressed="${!EXV.c}">Todos</button>${cs.map(c=>`<button data-act="exC" data-v="${c}" aria-pressed="${EXV.c===c}">${c}º</button>`).join('')}</div>`:''}</div>
+    <div id="ed"></div><div id="slot-ex"></div>`;
+  exPaint();
+}
+function exPaint(){
+  const box=$('slot-ex');if(!box)return;
+  if(!ready()){box.innerHTML=loadingHTML();return}
+  box.innerHTML=exMiosHTML()+exCalHTML();
+  exListFill();
+}
+function exMiosHTML(){
+  const L=exMios(),m=miPlan();
+  if(!L.length)return `<section class="panel stack"><h3>Tus exámenes</h3><p class="small muted" style="margin:0">No hay exámenes oficiales de tus asignaturas en los calendarios.</p></section>`;
+  const ord=L.filter(x=>x.per!=='jun'&&!exEnCal(x));
+  return `<section class="panel stack"><div class="row" style="justify-content:space-between"><h3>Tus exámenes</h3>${ord.length&&canWrite?`<button class="btn sm primary" data-act="exAddAll">Añadir las ordinarias a tu calendario (${ord.length})</button>`:''}</div>
+    <p class="small muted" style="margin:0">Los de tus asignaturas (${esc(cursoTxt(m.g,m.c))} y las que tienes en tu lista). Al añadirlos a tu calendario cuentan en el termómetro y en el mapa de calor, y el portal vigila los plazos de notas y revisión.</p>
+    ${EX_PER.map(([p,l,d])=>{const P=L.filter(x=>x.per===p);if(!P.length)return '';const lista=`<div class="list">${P.map(x=>`<div class="it"><span class="exh">${esc(x.t==='ent'?'23:59':x.h)}</span><div class="main"><div class="t">${esc(x.nombre)}</div><div class="m"><span class="date">${esc(fmtDay(x.f))}</span>${x.t==='ent'?'<span>Entrega</span>':''}${p==='jun'?`<span>${esc(x.conv==='ext1'?'del 1.er semestre':'del 2.º semestre')}</span>`:''}${x.a?`<span>${esc(x.a)}</span>`:''}</div></div>${exBtn(x)}</div>`).join('')}</div>`;
+      return p==='jun'?`<details class="gd"><summary>${esc(l)} · ${esc(d)} · ${P.length} <span class="small muted" style="font-weight:400">Mostrar</span></summary><div style="margin-top:8px">${lista}</div></details>`:`<div class="kicker">${esc(l)} · ${esc(d)}</div>${lista}`}).join('')}
+  </section>`;
+}
+function exCalHTML(){
+  return `<section class="panel stack" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:flex-end"><h3>Calendario completo</h3><div class="seg" role="group" aria-label="Convocatoria">${EX_PER.map(([p,l])=>`<button data-act="exPer" data-v="${p}" aria-pressed="${EXV.per===p}">${esc(l)}</button>`).join('')}</div></div>
+    <div class="search"><input id="exq" data-inp="exq" type="search" value="${esc(EXV.q)}" placeholder="Busca una asignatura" aria-label="Buscar en el calendario de exámenes"></div>
+    <div id="ex-list"></div>
+    ${Object.keys(EXAM_NOTAS).filter(g=>EXV.g==='todos'||EXV.g===g).map(g=>`<p class="small muted" style="margin:0">${esc(EX_GRADO[g])}: ${esc(EXAM_NOTAS[g])}</p>`).join('')}
+    <p class="small muted" style="margin:0">Fuente: calendarios oficiales de exámenes ${esc(EXAM_CURSO)} de la Escuela (Campus Castellana). Las aulas todavía no están asignadas.</p></section>`;
+}
+function exListFill(){
+  const box=$('ex-list');if(!box)return;
+  const T=norm(EXV.q).trim().split(/\s+/).filter(Boolean);
+  const L=EXS.filter(x=>x.per===EXV.per&&exPasa(x)&&(!T.length||T.every(t=>norm(x.nombre+' '+x.n+' '+exCurso(x)).includes(t)))).sort((a,b)=>(a.f+a.h).localeCompare(b.f+b.h)||Object.keys(EX_GRADO).indexOf(a.g)-Object.keys(EX_GRADO).indexOf(b.g)||a.c-b.c);
+  if(!L.length){box.innerHTML=`<div class="list"><div class="empty">${T.length?'Ninguna asignatura coincide con la búsqueda.':'No hay exámenes con estos filtros.'}</div></div>`;return}
+  const by=[];L.forEach(x=>{const last=by[by.length-1];if(last&&last.f===x.f)last.L.push(x);else by.push({f:x.f,L:[x]})});
+  box.innerHTML=by.map(d=>`<div class="exday"><div class="kicker">${esc(fmtDay(d.f))}</div><div class="list">${d.L.map(x=>`<div class="it exc"><span class="exh">${esc(x.t==='ent'?'23:59':x.h)}</span><div class="main exline"><span class="t">${guia(x.k)?`<a href="#asignaturas" data-act="asOpen" data-k="${esc(x.k)}">${esc(x.nombre)}</a>`:esc(x.nombre)}</span>${exTag(x)}${x.t==='ent'?'<span class="small muted">Entrega</span>':''}${EXV.per==='jun'?`<span class="small muted">${esc(x.conv==='ext1'?'1.er semestre':'2.º semestre')}</span>`:''}${x.a?`<span class="small muted">${esc(x.a)}</span>`:''}</div></div>`).join('')}</div></div>`).join('');
+}
+function calSegs(v){return [['mio','Tu calendario'],['escuela','Exámenes de la Escuela']].map(([k,l])=>`<button data-act="calView" data-v="${k}" aria-pressed="${v===k}">${l}</button>`).join('')}
+/* el calendario de 2º sigue igual; se le añade la vista de la Escuela */
+(function(){
+  const C=MODS.calendario,_r=C.render,_f=C.refresh;
+  C.state.view=C.state.view||'mio';
+  C.render=function(root){
+    if(this.state.view==='escuela'){exRender(root);return}
+    _r.call(this,root);
+    const h=root.querySelector('.head');if(h)h.insertAdjacentHTML('beforeend',`<div class="seg" role="group" aria-label="Vista">${calSegs('mio')}</div>`);
+  };
+  C.refresh=function(){if(this.state.view==='escuela'){exPaint();return}_f.call(this)};
+})();
+ACT.calView=el=>{MODS.calendario.state.view=el.dataset.v;renderAll();window.scrollTo({top:0})};
+ACT.exG=el=>{EXV.g=el.dataset.v;renderAll()};
+ACT.exC=el=>{EXV.c=Number(el.dataset.v)||0;renderAll()};
+ACT.exPer=el=>{EXV.per=el.dataset.v;$$('[data-act="exPer"]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===EXV.per)));exListFill()};
+INP.exq=el=>{EXV.q=el.value;exListFill()};
+ACT.exAdd=async el=>{const x=EXS[Number(el.dataset.i)];if(!x)return;el.disabled=true;if(await exAdd(x))toast('Añadido a tu calendario');else el.disabled=false};
+ACT.exAddAll=async el=>{
+  const L=exMios().filter(x=>x.per!=='jun'&&!exEnCal(x));if(!L.length)return;
+  el.disabled=true;let n=0;for(const x of L)if(await exAdd(x))n++;
+  toast(n?`${n} ${n===1?'examen añadido':'exámenes añadidos'} a tu calendario`:'No se ha podido añadir');
+};
+
+/* ===== Correos sin respuesta: a la semana el portal avisa y prepara un recordatorio educado ===== */
+const RESP_DIAS=7;
+/* los mensajes a la clase no esperan respuesta */
+const SIN_RESP_TPL=new Set(['Resumen por WhatsApp','Resumen por correo']);
+function envEspera(x){return x.espera!=null?!!x.espera:!SIN_RESP_TPL.has(x.plantilla||'')}
+function envRecs(x){return (Array.isArray(x.recordatorios)?x.recordatorios:[]).filter(d=>parse(d)).slice().sort()}
+function envUltimo(x){const r=envRecs(x);return r.length?r[r.length-1]:(x.fecha||'')}
+function envDias(x){const d=days(envUltimo(x));return d==null?0:Math.max(0,-d)}
+function envEstado(x){if(x.respondido)return 'ok';if(!envEspera(x))return 'no';return envDias(x)>=RESP_DIAS?'tarde':'espera'}
+function envPendientes(){return D.enviados.filter(x=>envEstado(x)==='tarde')}
+function envChip(x){
+  const e=envEstado(x),n=envDias(x);
+  if(e==='ok')return `<span class="chip ok">Contestado${parse(x.respondido)?' el '+esc(fmt(x.respondido)):''}</span>`;
+  if(e==='no')return '<span class="chip">No espera respuesta</span>';
+  if(e==='tarde')return `<span class="chip bad">Sin respuesta · ${n} días</span>`;
+  return `<span class="chip">Esperando respuesta · ${n===0?'desde hoy':n===1?'1 día':n+' días'}</span>`;
+}
+function envAcciones(x){
+  if(!canWrite)return '';
+  const e=envEstado(x),id=esc(x.id);
+  if(e==='ok')return `<button class="btn ghost sm" data-act="envUndo" data-id="${id}">Deshacer</button>`;
+  if(e==='no')return `<button class="btn ghost sm" data-act="envEsperar" data-id="${id}">Sí espera respuesta</button>`;
+  return `${e==='tarde'?`<button class="btn sm primary" data-act="envRec" data-id="${id}">Preparar recordatorio</button>`:''}<button class="btn sm" data-act="envResp" data-id="${id}">Ya me ha contestado</button>${e==='espera'?`<button class="btn ghost sm" data-act="envNo" data-id="${id}">No espera respuesta</button>`:''}`;
+}
+function envItemHTML(x){
+  const R=envRecs(x),e=envEstado(x);
+  return `<div class="it" data-focus="${esc(x.id)}"><div class="main"><div class="t">${esc(x.asunto||'(sin asunto)')}</div>
+    <div class="m">${envChip(x)}<span>${esc(x.nombre||x.para||'Sin destinatario')}</span><span class="date">Enviado el ${esc(fmt(x.fecha))}</span>${x.asignatura?`<span>${esc(x.asignatura)}</span>`:''}${R.length?`<span>${R.length} ${R.length===1?'recordatorio':'recordatorios'} · el último, ${esc(fmt(R[R.length-1]))}</span>`:''}</div>
+    ${e==='tarde'&&R.length>=2?'<p class="small late" style="margin:6px 0 0">Ya le has escrito tres veces. Si sigue sin contestar, pásate por su tutoría o escribe a la coordinación del grado.</p>':''}
+    ${x.cuerpo?`<details><summary class="small muted" style="cursor:pointer;margin-top:6px">Ver el correo</summary><p class="envb">${esc(x.cuerpo)}</p></details>`:''}
+    ${canWrite?`<div class="row" style="margin-top:8px">${envAcciones(x)}</div>`:''}</div></div>`;
+}
+function redSegs(v){const n=envPendientes().length;return [['plantillas','Plantillas'],['enviados',`Correos enviados${n?' · '+n+' sin respuesta':''}`]].map(([k,l])=>`<button data-act="redView" data-v="${k}" aria-pressed="${v===k}">${esc(l)}</button>`).join('')}
+const ENV_F=[['tarde','Sin respuesta'],['espera','Esperando'],['ok','Contestados'],['todos','Todos']];
+function envRender(root){
+  root.innerHTML=`<div class="head"><div><div class="kicker">Redactar · seguimiento</div><h2>Correos <em>enviados</em></h2><p class="lead">Los correos que registras al enviarlos. Si en una semana no te contestan, el portal te avisa y te prepara un recordatorio educado. El portal no puede leer tu correo: cuando te contesten, márcalo aquí.</p></div>
+    <div class="row"><div class="seg" role="group" aria-label="Vista">${redSegs('enviados')}</div></div></div>
+    <div id="ed"></div><div id="slot-env"></div>`;
+  envPaint();
+}
+function envPaint(){
+  const box=$('slot-env');if(!box)return;
+  if(!ready()){box.innerHTML=loadingHTML();return}
+  const st=MODS.redactar.state,L=D.enviados.slice().sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha))||(b.creado||0)-(a.creado||0));
+  const cnt={};ENV_F.forEach(([k])=>{cnt[k]=k==='todos'?L.length:L.filter(x=>envEstado(x)===k).length});
+  if(!st.envF)st.envF=cnt.tarde?'tarde':cnt.espera?'espera':'todos';
+  const V=st.envF==='todos'?L:L.filter(x=>envEstado(x)===st.envF);
+  box.innerHTML=!L.length?`<div class="list"><div class="empty"><b>Todavía no has registrado ningún correo</b>Cuando envíes uno desde Plantillas, pulsa «Registrar como enviado» y aparecerá aquí. A la semana sin respuesta, el portal te avisa.</div></div>`
+    :`<div class="asfil"><div class="seg" role="group" aria-label="Qué correos">${ENV_F.map(([k,l])=>`<button data-act="envF" data-v="${k}" aria-pressed="${st.envF===k}">${esc(l)} (${cnt[k]})</button>`).join('')}</div></div>
+      ${st.envF==='tarde'&&V.length?`<p class="small muted" style="margin:0 0 10px">Llevan ${RESP_DIAS} días o más sin respuesta desde el último correo. «Preparar recordatorio» te deja el correo escrito; al enviarlo, pulsa «Registrar como enviado» y el portal vuelve a contar una semana.</p>`:''}
+      <div class="list">${V.map(envItemHTML).join('')||'<div class="empty">No hay correos en este apartado.</div>'}</div>`;
+}
+/* la vista de correos enviados se añade a Redactar */
+(function(){
+  const R=MODS.redactar,_r=R.render;
+  R.state.view=R.state.view||'plantillas';
+  R.render=function(root){
+    if(this.state.view==='enviados'){envRender(root);return}
+    _r.call(this,root);
+    const h=root.querySelector('.head');if(h)h.insertAdjacentHTML('beforeend',`<div class="row"><div class="seg" role="group" aria-label="Vista">${redSegs('plantillas')}</div></div>`);
+  };
+  R.refresh=function(){if(this.state.view==='enviados')envPaint()};
+  const _tpl=ACT.tpl;ACT.tpl=el=>{R.state.view='plantillas';_tpl(el)};
+})();
+/* plantilla de recordatorio: firma con el mismo cargo que el correo original */
+TPLS.recordatorio={group:'Profesorado',name:'Recordatorio',desc:'Volver a escribir cuando no te contestan',kind:'mail',
+  fields:[{k:'orig',label:'Correo sin respuesta',type:'enviado',wide:true},{k:'dest',label:'Para',type:'contacto'},{k:'resumen',label:'Lo que necesitas, en una frase (opcional)',type:'text',wide:true,ph:'saber cuándo será la revisión del parcial'},{k:'cita',label:'Copiar debajo el correo anterior',type:'select',opts:[['si','Sí'],['no','No']],def:'si'}],
+  build(v){
+    const o=D.enviados.find(x=>x.id===v.orig)||null,c=contact(v.dest)||(o?contactoDeCorreo(o.para):null);
+    const R=o?envRecs(o):[],primero=!R.length;
+    const amb=(o&&Object.keys(AMB).find(k=>String(o.cuerpo||'').includes(AMB[k].firma)))||'curso';
+    const asunto=o?(o.asunto||'mi consulta'):'[asunto]',cuando=o?fmtDay(o.fecha).replace(',',''):'[fecha]';
+    const txt=primero?`Le escribo de nuevo por el correo que le envié el ${cuando} sobre «${asunto}». Imagino que estas semanas tiene mucho trabajo, así que se lo recuerdo por si se le ha pasado.`
+      :`Le vuelvo a escribir porque todavía no he recibido respuesta a mis correos del ${cuando} y del ${fmtDay(R[R.length-1]).replace(',','')} sobre «${asunto}». Entiendo que puede ser un momento complicado; si le resulta más cómodo, puedo pasarme por su tutoría o lo comentamos un momento después de clase.`;
+    const res=String(v.resumen||'').trim().replace(/\.$/,'');
+    const body=`${saludo(c,v.tono)}\n\n${txt}${res?`\n\nEn resumen, necesitaríamos ${res}.`:''}\n\n${primero?'Cuando pueda, le agradecería una respuesta.':'Le agradecería mucho una respuesta cuando le sea posible.'} Muchas gracias.\n\n${firmaTxt(amb,v.tono)}${v.cita!=='no'&&o&&o.cuerpo?`\n\n---------- Correo enviado el ${fmtLong(o.fecha)} ----------\n${o.cuerpo}`:''}`;
+    return {mail:{to:(c&&c.email)||(o&&o.para)||'',subject:o?(/^recordatorio:/i.test(asunto)?asunto:'Recordatorio: '+asunto):'Recordatorio',body}};
+  }};
+ACT.redView=el=>{MODS.redactar.state.view=el.dataset.v;renderAll();window.scrollTo({top:0})};
+ACT.envF=el=>{MODS.redactar.state.envF=el.dataset.v;envPaint()};
+ACT.envResp=async el=>{if(await patch('enviados',el.dataset.id,{respondido:today()}))toast('Marcado como contestado')};
+ACT.envNo=async el=>{if(await patch('enviados',el.dataset.id,{espera:false}))toast('Este correo no necesita respuesta')};
+ACT.envEsperar=async el=>{await patch('enviados',el.dataset.id,{espera:true})};
+ACT.envUndo=async el=>{await patch('enviados',el.dataset.id,{respondido:''})};
+ACT.envRec=el=>{
+  const x=D.enviados.find(y=>y.id===el.dataset.id);if(!x)return;
+  const c=contactoDeCorreo(x.para);
+  setTab('redactar',{state:{view:'plantillas',tpl:'recordatorio',normPrefill:Object.assign({orig:x.id,cita:'si'},c?{dest:c.id}:{dest:''})}});
+  if(!c&&x.para)toast('No está en tu directorio: el correo va a '+x.para);
+};
+{const _rcE=renderChrome;renderChrome=function(){_rcE();const n=$('n-redactar');if(n){const k=envPendientes().length;n.textContent=k?String(k):''}}}
 
 /* ===== arranque ===== */
 init();
