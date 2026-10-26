@@ -18,4 +18,4 @@ Es una página estática que se abre en el navegador (también en el móvil, com
 
 Sustituye `index.html` (y el resto de archivos si cambian) por la nueva versión. Tus datos no se tocan: están en tu navegador, no en el repositorio. Si el curso que viene cambian las guías docentes, sustituye también la carpeta `guias/`.
 
-Versión 6 · 25 de octubre de 2026.
+Versión 7 · 26 de octubre de 2026.
