@@ -533,6 +533,30 @@ main .rpaper a:not(.btn){color:#96234a;word-break:break-all}
 .sobox>b{font-size:13px}
 .paso .steps{font-size:13px;gap:4px}
 .paso .url{font:600 12.5px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--surface-2);padding:2px 6px;overflow-wrap:anywhere}
+/* ¿a quién acudo? */
+.aqsearch input{font-size:16px;padding:13px 14px;background:var(--surface)}
+.aqres{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.aqcard{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--brand);padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.aqcard.w-uni{border-left-color:var(--gra)}.aqcard.w-per{border-left-color:var(--ok)}.aqcard.w-otra{border-left-color:var(--slate)}
+.aqcard.w-uni .aqw{background:var(--gra-bg);color:var(--gra)}.aqcard.w-esc .aqw{background:var(--esc-bg);color:var(--esc)}.aqcard.w-per .aqw{background:var(--ok-bg);color:var(--ok)}
+.aqnota{margin:0;font-size:13.5px;background:var(--warn-bg);color:var(--warn);padding:8px 11px}
+.aqsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.aqp{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.aqp .pn{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 12.5px/1 var(--sans);background:var(--brand-50);color:var(--brand)}
+.aqp .main{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.aqp .main>p{margin:0;font-size:14px}
+.aqwho{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--line);padding:9px 11px;min-width:0}
+.aqwho .main{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 220px}
+.aqwho .row{gap:4px}
+.aqsub{margin:0}
+.aqidx{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:18px}
+.aqchips{display:flex;flex-wrap:wrap;gap:6px}
+.aqchip{appearance:none;font:600 12.5px/1.25 var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 10px;cursor:pointer;text-align:left}
+.aqchip:hover{border-color:var(--ink-2)}
+.aqchip[aria-pressed="true"]{border-color:var(--brand);box-shadow:inset 3px 0 0 var(--brand)}
+.aqhint{border-left:3px solid var(--brand);background:var(--brand-50);padding:7px 10px;font-size:13px;margin:2px 0;overflow-wrap:anywhere}
+.aqhint a{color:var(--brand);font-weight:600}
+form.editor #aq-ehint:empty{display:none}
 
 </style>
 
@@ -1223,7 +1247,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>
 const BUILD="web";
 const LOGO_DEFAULT="";
-const LOCAL_VERSION="7.1 · 27 de octubre de 2026";
+const LOCAL_VERSION="7.2 · 27 de octubre de 2026";
 /* ===== núcleo: datos, utilidades, editor genérico ===== */
 /* edición: «delegado» (el portal de Fran) o «clase» (el portal para los delegados y subdelegados de cada clase) */
 const ED=typeof EDICION!=='undefined'?EDICION:'delegado';
@@ -1715,6 +1739,7 @@ MODS.inicio={
         <button class="btn" data-act="liveNew">Reunión en directo</button>
         <button class="btn" data-act="go" data-t="resumenes" data-state='{"sel":"nuevo"}'>Resumir una charla</button>
         <button class="btn" data-act="go" data-t="normativa">Comprobar un plazo</button>
+        <button class="btn" data-act="go" data-t="incidencias" data-state='{"view":"acudir"}'>¿A quién acudo?</button>
       </div></div>
       <div id="slot-alerts"></div>
       <div class="grid g2" style="margin-top:16px">
@@ -4023,6 +4048,7 @@ function searchAll(q){
   const H=[];
   const add=(grp,title,sub,go,txt)=>{if(ok(txt||title+' '+sub))H.push({grp,title,sub,go})};
   D.incidencias.forEach(i=>add('Quejas',i.titulo,[KLABEL[i.columna]||'',i.asignatura,i.categoria].filter(Boolean).join(' · '),{t:'incidencias',id:i.id},[i.titulo,i.descripcion,i.asignatura,i.categoria,i.seguimiento].join(' ')));
+  AQ.forEach(T=>add('¿A quién acudo?',T.t,aqCorto(T,{}),{t:'incidencias',state:{view:'acudir',aqSel:T.id}},[T.t,T.d,'a quien acudo contacto',T.k.join(' ').replace(/~/g,'')].join(' ')));
   D.evaluaciones.forEach(e=>add('Exámenes y entregas',`${e.tipo||'Prueba'}: ${e.asignatura}`,[e.titulo,fmt(e.fecha)].filter(Boolean).join(' · '),{t:'calendario',id:e.id},[e.tipo,e.asignatura,e.titulo,e.notas].join(' ')));
   asTodas().forEach(k=>{const g=guia(k),n=asNombre(k),pr=profesAsig(k).map(p=>p.n);add('Asignaturas',n,[g?`${GCORTO[g.g]} ${g.c}º`:'',pr.slice(0,2).join(', ')].filter(Boolean).join(' · '),{t:'asignaturas',state:{view:'fichas',sel:k}},[n,g?g.cod:'',g?GCORTO[g.g]:'',pr.join(' ')].join(' '))});
   Object.values(PROFS).forEach(p=>{const L=CLASES.filter(x=>x.profs.some(q=>q[1]===p.e));if(!L.length)return;const A=[...new Set(L.map(x=>x.n))];add('Horarios del profesorado','Horario de '+p.n,A.slice(0,3).join(', ')+(A.length>3?'…':''),ED==='clase'?{t:'horario',state:{view:'prof'},hv:p.e}:{t:'directorio',state:{view:'horarios'},hv:p.e},['horario donde esta',p.n,A.join(' ')].join(' '))});
@@ -5300,6 +5326,305 @@ ACT.envRec=el=>{
 };
 {const _rcE=renderChrome;renderChrome=function(){_rcE();const n=$('n-redactar');if(n){const k=envPendientes().length;n.textContent=k?String(k):''}}}
 
+/* ===== ¿A quién acudo? Según el problema, con quién hay que hablar y en qué orden.
+   Lo académico va por la Escuela (profesor → director del grado → dirección de la Escuela);
+   instalaciones, cafetería, biblioteca, informática o secretaría, por la Universidad (servicios de la UCJC).
+   Contactos de ucjc.edu y de las guías docentes 2026-2027 (octubre de 2026). ===== */
+const AQ_FUENTE='Contactos de ucjc.edu y de las guías docentes 2026-2027, revisados en octubre de 2026.';
+const AQ_P360='https://sekucjc.service-now.com/alumnos';
+/* servicios de la Universidad */
+const AQ_U={
+  conserjeria:{s:'conserjería del campus',n:'Conserjería o recepción del campus',d:'Para lo que hay que arreglar ya: algo roto, peligroso o que no funciona en el aula.'},
+  p360:{s:'el Portal 360º',n:'Portal de servicios 360º',d:'Solicitudes, incidencias y quejas o sugerencias a la UCJC. Entras con tu usuario de la universidad y queda registrado.',url:AQ_P360,btn:'Abrir el Portal 360º'},
+  tic:{s:'una incidencia informática en el Portal 360º',n:'Incidencias informáticas',d:'Formulario del Portal 360º para wifi, correo, contraseñas, Blackboard o los equipos de las aulas.',url:AQ_P360+'?id=sc_cat_item&sys_id=8143ad40db2f4b0014d8ed6b4b961904',btn:'Abrir una incidencia'},
+  sistemas:{s:'el Servicio de Sistemas',n:'Servicio de Sistemas (informática)',email:'sistemas.ucjc@ucjc.edu',url:'https://www.ucjc.edu/servicio-de-sistemas/',btn:'Web del servicio'},
+  clave:{n:'Recuperar el usuario o la contraseña',url:'https://my.ucjc.edu/resetPassword',btn:'Recuperar la contraseña'},
+  wifi:{n:'Wifi de la UCJC',url:'https://www.ucjc.edu/red-inalambrica-wifi/',btn:'Cómo conectarse al wifi'},
+  impresion:{n:'Servicio de impresión',url:'https://www.ucjc.edu/servicio-impresion/',btn:'Cómo imprimir'},
+  biblioteca:{s:'la Biblioteca',n:'Biblioteca UCJC',d:'Está en el campus de Villafranca.',email:'biblioteca@ucjc.edu',tel:'607 903 069',url:'https://www.ucjc.edu/biblioteca/',btn:'Web de la biblioteca'},
+  bibCompra:{s:'pedir que compren el libro',n:'Pedir que compren un libro',url:'https://www.ucjc.edu/alumnos/biblioteca/solicitud-de-compra-bibliografica/',btn:'Pedir la compra'},
+  secretaria:{s:'Secretaría de alumnos',n:'Secretaría de alumnos',d:'Matrícula, pagos, expediente y trámites.',email:'secretaria@ucjc.edu',url:'https://www.ucjc.edu/secretaria-de-alumnos/',btn:'Web de Secretaría'},
+  titulos:{s:'Títulos y certificados',n:'Títulos y certificados',email:'titulos@ucjc.edu'},
+  tarjeta:{n:'Tarjeta universitaria',url:'https://www.ucjc.edu/tarjeta-universitaria/',btn:'Tarjeta universitaria'},
+  reconoc:{s:'Convalidaciones y reconocimientos',n:'Convalidaciones y reconocimientos',email:'reconocimientos@ucjc.edu',url:'https://www.ucjc.edu/tramitacion-de-convalidaciones/',btn:'Cómo se tramitan'},
+  becas:{s:'Becas y ayudas',n:'Becas y ayudas',d:'Becas de la UCJC y del Ministerio: requisitos, plazos y solicitud.',email:'info@ucjc.edu',url:'https://www.ucjc.edu/becas-y-ayudas/',btn:'Ver las becas'},
+  carreras:{s:'Carreras Profesionales',n:'Carreras Profesionales (prácticas y empleo)',d:'Convenios con empresas, ofertas de prácticas en PRANET y empleo.',email:'carrerasprofesionales@ucjc.edu',url:'https://www.ucjc.edu/carreras-profesionales/',btn:'Web de Carreras Profesionales'},
+  omi:{s:'la Oficina de Movilidad Internacional',n:'Oficina de Movilidad Internacional',d:'Erasmus e intercambios. Está en el campus de Villafranca, en el edificio de Atención al alumno.',email:'relint@ucjc.edu',url:'https://www.ucjc.edu/movilidad-internacional/',btn:'Web de movilidad'},
+  psico:{s:'Orientación psicológica',n:'Orientación y asesoramiento psicológico',d:'Atención confidencial. Se pide cita en el Portal 360º.',url:AQ_P360+'?id=sc_cat_item&sys_id=da9ccf6cdb98d30014d8ed6b4b96195c',btn:'Pedir cita',web:'https://www.ucjc.edu/orientacion-y-asesoramiento-psicologico/'},
+  sad:{s:'el Servicio de Atención a la Discapacidad',n:'Servicio de Atención a la Discapacidad',d:'Necesidades educativas especiales y apoyos. Se pide cita en el Portal 360º.',url:AQ_P360+'?id=sc_cat_item&sys_id=456c4bacdb98d30014d8ed6b4b961912',btn:'Pedir cita'},
+  adapt:{s:'la solicitud de adaptación curricular',n:'Solicitud de adaptación curricular',url:AQ_P360+'?id=sc_cat_item&sys_id=f285826d8732d9105eb4baaabbbb3550',btn:'Pedir la adaptación'},
+  defensor:{s:'el Defensor Universitario',n:'Defensor Universitario',p:'Gonzalo Duñaiturria Laguarda',d:'Es independiente. Atiende consultas, quejas y mediaciones cuando un órgano o servicio de la universidad no respeta tus derechos. No admite quejas anónimas.',email:'defensor-univ@ucjc.edu',url:'https://www.ucjc.edu/defensor-universitario/',btn:'Web del Defensor'},
+  deporte:{s:'Clubes, bienestar y deporte',n:'Clubes, bienestar y deporte',url:'https://www.ucjc.edu/clubes-bienestar-y-deporte/',btn:'Ver clubes y deporte'},
+  medico:{s:'el servicio médico',n:'Servicio médico y seguro escolar',url:'https://www.ucjc.edu/seguro-escolar/',btn:'Servicio médico'},
+  info:{s:'Info y atención de la UCJC',n:'Info y atención de la UCJC',d:'Para lo que no sabes dónde va. También por WhatsApp (+34 697 444 724) o con el asistente virtual Camilo.',email:'info@ucjc.edu',tel:'918 15 31 31',url:'https://camiloassistant.ucjc.edu/',btn:'Preguntar al asistente Camilo'}
+};
+/* la Escuela Politécnica Superior de Tecnología y Ciencia */
+const AQ_E={
+  director:{s:'la dirección de la Escuela',p:'Tomás García Martín',c:'Director de la Escuela Politécnica Superior de Tecnología y Ciencia',email:'tgmartin@ucjc.edu'},
+  secretario:{s:'el secretario académico de la Escuela',p:'Antonio Robles García',c:'Secretario académico de la Escuela',email:'argarcia@ucjc.edu'},
+  coordAlumnos:{s:'el coordinador de alumnos',p:'Rodrigo Montúfar Chaveznava',c:'Coordinador de Alumnos',email:'rodrigo.montufar@ucjc.edu'},
+  coordCalidad:{s:'el coordinador de calidad',p:'Javier Martínez Boada',c:'Coordinador de Calidad y Alumnos',email:'javier.martinez6@ucjc.edu'}
+};
+/* cada grado, con su director */
+const AQ_DIR={
+  robotica:{p:'David Martín Moncunill',c:'Director del Grado en Ingeniería Robótica e Inteligencia Artificial y subdirector de la Escuela',email:'david.martinm@ucjc.edu'},
+  informatica:{p:'Nimrod Puente Luis',c:'Director académico del Grado en Ingeniería Informática',email:'nimrod.puente@ucjc.edu'},
+  telematica:{p:'José Manuel Baños Expósito',c:'Director del Grado en Ingeniería Telemática',email:'jmanuel.banos@ucjc.edu'}
+};
+/* los temas: palabras clave (sin tildes; «~» = pista débil) y a quién ir, en orden.
+   Pasos: prof (el profesor de la asignatura) · dir (el director del grado) · pract (prácticas externas) · e.X (Escuela) · u.X (Universidad) · txt · links · delegacion */
+const AQ=[
+  {id:'profesor',w:'esc',t:'Profesorado y asignaturas',d:'Cómo se dan las clases, materiales, tutorías, trato, correos sin respuesta o demasiada carga de trabajo.',
+   k:['profesor','profesora','profesores','profesoras','profe','profes','docente','docentes','~clase','~clases','~asignatura','~asignaturas','temario','apuntes','materiales','diapositivas','explica','explicaciones','tutoria','tutorias','trato','grita','falta a clase','no viene','no da clase','no contesta','no responde','guia docente','carga de trabajo','demasiados trabajos','~entrega','~entregas','~trabajos','deberes','no sube','plazo de entrega'],
+   pasos:[['prof','Primero, el profesor de la asignatura: habladlo en clase, en una tutoría o por correo.'],['dir','Si no se arregla, el director del grado.'],['e.director','Si sigue igual, la dirección de la Escuela.']],
+   nota:'Llevad datos: fechas, cuántos estáis afectados y qué habéis hecho ya.'},
+  {id:'notas',w:'esc',t:'Notas, revisiones y reclamaciones',d:'Notas que no se publican, revisiones de examen o desacuerdo con una calificación.',
+   k:['nota','notas','calificacion','calificaciones','suspenso','suspendido','suspendida','aprobado','!revision','!revisiones','!reclamar','!reclamacion','acta','actas','publicar las notas','no publica','corregir','correccion','examen corregido','mal corregido','mal corregida','mal sumada','mal sumado','ver el examen','nota final','nota definitiva','~examen'],
+   pasos:[['prof','Primero, la revisión con quien corrigió el examen, dentro de los plazos de la normativa.'],['dir','Para reclamar la nota definitiva: por escrito y razonado al director del grado, en los 5 días hábiles siguientes a la revisión (artículo 16).'],['u.defensor','Si desestiman la reclamación: recurso ante el Defensor Universitario en 15 días naturales.']],
+   go:{t:'normativa',l:'Comprobar los plazos en Normativa'}},
+  {id:'horarios',w:'esc',t:'Horarios, fechas de examen y aulas',d:'Exámenes que coinciden, cambios de fecha, horarios, aulas o grupos.',
+   k:['horario','horarios','calendario','fecha','fechas','coincide','coinciden','solapa','solapan','solapamiento','mismo dia','cambio de fecha','cambiar la fecha','aplazar','~examen','~examenes','parcial','parciales','~final','~finales','~aula','~aulas','cambio de aula','sin aula','no tenemos aula','aula asignada','grupo','grupos','turno'],
+   pasos:[['dir','El director del grado: organiza los horarios y las fechas de examen del grado.'],['e.secretario','Si afecta a varios grados o no se resuelve, el secretario académico de la Escuela.'],['e.director','Si sigue sin resolverse, la dirección de la Escuela.']]},
+  {id:'labs',w:'esc',t:'Laboratorios y material de prácticas',d:'Kits, robots, sensores, ordenadores o programas que hacen falta para las prácticas de una asignatura.',
+   k:['laboratorio','laboratorios','lab','labs','kit','kits','arduino','raspberry','robot','robots','sensor','sensores','componentes','material de practicas','~practica','~practicas','matlab','simulador','impresora 3d','osciloscopio','soldador','licencia','licencias','software de practicas'],
+   pasos:[['prof','El profesor de la asignatura (o el técnico del laboratorio).'],['dir','Si falta material para toda la clase, el director del grado.'],['e.director','Para compras grandes o equipamiento nuevo, la dirección de la Escuela.']]},
+  {id:'tfg',w:'esc',t:'Trabajo Fin de Grado',d:'Tutor, temas, normas, depósito y defensa del TFG.',
+   k:['tfg','trabajo fin de grado','trabajo de fin de grado','tutor del tfg','defensa','deposito','tribunal'],
+   pasos:[['txt','Tu tutor del TFG.','tu tutor del TFG'],['dir','El director del grado: asignación de tutores, normas y fechas de defensa.'],['e.secretario','El secretario académico de la Escuela, para lo administrativo.']]},
+  {id:'calidad',w:'esc',t:'La titulación en general',d:'Problemas que se repiten en el grado, el plan de estudios, la calidad de la enseñanza o una queja formal.',
+   k:['plan de estudios','calidad','encuesta','encuestas','titulacion','todo el grado','todo el curso','se repite','siempre pasa','queja formal','quejas formales','coordinacion','coordinador','optativa','optativas'],
+   pasos:[['dir','El director del grado.'],['e.coordCalidad','El coordinador de calidad y alumnos: recibe las quejas formales que se ponen en el Portal 360º y hace el informe anual del grado.'],['e.director','La dirección de la Escuela.']]},
+  {id:'repre',w:'esc',t:'Representación de estudiantes',d:'Delegados, Junta de Escuela, elecciones o algo que afecta a varias clases.',
+   k:['delegado','delegada','delegados','subdelegado','subdelegada','representante','representantes','junta','junta de escuela','elecciones','votacion','varias clases','toda la escuela'],
+   pasos:[['delegacion','La delegación de estudiantes de la Escuela.'],['e.coordAlumnos','El coordinador de alumnos.']]},
+  {id:'instal',w:'uni',t:'Instalaciones y mobiliario',d:'Sillas, mesas, enchufes, calefacción o aire acondicionado, luz, baños, limpieza, goteras, ascensores, puertas o taquillas.',
+   k:['silla','sillas','mesa','mesas','pupitre','pupitres','mobiliario','mueble','muebles','enchufe','enchufes','calefaccion','frio','calor','aire acondicionado','climatizacion','temperatura','luz','luces','bombilla','fluorescente','persiana','persianas','ventana','ventanas','puerta','puertas','cerradura','bano','banos','aseo','aseos','limpieza','sucio','sucia','sucios','papel','jabon','gotera','goteras','humedad','ascensor','ascensores','escalera','escaleras','rampa','taquilla','taquillas','fuente','instalaciones','edificio','obras','ruido','pizarra','tiza','rotulador','rotuladores','aparcamiento','parking','roto','rota','rotos','rotas','estropeado','estropeada','no funciona el aire','no funciona la luz'],
+   pasos:[['u.conserjeria','Si hay que arreglarlo ya (algo roto o peligroso), avisa en el momento en conserjería.'],['u.p360','Y déjalo por escrito en el Portal 360º (quejas y sugerencias): queda registrado y te contestan.'],['txt',['Si se repite o nadie lo arregla, apúntalo en Quejas y mándalo en el parte a la delegación de Escuela.','Si se repite o nadie lo arregla, apúntalo como incidencia y llévalo a la Junta de Escuela.'],['la delegación de Escuela si se repite','la Junta de Escuela si se repite']]],
+   nota:'No es cosa de la dirección de la Escuela ni del director del grado: lo gestiona la Universidad.'},
+  {id:'cafe',w:'uni',t:'Cafetería y máquinas',d:'Precios, comida, horarios de la cafetería, microondas o máquinas expendedoras.',
+   k:['cafeteria','cafe','comida','comer','comedor','menu','bocadillo','bocadillos','precio','precios','caro','cara','caros','microondas','vending','maquina','maquinas','expendedora','expendedoras'],
+   pasos:[['txt','En el momento, al personal de la cafetería.','el personal de la cafetería'],['u.p360','Por escrito: el Portal 360º (quejas y sugerencias).']],
+   nota:'La cafetería no depende de la Escuela: las quejas van a la Universidad.'},
+  {id:'biblio',w:'uni',t:'Biblioteca',d:'Préstamos, libros que faltan, salas de estudio, bases de datos o revistas.',
+   k:['biblioteca','libro','libros','prestamo','prestamos','devolver','sala de estudio','salas de estudio','~bases de datos','revista','revistas','ieee','articulo','articulos','interbibliotecario','bibliografia'],
+   pasos:[['u.biblioteca','La Biblioteca de la UCJC, por correo o por teléfono (también para quejas y sugerencias).'],['u.bibCompra','Si falta un libro de una asignatura, pide que lo compren.']],
+   nota:'La biblioteca la gestiona la Universidad, no la Escuela.'},
+  {id:'tic',w:'uni',t:'Informática, wifi y cuentas',d:'Wifi, correo, contraseñas, Blackboard o MyUCJC, ordenadores y proyectores de las aulas, impresión.',
+   k:['wifi','wi fi','internet','red','eduroam','conexion','correo','email','outlook','contrasena','password','usuario','cuenta','blackboard','campus virtual','myucjc','my ucjc','teams','office','ordenador','ordenadores','pc','portatil','impresora','imprimir','impresion','proyector','proyectores','pantalla','altavoz','altavoces','microfono','hdmi','~software','~programa','instalar'],
+   pasos:[['u.tic','Abre una incidencia informática en el Portal 360º.'],['u.sistemas','O escribe al Servicio de Sistemas.'],['links','Atajos:','',['clave','wifi','impresion']]],
+   nota:'Si falla el proyector en mitad de una clase, que avise el profesor: suele ser lo más rápido.'},
+  {id:'secre',w:'uni',t:'Secretaría: matrícula, expediente y certificados',d:'Matrícula, pagos y recibos, expediente, certificados, títulos, bajas, traslados o la tarjeta universitaria.',
+   k:['secretaria','!matricula','matricularse','matricular','expediente','!certificado','!certificados','certificado de notas','titulo','pago','pagos','recibo','recibos','factura','baja','anular','anulacion','traslado','tarjeta','carnet','carne','tramite','tramites','plazo de matricula','solicitud'],
+   pasos:[['u.p360','Casi todo se pide en el Portal 360º.'],['u.secretaria','Para lo demás, Secretaría de alumnos.'],['u.titulos','Títulos y certificados.'],['links','También:','',['tarjeta']]]},
+  {id:'conva',w:'uni',t:'Convalidaciones',d:'Convalidar asignaturas o reconocer créditos de otros estudios.',
+   k:['convalidar','convalidacion','convalidaciones','convalidado','convalidada','reconocimiento','reconocimientos','reconocer creditos','~creditos'],
+   pasos:[['u.reconoc','Convalidaciones y reconocimientos de la UCJC.']]},
+  {id:'becas',w:'uni',t:'Becas y ayudas',d:'Becas de la UCJC y del Ministerio, descuentos y ayudas.',
+   k:['beca','becas','ayuda','ayudas','descuento','descuentos','ministerio','mec','financiacion','beca del ministerio'],
+   pasos:[['u.becas','Becas y ayudas de la UCJC.']]},
+  {id:'practicas',w:'uni',t:'Prácticas en empresa y empleo',d:'Convenios, ofertas de prácticas, PRANET, empleo y orientación profesional.',
+   k:['practicas en empresa','practicas en una empresa','practicas externas','practicas curriculares','practicas extracurriculares','empresa','empresas','empleo','trabajar','oferta','ofertas','pranet','convenio','convenios','curriculum','cv','feria de empleo','becario','becaria'],
+   pasos:[['u.carreras','Carreras Profesionales: convenios, ofertas y PRANET.'],['pract','Para lo académico (créditos, tutor y memoria), el profesor de la asignatura de prácticas externas de tu grado.']]},
+  {id:'erasmus',w:'uni',t:'Erasmus e intercambios',d:'Erasmus, SICUE, learning agreement y estancias en otras universidades.',
+   k:['erasmus','intercambio','intercambios','movilidad','extranjero','sicue','learning agreement','estancia'],
+   pasos:[['u.omi','La Oficina de Movilidad Internacional.'],['dir','Para las asignaturas que vas a cursar fuera, el coordinador Erasmus de la Escuela: pregunta al director del grado quién es.']]},
+  {id:'deporte',w:'uni',t:'Deporte, clubes y actividades',d:'Equipos, clubes, torneos y actividades de bienestar.',
+   k:['deporte','deportes','gimnasio','club','clubes','equipo','torneo','liga','futbol','baloncesto','padel','voleibol','actividades'],
+   pasos:[['u.deporte','Clubes, bienestar y deporte de la UCJC.']]},
+  {id:'psico',w:'per',t:'Apoyo psicológico',d:'Estrés, ansiedad por los exámenes, problemas personales o dudas con la carrera.',
+   k:['!ansiedad','!estres','!agobio','!agobiado','!agobiada','!agobiados','!psicologo','!psicologa','!psicologico','!psicologica','salud mental','triste','tristeza','!depresion','emocional','duelo','autoestima','no puedo mas','dejar la carrera','motivacion','desmotivado','desmotivada','ataque de ansiedad'],
+   pasos:[['u.psico','Orientación y asesoramiento psicológico de la UCJC: es confidencial.'],['txt','Si alguien está en peligro, llama al 112. Si alguien piensa en hacerse daño, el 024 atiende las 24 horas.','112 o 024 si hay peligro']]},
+  {id:'disc',w:'per',t:'Discapacidad y adaptaciones',d:'Necesidades educativas especiales, adaptaciones de examen (más tiempo, otro formato) o accesibilidad.',
+   k:['discapacidad','adaptacion','adaptaciones','adaptacion curricular','necesidades especiales','neae','tdah','dislexia','tiempo extra','mas tiempo','accesibilidad','silla de ruedas','movilidad reducida'],
+   pasos:[['u.sad','El Servicio de Atención a la Discapacidad.'],['u.adapt','La solicitud de adaptación curricular.'],['prof','Después, coméntalo con cada profesor para que lo aplique.']]},
+  {id:'acoso',w:'per',t:'Acoso, discriminación o trato humillante',d:'Acoso, discriminación, amenazas o trato humillante, venga de quien venga.',
+   k:['!acoso','!acosa','!acosando','!acosador','!acosadora','!discriminacion','!discrimina','!racismo','!racista','!racistas','!machismo','!machista','!machistas','!homofobia','!homofobo','!homofobos','comentarios machistas','comentarios racistas','comentarios homofobos','insulto','insultos','!amenaza','!amenazas','!bullying','humilla','humillante','vejatorio','!abuso','!agresion','violencia','!tocamientos'],
+   pasos:[['txt','Si hay peligro, llama al 112. Violencia de género: 016.','112 si hay peligro'],['u.defensor','El Defensor Universitario: es independiente y lo trata con confidencialidad.'],['e.director','Si pasa en la Escuela, también la dirección de la Escuela.'],['u.psico','Para acompañar a la persona: orientación psicológica.']],
+   nota:'Escucha, acompaña y no compartas detalles en grupos ni con nombres.'},
+  {id:'salud',w:'per',t:'Salud, accidentes y seguro escolar',d:'Accidentes en la universidad, lesiones o el seguro escolar.',
+   k:['accidente','lesion','me he hecho dano','herida','caida','caido','me he caido','me cai','desmayo','medico','enfermeria','botiquin','seguro escolar','urgencia','urgencias'],
+   pasos:[['txt','Urgencias: 112.','112 si es urgente'],['u.medico','Servicio médico y seguro escolar de la UCJC.']]},
+  {id:'derechos',w:'per',t:'Nadie lo resuelve',d:'Has probado los canales normales y crees que no se han respetado tus derechos.',
+   k:['defensor','defensor universitario','derechos','injusticia','injusto','injusta','nadie me hace caso','no me hacen caso','no me resuelven','no me lo resuelven','nadie lo resuelve','nadie me resuelve','nadie me lo resuelve','recurso','alzada'],
+   pasos:[['u.defensor','Escribe al Defensor Universitario contando el caso y lo que ya has hecho.']]},
+  {id:'otra',w:'otra',t:'Otra cosa o no sé a quién',d:'Lo que no encaja en nada de lo anterior.',
+   k:[],
+   pasos:[['u.info','Info y atención de la UCJC.'],['delegacion','La delegación de estudiantes de la Escuela.']]}
+];
+const AQ_W=[['esc','En la Escuela','Lo académico: el profesor, el director del grado y la dirección de la Escuela.'],['uni','En la Universidad','Servicios de la UCJC: no dependen de la Escuela.'],['per','Personas y derechos','Apoyo, adaptaciones y derechos.']];
+const AQ_WLBL={esc:'Lo lleva la Escuela',uni:'Lo lleva la Universidad',per:'Te ayuda la Universidad'};
+/* la categoría de una queja da una pista fuerte */
+const AQ_CAT={'Exámenes':['horarios','notas'],'Entregas y carga de trabajo':['profesor'],'Horarios':['horarios'],'Profesorado':['profesor'],'Notas y revisiones':['notas'],'Instalaciones':['instal'],'Laboratorios y material':['labs'],'Trámites':['secre']};
+
+/* ---------- búsqueda ---------- */
+const AQN=AQ.map(T=>{const W=[],P=[];T.k.forEach(x=>{const c=x[0],m=c==='~'||c==='!',w=norm(m?x.slice(1):x),wt=c==='~'?1:c==='!'?3:2;(w.includes(' ')?P:W).push({w,wt:w.includes(' ')?(c==='~'?1:3):wt})});return {T,W,P}});
+function aqToks(s){return norm(s).replace(/[^a-z0-9 ]+/g,' ').split(/\s+/).filter(Boolean)}
+/* cada palabra del texto suma una vez por tema (su mejor coincidencia: exacta o con otra terminación); las frases, enteras */
+function aqMatch(txt,cat){
+  const toks=aqToks(txt),q=' '+toks.join(' ')+' ',boost=AQ_CAT[cat]||[];
+  const R=AQN.map(({T,W,P})=>{
+    let s=0;
+    for(const x of P)if(q.includes(' '+x.w+' '))s+=x.wt;
+    for(const t of toks){let b=0;for(const x of W){if(t===x.w)b=Math.max(b,x.wt);else if(x.wt>1&&x.w.length>=5&&t.length>=x.w.length-1&&t.startsWith(x.w.slice(0,x.w.length-1)))b=Math.max(b,x.wt-1)}s+=b}
+    return {T,s};
+  });
+  /* el tipo de queja ayuda, pero no manda: suma a los temas que encajan con el texto (o decide si el texto no dice nada) */
+  const claro=R.some(r=>r.s>=2);
+  R.forEach(r=>{const i=boost.indexOf(r.T.id);if(i>=0&&(r.s>0||!claro))r.s+=i===0?4:3});
+  return R.filter(r=>r.s>0).sort((a,b)=>b.s-a.s);
+}
+/* la asignatura que se nombra en el texto (para saber su profesor y su grado) */
+function aqAsigDe(txt){
+  const toks=aqToks(txt),q=' '+toks.join(' ')+' ',mias=new Set(misKeys().map(k=>norm(asNombre(k))));
+  let best='',bm=false;
+  for(const a of asignaturas()){
+    const n=aqToks(a).join(' '),tk=tokens(a);
+    if(!n)continue;
+    /* el nombre entero, o todas sus palabras si tiene dos o más (así «cálculo de la nota» no es Cálculo I) */
+    if(!(q.includes(' '+n+' ')||(tk.length>=2&&tk.every(w=>toks.includes(w)))))continue;
+    const m=mias.has(norm(a));
+    if((m&&!bm)||(m===bm&&n.length>aqToks(best).join(' ').length)){best=a;bm=m}
+  }
+  return best;
+}
+function aqT(x,i){return Array.isArray(x)?(ED==='clase'?x[0]:x[1]):x}
+function aqProfs(asig){return asig?profesAsig(asKey(asig)).filter(p=>p.n):[]}
+function aqGradoDe(ctx){if(ctx.g&&AQ_DIR[ctx.g])return ctx.g;if(ctx.asig){const g=guia(asKey(ctx.asig));if(g&&AQ_DIR[g.g])return g.g}return ED==='clase'?miPlan().g:''}
+
+/* ---------- cómo se pinta ---------- */
+function aqMailBtns(e){return `<button class="btn ghost sm" data-act="copyMail" data-v="${esc(e)}">Copiar</button><a class="btn ghost sm" href="${esc(gmail(e))}" target="_blank" rel="noopener">Gmail</a><a class="btn ghost sm" href="${esc(outlook(e))}" target="_blank" rel="noopener">Outlook</a>`}
+function aqPersonaHTML(x){
+  if(!x)return '';
+  return `<div class="aqwho"><div class="main"><b>${esc(x.p)}</b><span class="small muted">${esc(x.c)}</span>${x.email?`<span class="addr">${esc(x.email)}</span>`:''}</div>${x.email?`<div class="row">${aqMailBtns(x.email)}</div>`:''}</div>`;
+}
+function aqLinkBtn(u,ghost){return u&&u.url?`<a class="btn sm${ghost?' ghost':''}" href="${esc(u.url)}" target="_blank" rel="noopener">${esc(u.btn||u.n)}</a>`:''}
+function aqServHTML(u){
+  if(!u)return '';
+  const bt=aqLinkBtn(u)+(u.email?aqMailBtns(u.email):'')+(u.web?`<a class="btn ghost sm" href="${esc(u.web)}" target="_blank" rel="noopener">Más información</a>`:'');
+  return `<div class="aqwho"><div class="main"><b>${esc(u.n)}</b>${u.p?`<span class="small muted">${esc(u.p)}</span>`:''}${u.d?`<span class="small muted">${esc(u.d)}</span>`:''}${u.email?`<span class="addr">${esc(u.email)}</span>`:''}${u.tel?`<span class="small">Teléfono ${esc(u.tel)}</span>`:''}</div>${bt?`<div class="row">${bt}</div>`:''}</div>`;
+}
+function aqProfHTML(ctx){
+  const P=aqProfs(ctx.asig);
+  if(!P.length)return `<p class="small muted aqsub">${ctx.asig?`No tengo el profesor de ${esc(ctx.asig)}. `:''}${ED==='clase'?'Tu profesorado está en Correos → Profesorado.':'Lo tienes en la ficha de cada asignatura.'}</p>`;
+  return P.slice(0,3).map(p=>aqPersonaHTML({p:p.n,c:`${p.f?'Profesora':'Profesor'} de ${ctx.asig}`,email:p.e})).join('');
+}
+function aqDirHTML(ctx){const g=aqGradoDe(ctx);return (g?[g]:Object.keys(AQ_DIR)).map(k=>aqPersonaHTML(AQ_DIR[k])).join('')}
+function aqPractProfs(ctx){
+  const g=aqGradoDe(ctx),M=new Map();
+  GUIAS.filter(x=>(!g||x.g===g)&&/practicas (academicas )?externas/.test(norm(x.n))).forEach(x=>x.p.forEach(([n,e])=>{const m=M.get(e)||{n,e:gMail(e),a:[]};m.a.push(`${x.n} (${GCORTO[x.g]} ${x.c}º)`);M.set(e,m)}));
+  return [...M.values()];
+}
+function aqPractHTML(ctx){
+  const L=aqPractProfs(ctx);
+  if(!L.length){const g=aqGradoDe(ctx);return g?aqPersonaHTML(AQ_DIR[g]):aqDirHTML(ctx)}
+  return L.map(m=>aqPersonaHTML({p:m.n,c:m.a.join(' · '),email:m.e})).join('');
+}
+function aqPasoTxt(p){return p[0]==='delegacion'&&ED!=='clase'?'Tú, como delegado de la Escuela: llévalo a la reunión de delegados o a la Junta de Escuela.':aqT(p[1])}
+function aqPasoHTML(p,i,ctx){
+  const ref=p[0];let who='';
+  if(ref==='prof')who=aqProfHTML(ctx);
+  else if(ref==='dir')who=aqDirHTML(ctx);
+  else if(ref==='pract')who=aqPractHTML(ctx);
+  else if(ref==='delegacion')who=ED==='clase'?'<div class="row"><button class="btn sm" data-act="parteOpen">Enviar parte a la delegación</button></div>':'';
+  else if(ref==='links')who=`<div class="row">${(p[3]||[]).map(k=>aqLinkBtn(AQ_U[k],true)).join('')}</div>`;
+  else if(ref.startsWith('e.'))who=aqPersonaHTML(AQ_E[ref.slice(2)]);
+  else if(ref.startsWith('u.'))who=aqServHTML(AQ_U[ref.slice(2)]);
+  return `<li class="aqp"><span class="pn" aria-hidden="true">${i+1}</span><div class="main"><p>${esc(aqPasoTxt(p))}</p>${who}</div></li>`;
+}
+/* el camino en una línea: «el profesor (…) → el director del grado (…) → la dirección de la Escuela» */
+function aqPasoCorto(p,ctx){
+  const ref=p[0];
+  if(ref==='prof'){const P=aqProfs(ctx.asig);return 'el profesor'+(P.length?` (${P.slice(0,2).map(x=>x.n).join(', ')})`:'')}
+  if(ref==='dir'){const g=aqGradoDe(ctx);return 'el director del grado'+(g?` (${AQ_DIR[g].p})`:'')}
+  if(ref==='pract')return 'el profesor de prácticas externas';
+  if(ref==='delegacion')return ED==='clase'?'la delegación de Escuela':'la Junta de Escuela';
+  if(ref.startsWith('e.'))return AQ_E[ref.slice(2)].s;
+  if(ref.startsWith('u.')){const u=AQ_U[ref.slice(2)];return u.s||u.n}
+  if(ref==='txt')return aqT(p[2]||'');
+  return '';
+}
+function aqCorto(T,ctx){return T.pasos.map(p=>aqPasoCorto(p,ctx)).filter(Boolean).join(' → ')}
+function aqCardHTML(T,ctx){
+  return `<section class="aqcard w-${T.w}" data-aq="${T.id}"><div class="row" style="justify-content:space-between;align-items:flex-start;gap:8px 14px"><div style="min-width:0;flex:1 1 260px"><h3>${esc(T.t)}</h3><p class="small muted" style="margin:3px 0 0">${esc(T.d)}</p></div>${AQ_WLBL[T.w]?`<span class="chip aqw">${esc(AQ_WLBL[T.w])}</span>`:''}</div>
+    ${T.nota?`<p class="aqnota">${esc(aqT(T.nota))}</p>`:''}
+    <ol class="aqsteps">${T.pasos.map((p,i)=>aqPasoHTML(p,i,ctx)).join('')}</ol>
+    ${T.go?`<div class="row"><button class="btn sm" data-act="go" data-t="${T.go.t}">${esc(T.go.l)}</button></div>`:''}</section>`;
+}
+function aqMiniHTML(T,ctx){return `<div class="it"><div class="main"><div class="t">${esc(T.t)}</div><div class="m"><span>${esc(aqCorto(T,ctx))}</span></div></div><button class="btn ghost sm" data-act="aqPick" data-id="${T.id}">Ver</button></div>`}
+
+/* ---------- la vista: buscador + índice ---------- */
+const AQS={q:'',sel:null,ctx:null,pick:null};
+function aqSegs(){return typeof kSegs==='function'?kSegs('acudir'):typeof qSegs==='function'?qSegs('acudir'):`<button data-act="kview" data-v="tablero" aria-pressed="false">Tablero</button><button data-act="kview" data-v="acudir" aria-pressed="true">¿A quién acudo?</button>`}
+function aqSegBtn(v){return `<button data-act="kview" data-v="acudir" aria-pressed="${v==='acudir'}">¿A quién acudo?</button>`}
+function aqRender(root){
+  const st=MODS.incidencias.state;
+  if(st.aqSel){AQS.sel=st.aqSel;AQS.q='';AQS.pick=null;delete st.aqSel}
+  if(st.aqCtx){AQS.ctx=st.aqCtx;delete st.aqCtx}
+  root.innerHTML=`<div class="head"><div><div class="kicker">${ED==='clase'?'Quejas':'Incidencias'} · a quién acudir</div><h2>¿A quién <em>acudo</em>?</h2><p class="lead">Escribe el problema y te digo con quién hay que hablar y en qué orden. Lo académico va por la Escuela: el profesor, el director del grado y la dirección. Instalaciones, cafetería, biblioteca, informática o secretaría las lleva la Universidad.</p></div>
+    <div class="row"><div class="seg" role="group" aria-label="Vista">${aqSegs()}</div></div></div>
+    <div class="aqsearch"><input id="aq-q" type="search" data-inp="aqQ" value="${esc(AQS.q)}" placeholder="Describe el problema: «no funciona el wifi», «faltan sillas en el aula», «el profesor no publica las notas»…" aria-label="Describe el problema" autocomplete="off" spellcheck="false"></div>
+    <div id="slot-aq"></div>`;
+  aqPaint();
+}
+function aqPaint(){
+  const s=$('slot-aq');if(!s)return;
+  const q=AQS.q.trim();let h='';
+  if(q){
+    const a=aqAsigDe(q),ctx=Object.assign({},AQS.ctx||{},a?{asig:a}:{}),R=aqMatch(q).filter(r=>r.s>=2).slice(0,3);
+    if(R.length){
+      const first=R.find(r=>r.T.id===AQS.pick)||R[0];
+      h+=`<div class="aqres">${a?`<p class="small muted" style="margin:0">Asignatura: <b>${esc(a)}</b></p>`:''}${aqCardHTML(first.T,ctx)}${R.length>1?`<div class="stack" style="gap:6px"><div class="kicker">¿O es esto?</div><div class="list">${R.filter(r=>r!==first).map(r=>aqMiniHTML(r.T,ctx)).join('')}</div></div>`:''}</div>`;
+    }else h+=`<div class="aqres"><div class="list"><div class="empty"><b>No lo tengo claro</b>Prueba con otras palabras (qué pasa y dónde) o elige el tema en la lista de abajo. Si no encaja en nada, pregunta en Info y atención de la UCJC.</div></div></div>`;
+  }else if(AQS.sel){const T=AQ.find(x=>x.id===AQS.sel);if(T)h+=`<div class="aqres">${AQS.ctx&&AQS.ctx.asig?`<p class="small muted" style="margin:0">Asignatura: <b>${esc(AQS.ctx.asig)}</b></p>`:''}${aqCardHTML(T,AQS.ctx||{})}</div>`}
+  const otra=AQ.find(T=>T.id==='otra');
+  h+=`<div class="aqidx">${AQ_W.map(([w,t,d])=>`<section class="panel stack"><div><h3>${esc(t)}</h3><p class="small muted" style="margin:3px 0 0">${esc(d)}</p></div><div class="aqchips">${AQ.filter(T=>T.w===w).map(T=>`<button class="aqchip" data-act="aqSel" data-id="${T.id}" aria-pressed="${!q&&AQS.sel===T.id}">${esc(T.t)}</button>`).join('')}</div></section>`).join('')}
+    <section class="panel stack"><div><h3>¿Otra cosa?</h3><p class="small muted" style="margin:3px 0 0">Si no encaja en nada o no sabes por dónde empezar.</p></div><div class="aqchips"><button class="aqchip" data-act="aqSel" data-id="otra" aria-pressed="${!q&&AQS.sel==='otra'}">${esc(otra.t)}</button></div></section></div>
+    <p class="small muted" style="margin:14px 0 0">${esc(AQ_FUENTE)}</p>`;
+  s.innerHTML=h;
+}
+let aqT0;
+INP.aqQ=el=>{AQS.q=el.value;AQS.pick=null;if(!el.value.trim())AQS.ctx=null;clearTimeout(aqT0);aqT0=setTimeout(aqPaint,120)};
+ACT.aqSel=el=>{AQS.sel=el.dataset.id;AQS.q='';AQS.pick=null;const i=$('aq-q');if(i)i.value='';aqPaint();const r=document.querySelector('#slot-aq .aqcard');if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};
+ACT.aqPick=el=>{AQS.pick=el.dataset.id;aqPaint();const r=document.querySelector('#slot-aq .aqcard');if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};
+ACT.aqVer=el=>setTab('incidencias',{state:{view:'acudir',aqSel:el.dataset.t,aqCtx:el.dataset.asig?{asig:el.dataset.asig}:null}});
+/* si se va a una queja (o a apuntar una) desde otra pestaña, se enseña el tablero (en el portal de clase, si es un acuerdo, los acuerdos) */
+{const _st=setTab;setTab=function(t,opts){
+  if(t==='incidencias'){const o=opts||{},s=o.state||{};if(!s.view&&(o.open||s.newPrefill))MODS.incidencias.state.view=ED==='clase'&&o.open&&D.compromisos.some(x=>x.id===o.open)?'acuerdos':'tablero'}
+  return _st.apply(this,arguments);
+}}
+
+/* ---------- pista en cada queja y en el editor ---------- */
+function aqDeTexto(titulo,desc,cat){const R=aqMatch([titulo,desc].join(' '),cat);return R[0]&&R[0].s>=2?R[0].T:null}
+function aqHintHTML(T,ctx,link){
+  return `<div class="aqhint"><b>¿A quién?</b> ${esc(T.t)}${T.w==='uni'?' (lo lleva la Universidad)':''}: ${esc(aqCorto(T,ctx))}.${link?` <a href="#incidencias" data-act="aqVer" data-t="${T.id}" data-asig="${esc(ctx.asig||'')}">Ver contactos</a>`:''}</div>`;
+}
+(function(){
+  const M=MODS.incidencias,_r=M.render,_f=M.refresh,_c=M.card;
+  M.render=function(root){if(this.state.view==='acudir'){aqRender(root);return}_r.call(this,root)};
+  M.refresh=function(){if(this.state.view==='acudir'){aqPaint();return}_f.call(this)};
+  M.card=function(i,ci){
+    const h=_c.call(this,i,ci);if(!OPEN.has(i.id))return h;
+    const T=aqDeTexto(i.titulo,i.descripcion,i.categoria);if(!T)return h;
+    const hint=aqHintHTML(T,{asig:i.asignatura||''},true);
+    return h.replace(/(<div class="detail small">[\s\S]*?)(\n\s*<div class="row">)/,(m,a,b)=>a+hint+b);
+  };
+})();
+(function(){
+  const _f=formHTML;
+  formHTML=function(col,item,title){
+    const h=_f(col,item,title);if(col!=='incidencias')return h;
+    const T=aqDeTexto(item.titulo,item.descripcion,item.categoria);
+    return h.replace('<div class="row"><button type="submit"',`<div id="aq-ehint" aria-live="polite">${T?aqHintHTML(T,{asig:item.asignatura||''},false):''}</div><div class="row"><button type="submit"`);
+  };
+})();
+let aqT1;
+function aqEditorHint(){
+  const f=document.querySelector('form.editor[data-col="incidencias"]'),box=$('aq-ehint');if(!f||!box)return;
+  const v=k=>{const e=f.querySelector(`[name="${k}"]`);return e?e.value:''};
+  const T=aqDeTexto(v('titulo'),v('descripcion'),v('categoria'));
+  box.innerHTML=T?aqHintHTML(T,{asig:v('asignatura')},false):'';
+}
+['input','change'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target&&e.target.closest&&e.target.closest('form.editor[data-col="incidencias"]')){clearTimeout(aqT1);aqT1=setTimeout(aqEditorHint,150)}}));
 /* ===== Aviso de copia de seguridad: si pasa más de un mes sin descargar una copia, el portal te lo recuerda ===== */
 const COPIA_DIAS=30;
 /* el primer día con datos: si nunca has descargado una copia, se cuenta desde ahí */
@@ -5368,7 +5693,7 @@ function ptQRef(p,q){return ptKey(p)+'|'+norm(q.t).slice(0,120)}
 function ptPasada(p,q){const r=ptQRef(p,q);return D.incidencias.some(i=>i.parteRef===r)}
 function ptJunta(){const t=today();return D.reuniones.filter(r=>r.organo==='Junta de Escuela'&&r.estado==='Convocada'&&r.fecha>=t).sort((a,b)=>String(a.fecha).localeCompare(b.fecha))[0]||null}
 const PT_EST={nuevas:'Nueva',negociacion:'En negociación',resueltas:'Resuelta'};
-function kSegs(v){const n=ptNuevos();return [['tablero','Tablero'],['informe','Informe para Dirección'],['partes','Partes de las clases'+(n?` · ${n} ${n===1?'nuevo':'nuevos'}`:'')]].map(([k,l])=>`<button data-act="kview" data-v="${k}" aria-pressed="${v===k}">${esc(l)}</button>`).join('')}
+function kSegs(v){const n=ptNuevos();return [['tablero','Tablero'],['acudir','¿A quién acudo?'],['informe','Informe para Dirección'],['partes','Partes de las clases'+(n?` · ${n} ${n===1?'nuevo':'nuevos'}`:'')]].map(([k,l])=>`<button data-act="kview" data-v="${k}" aria-pressed="${v===k}">${esc(l)}</button>`).join('')}
 
 /* ---------- vista ---------- */
 function ptRender(root){
