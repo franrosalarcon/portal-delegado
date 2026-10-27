@@ -1,5 +1,5 @@
 /* Portal del delegado: funciona sin conexión. Primero intenta la red (para tener siempre la última versión) y si no hay, usa la copia guardada. Nunca guarda nada de otros sitios ni de GitHub. */
-const CACHE='portal-delegado-e31b29a1eed6';
+const CACHE='portal-delegado-793f1df1da98';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./apple-touch-icon.png','./favicon-32.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('portal-delegado-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});

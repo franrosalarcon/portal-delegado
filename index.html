@@ -514,6 +514,25 @@ main .rpaper a:not(.btn){color:#96234a;word-break:break-all}
 .second{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px}
 .hero:has(.tabs[hidden]){padding-bottom:28px}
 .ptsel textarea{padding:7px 9px;font-size:14px;line-height:1.4;resize:vertical;field-sizing:content;min-height:2.4em}
+/* portal de clase: primeros pasos */
+.pasosp{margin-bottom:16px;display:flex;flex-direction:column;gap:12px;border-top:4px solid var(--brand)}
+.pasosp.done{border-top-color:var(--ok)}
+.pbar{height:6px;background:var(--surface-2);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--brand);transition:width .3s ease}
+.pasos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));column-gap:28px}
+.paso{display:flex;gap:12px;align-items:flex-start;padding:14px 0 6px;border-top:1px solid var(--line);min-width:0}
+.paso .pn{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:700 13px/1 var(--sans);background:var(--brand-50);color:var(--brand)}
+.paso.ok .pn{background:var(--ok-bg);color:var(--ok)}
+.paso .main{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.paso .main>b{font-size:15px;font-weight:600}
+.paso.ok .main>b{color:var(--muted)}
+.paso .main p{margin:0}
+.paso[data-paso="app"]{grid-column:1/-1}
+.sos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px 28px;align-items:start}
+.sobox{border-left:3px solid var(--brand-150);padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.sobox>b{font-size:13px}
+.paso .steps{font-size:13px;gap:4px}
+.paso .url{font:600 12.5px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--surface-2);padding:2px 6px;overflow-wrap:anywhere}
 
 </style>
 
@@ -1204,7 +1223,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>
 const BUILD="web";
 const LOGO_DEFAULT="";
-const LOCAL_VERSION="7 · 26 de octubre de 2026";
+const LOCAL_VERSION="7.1 · 27 de octubre de 2026";
 /* ===== núcleo: datos, utilidades, editor genérico ===== */
 /* edición: «delegado» (el portal de Fran) o «clase» (el portal para los delegados y subdelegados de cada clase) */
 const ED=typeof EDICION!=='undefined'?EDICION:'delegado';
@@ -1220,7 +1239,7 @@ const TABS=ED==='clase'?['inicio','horario','calendario','asignaturas','incidenc
 
 const D={};COLS.forEach(c=>D[c]=[]);
 const LOADED={};COLS.forEach(c=>LOADED[c]=false);
-const CFG_DEF={firma:'',alumnos:0,lugar:'Madrid',sub:'',logo:'',logoW:0,logoH:0,anonimizar:true,miGrado:'',miCurso:0,guias2627:0,aulas:{},copiaFecha:'',cargoCurso:'',cargoGrado:'',delegacionEmail:''};
+const CFG_DEF={firma:'',alumnos:0,lugar:'Madrid',sub:'',logo:'',logoW:0,logoH:0,anonimizar:true,miGrado:'',miCurso:0,guias2627:0,aulas:{},copiaFecha:'',cargoCurso:'',cargoGrado:'',delegacionEmail:'',pasos:{},pasosFin:0};
 let CFG=Object.assign({},CFG_DEF),CFG_LOADED=false;
 let db=null,sample=null,downloads=null,canWrite=true,status='loading';
 let filter='todos',tab='inicio',editing=null;
@@ -1375,9 +1394,10 @@ function fieldVal(f,item){
 }
 function formHTML(col,item,title){
   const sch=S[col];
-  let h=`<form class="editor" data-col="${col}" data-id="${esc(item.id||'')}" novalidate><h3>${esc(title||((item.id?'Editar ':'Nueva ')+sch.one))}</h3><div class="form">`;
+  let h=`<form class="editor" data-col="${col}" data-id="${esc(item.id||'')}" novalidate><h3>${esc(title||((item.id?'Editar ':/^(examen|contacto|compromiso|acuerdo|material|préstamo|participante|evento|resumen)\b/.test(sch.one)?'Nuevo ':'Nueva ')+sch.one))}</h3><div class="form">`;
   for(const f of sch.fields){
     const id=`f-${col}-${f.k}`,v=fieldVal(f,item);
+    if(f.type==='ambito'&&Object.keys(AMB).length<2){h+=`<input type="hidden" id="${id}" name="${f.k}" value="${esc(AMB[v]?v:(Object.keys(AMB)[0]||'curso'))}">`;continue}
     if(f.type==='check'){h+=`<label class="f" for="${id}" style="flex-direction:row;align-items:center;gap:10px;align-self:end;padding-bottom:10px"><input type="checkbox" id="${id}" name="${f.k}" ${v?'checked':''}><span style="font-size:14px;color:var(--ink)">${f.label}</span></label>`;continue}
     h+=`<label class="f${(f.type==='textarea'||f.wide)?' wide':''}" for="${id}"><span>${f.label}</span>`;
     if(f.type==='textarea')h+=`<textarea id="${id}" name="${f.k}" rows="${f.rows||3}" placeholder="${esc(f.ph||'')}">${esc(v)}</textarea>`;
@@ -1678,7 +1698,7 @@ function proximos(t,n){
 }
 function proximosHTML(soon){
   return soon.length?'<div class="list">'+soon.map(s=>{const lt=days(s.d)<0,ca=!s.x.id;const chip=s.k==='Examen'||s.k==='Festivo'?'bad':s.k==='Reunión'||s.k==='Curso'?'':'warn';
-    return `<div class="it click" data-act="go" data-t="${s.go}"${s.x.id?` data-id="${esc(s.x.id)}"`:''}><div class="main"><div class="t">${esc(s.title)}</div><div class="m"><span class="chip ${chip}">${esc(s.k)}</span>${s.x.ambito?ambChip(s.x.ambito):''}<span class="date">${esc(s.end?caRango(s.ini,s.end):fmt(s.d))}</span><span class="${lt?'late':''}">${s.end&&s.ini<today()?'hasta el '+esc(fmt(s.end)):(lt?'vencida, ':'')+esc(rel(s.d))}</span></div></div></div>`}).join('')+'</div>':'<div class="list"><div class="empty"><b>Semana despejada</b>Nada en los próximos 14 días.</div></div>';
+    return `<div class="it click" data-act="go" data-t="${s.go}"${s.x.id?` data-id="${esc(s.x.id)}"`:''}${s.st?` data-state='${esc(JSON.stringify(s.st))}'`:''}><div class="main"><div class="t">${esc(s.title)}</div><div class="m"><span class="chip ${chip}">${esc(s.k)}</span>${s.x.ambito&&(ED!=='clase'||AMB.grado)?ambChip(s.x.ambito):''}<span class="date">${esc(s.end?caRango(s.ini,s.end):fmt(s.d))}</span><span class="${lt?'late':''}">${s.end&&s.ini<today()?'hasta el '+esc(fmt(s.end)):(lt?'vencida, ':'')+esc(rel(s.d))}</span></div></div></div>`}).join('')+'</div>':'<div class="list"><div class="empty"><b>Semana despejada</b>Nada en los próximos 14 días.</div></div>';
 }
 function thermoSVG(pct,cls){
   const col={ok:'var(--ok)',mid:'#e2b80d',high:'#f0a43c',crit:'var(--heat3)'}[cls];
@@ -3261,12 +3281,13 @@ function calEvents(o){
   if(o.plazos&&!o.clase)D.evaluaciones.forEach(e=>evalPlazos(e).items.filter(i=>i.d>=t).forEach(i=>E.push({uid:'pl-'+e.id+'-'+i.k,title:`${i.lbl}: ${e.asignatura}`,date:i.d,desc:i.msg+' ('+i.art+')'})));
   if(o.festivos)caFechas(t,CALACAD.hasta).forEach(x=>E.push({uid:'ca-'+x.d+'-'+slug(x.t),title:x.t,date:x.d,end:x.end||'',desc:CALACAD.fuente,noAlarm:true}));
   if(o.compromisos&&!o.clase)D.compromisos.filter(c=>c.estado==='pendiente'&&c.fecha&&c.fecha>=t).forEach(c=>E.push({uid:'co-'+c.id,title:'Compromiso: '+c.que,date:c.fecha,desc:c.quien?'Se comprometió: '+c.quien:''}));
+  if(o.acuerdos&&!o.clase)D.compromisos.filter(c=>c.estado==='pendiente'&&c.fecha&&c.fecha>=t).forEach(c=>{const pr=contact(c.contacto);E.push({uid:'acu-'+c.id,title:'Acuerdo: '+c.que,date:c.fecha,desc:[pr?'Lo prometió: '+(pr.nombreCompleto||pr.nombre):'',c.asignatura?'Asignatura: '+c.asignatura:''].filter(Boolean).join('\n')})});
   return E;
 }
 function icsPanelHTML(){
   return `<section class="editor" id="ics-panel"><h3>Exportar a tu calendario</h3>
     <p class="small muted" style="margin:0">Descarga un archivo .ics y ábrelo para añadir los eventos a Google Calendar, Outlook o el calendario del móvil, con aviso incluido. Si cambian las fechas, vuelve a descargarlo.</p>
-    <div class="row">${[['pruebas','Exámenes y entregas',1],...(ED==='clase'?[]:[['reuniones','Reuniones convocadas',1]]),['tareas','Mis tareas con fecha',0],['plazos','Plazos de notas y revisiones',1],['festivos','Festivos y fechas del calendario académico',1],...(ED==='clase'?[]:[['compromisos','Compromisos de la universidad',0]])].map(([k,l,on])=>`<label class="row small" for="ics-${k}" style="gap:6px"><input type="checkbox" id="ics-${k}" ${on?'checked':''}> ${l}</label>`).join('')}</div>
+    <div class="row">${[['pruebas','Exámenes y entregas',1],...(ED==='clase'?[]:[['reuniones','Reuniones convocadas',1]]),['tareas','Mis tareas con fecha',0],['plazos','Plazos de notas y revisiones',1],['festivos','Festivos y fechas del calendario académico',1],...(ED==='clase'?[['acuerdos','Acuerdos con el profesorado',1]]:[['compromisos','Compromisos de la universidad',0]])].map(([k,l,on])=>`<label class="row small" for="ics-${k}" style="gap:6px"><input type="checkbox" id="ics-${k}" ${on?'checked':''}> ${l}</label>`).join('')}</div>
     <div class="form"><label class="f" for="ics-aviso"><span>Aviso</span><select id="ics-aviso"><option value="dia">El día antes</option><option value="horas">Unas horas antes</option><option value="">Sin aviso</option></select></label>
     <label class="row small" for="ics-clase" style="gap:6px;align-self:end;padding-bottom:10px"><input type="checkbox" id="ics-clase"> Versión para compartir con la clase (solo exámenes y entregas, sin notas)</label></div>
     <div class="row"><button class="btn primary" data-act="icsGo">Descargar calendario</button><button class="btn" data-act="icsClose">Cerrar</button><span class="small muted" id="ics-n"></span></div></section>`;
@@ -3274,7 +3295,7 @@ function icsPanelHTML(){
 ACT.icsOpen=()=>{const p=$('ics-slot');if(!p)return;p.innerHTML=icsPanelHTML();p.scrollIntoView({block:'nearest',behavior:'smooth'})};
 ACT.icsClose=()=>{const p=$('ics-slot');if(p)p.innerHTML=''};
 ACT.icsGo=async()=>{
-  const o={};['pruebas','reuniones','tareas','plazos','festivos','compromisos','clase'].forEach(k=>{const c=$('ics-'+k);o[k]=!!(c&&c.checked)});
+  const o={};['pruebas','reuniones','tareas','plazos','festivos','compromisos','acuerdos','clase'].forEach(k=>{const c=$('ics-'+k);o[k]=!!(c&&c.checked)});
   const E=calEvents(o);if(!E.length){$('ics-n').textContent='No hay eventos futuros con esas opciones.';return}
   const m=miPlan(),cl=`${m.c}º ${GCORTO[m.g]}`;
   const name=o.clase?(ED==='clase'?'calendario-'+slug(cl):'calendario-2o-curso'):(ED==='clase'?'calendario-portal-clase':'calendario-delegado');
@@ -3402,18 +3423,18 @@ function calcNotas(crit,vals,target,R){
 }
 
 MODS.asignaturas={
-  state:{view:'fichas',sel:null,f:'mio',curso:0,q:'',crit:{},calc:{},target:5,guiaD:{},notasD:{},aulaD:{},hsem:0},
+  state:{view:'fichas',sel:null,f:'mio',curso:0,q:'',crit:{},calc:{},target:5,guiaD:{},notasD:{},aulaD:{},hsem:0,hg:'',hc:0},
   render(root){
     const st=this.state;
     if(st.sel)st.sel=asKey(st.sel);
     if(st.view==='fichas'&&st.sel){this.detail(root);return}
     const m=miPlan(),hs=st.hsem||semActual(),cs=st.f!=='mio'?cursosDe(st.f):[];
     root.innerHTML=`<div class="head"><div><div class="kicker">Asignaturas · guías docentes y horarios ${esc(GUIAS_CURSO)}</div><h2>Cada asignatura, <em>de un vistazo</em></h2><p class="lead">${ED==='clase'?`Las asignaturas del ${esc(GUIAS_GRADO[m.g])} con su guía docente: profesorado, cómo se evalúa, temario, cuándo son las clases y la guía en PDF. En las de tu curso, además, tus criterios, quejas y fechas, y la calculadora de notas.`:`Las ${GUIAS.length} asignaturas de Robótica e IA, Informática y Telemática con su guía docente y su horario oficial: profesorado, cómo se evalúa, temario, cuándo son las clases y la guía en PDF. En las de tu curso, además, tus criterios, quejas y fechas.`}</p></div>
-      ${ED==='clase'?'':`<div class="row"><div class="seg" role="group" aria-label="Vista"><button data-act="asView" data-v="fichas" aria-pressed="${st.view==='fichas'}">Asignaturas</button><button data-act="asView" data-v="horario" aria-pressed="${st.view==='horario'}">Horario</button></div>${st.view==='horario'&&canWrite?'<button class="btn primary" data-act="newItem" data-col="horario">+ Clase</button>':''}</div>`}</div>
+      ${ED==='clase'?'':`<div class="row"><div class="seg" role="group" aria-label="Vista"><button data-act="asView" data-v="fichas" aria-pressed="${st.view==='fichas'}">Asignaturas</button><button data-act="asView" data-v="horario" aria-pressed="${st.view==='horario'}">Horario</button></div>${st.view==='horario'&&!st.hg&&canWrite?'<button class="btn primary" data-act="newItem" data-col="horario">+ Clase</button>':''}</div>`}</div>
       ${st.view==='fichas'?`<div class="asfil"><div class="seg" role="group" aria-label="Qué asignaturas">${[['mio','Tu curso'],...(ED==='clase'?[m.g]:Object.keys(GUIAS_GRADO)).map(g=>[g,ED==='clase'?'Todo el grado':GCORTO[g]])].map(([v,l])=>`<button data-act="asF" data-v="${v}" aria-pressed="${st.f===v}">${esc(l)}</button>`).join('')}</div>
         ${cs.length>1?`<div class="seg" role="group" aria-label="Curso"><button data-act="asC" data-v="0" aria-pressed="${!st.curso}">Todos</button>${cs.map(c=>`<button data-act="asC" data-v="${c}" aria-pressed="${st.curso===c}">${c}º</button>`).join('')}</div>`:''}
         <div class="search asq"><input id="asq" data-inp="asq" type="search" value="${esc(st.q)}" placeholder="Busca asignatura, código o profesor" aria-label="Buscar asignaturas"></div></div>`
-      :`<div class="asfil"><div class="seg" role="group" aria-label="Semestre">${[1,2].map(n=>`<button data-act="asHSem" data-v="${n}" aria-pressed="${hs===n}">${n===1?'1.er':'2.º'} semestre</button>`).join('')}</div></div>`}
+      :`<div class="asfil">${ED==='clase'?'':horSelHTML(st,m)}<div class="seg" role="group" aria-label="Semestre">${[1,2].map(n=>`<button data-act="asHSem" data-v="${n}" aria-pressed="${hs===n}">${n===1?'1.er':'2.º'} semestre</button>`).join('')}</div></div>`}
       <div id="ed"></div><div id="slot-as"></div>`;
     this.refresh();
   },
@@ -3427,7 +3448,7 @@ MODS.asignaturas={
     const st=this.state,s=$('slot-as');
     if(st.view==='fichas'&&st.sel){if($('as-detail'))this.detailBody();return}
     if(!s)return;if(!ready()){s.innerHTML=loadingHTML();return}
-    if(st.view==='horario'){s.innerHTML=this.horario();return}
+    if(st.view==='horario'){s.innerHTML=ED!=='clase'&&GUIAS_GRADO[st.hg]?this.horCurso():this.horario();return}
     const keys=this.keys(),m=miPlan(),grid=ks=>`<div class="grid asg">${ks.map(k=>this.card(k)).join('')}</div>`;
     const grp=(t,ks)=>ks.length?`<div class="asgrp"><div class="kicker">${esc(t)}</div></div>${grid(ks)}`:'';
     let h='';
@@ -3523,7 +3544,7 @@ MODS.asignaturas={
         ${inc.length?'<div class="list">'+inc.map(i=>`<div class="it click" data-act="go" data-t="incidencias" data-id="${esc(i.id)}"><div class="main"><div class="t">${esc(i.titulo)}</div><div class="m"><span class="chip">${esc(KLABEL[i.columna]||'Nueva queja')}</span>${i.urgente?'<span class="chip urg">Urgente</span>':''}</div></div></div>`).join('')+'</div>':'<p class="small muted" style="margin:0">Ninguna queja sobre esta asignatura.</p>'}</section>
       ${this.horPanel(k,g,true,hor)}
       <section class="panel stack"><h3>Correos enviados</h3>${env.length?'<div class="list">'+env.slice(0,12).map(envItemHTML).join('')+'</div>':'<p class="small muted" style="margin:0">Cuando redactes un correo, pulsa «Registrar como enviado» y aparecerá aquí. Si en una semana no te contestan, el portal te avisa.</p>'}
-        ${com.length?`<h3 style="margin-top:8px">Compromisos</h3><div class="list">${com.map(c=>`<div class="it"><div class="main"><div class="t">${esc(c.que)}</div><div class="m"><span class="chip ${c.estado==='cumplido'?'ok':c.estado==='incumplido'?'bad':'warn'}">${esc(c.estado)}</span>${c.fecha?`<span class="date">${esc(fmt(c.fecha))}</span>`:''}</div></div></div>`).join('')}</div>`:''}</section>`
+        ${asComHTML(com,n,p)}</section>`
       :`<div class="stack"><section class="panel stack"><h3>Exámenes, quejas y correos</h3><p class="small muted" style="margin:0">Hay una asignatura con el mismo nombre en tu grado. Lo que tengas apuntado como «${esc(n)}» (exámenes, quejas, horario y correos) sale en <a href="#asignaturas" data-act="asOpen" data-k="${esc(pref.id)}">su ficha de ${esc(GCORTO[pref.g])}</a>.</p>${exFichaHTML(k)}${g?this.fechasGuia(g):''}</section>${this.horPanel(k,g,false,[])}</div>`}
     </div></div>`;
   },
@@ -3533,7 +3554,8 @@ MODS.asignaturas={
     const of=L.length?`<div class="list">${L.map(x=>`<div class="it"><div class="main"><div class="t">${esc(DIA_N[x.d])} · ${esc(x.a)}–${esc(x.b)}</div><div class="m"><span>${esc(cursoTxt(x.g,x.c))}</span><span>${x.s===1?'1.er':'2.º'} semestre</span>${aulaDe(x)?`<span>${esc(aulaTxt(aulaDe(x)))}</span>`:''}</div></div></div>`).join('')}</div>`
       :`<p class="small muted" style="margin:0">${g&&g.t==='Optativa'?'No sale en los horarios oficiales de la Politécnica: puede que esta optativa no se imparta este curso.':g?'No sale en los horarios oficiales de la Politécnica.':'No tiene horario oficial.'}${own&&!hor.length?' Si tienes clase, apúntala en la vista Horario con «+ Clase».':''}</p>`;
     const mio=own&&hor.length?`<div class="kicker" style="margin-top:4px">Apuntado por ti</div><div class="list">${hor.map(h=>`<div class="it"><div class="main"><div class="t">${esc(DIAS[Number(h.dia)]||'')} · ${esc(h.inicio)}–${esc(h.fin)}</div><div class="m">${h.aula?`<span>${esc(h.aula)}</span>`:''}${h.grupo?`<span>${esc(h.grupo)}</span>`:''}</div></div>${canWrite?`<button class="btn ghost sm" data-act="edit" data-col="horario" data-id="${esc(h.id)}">Editar</button>`:''}</div>`).join('')}</div>`:'';
-    return `<section class="panel stack"><div class="row" style="justify-content:space-between"><h3>${L.length?'Horario oficial':'Horario'}</h3>${L.length?`<span class="chip${pv?' warn':''}">${pv?'Provisional':esc(GUIAS_CURSO)}</span>`:''}</div>${of}${mio}
+    const cur=ED==='clase'?[]:[...new Map(L.map(x=>[x.g+'-'+x.c,x])).values()];
+    return `<section class="panel stack"><div class="row" style="justify-content:space-between"><h3>${L.length?'Horario oficial':'Horario'}</h3>${L.length?`<span class="chip${pv?' warn':''}">${pv?'Provisional':esc(GUIAS_CURSO)}</span>`:''}</div>${of}${cur.length?`<div class="row">${cur.map(x=>`<button class="btn sm" data-act="asHorCurso" data-g="${x.g}" data-c="${x.c}" data-s="${x.s}">Horario de todo ${esc(cursoTxt(x.g,x.c))}</button>`).join('')}</div>`:''}${mio}
       ${L.length&&!aulaDe(L[0])?(ED==='clase'?'<p class="small muted" style="margin:0">El horario oficial no dice el aula. Si la sabes, apúntala arriba, en la ficha.</p>':'<p class="small muted" style="margin:0">El horario oficial no dice el aula. Apúntala en Quién es quién → Horarios del profesorado → Aulas (o arriba, en la ficha, si esta asignatura va a otra).</p>'):''}</section>`;
   },
   guiaPanel(g,pr){
@@ -3638,9 +3660,38 @@ MODS.asignaturas.horario=function(){
     ${B.length?'<div class="row"><button class="btn sm" data-act="horCopy">Copiar horario para el grupo</button></div>':''}</section>`;
 };
 ACT.asHSem=el=>{MODS.asignaturas.state.hsem=Number(el.dataset.v)||0;renderAll()};
+/* ---------- el horario oficial de cualquier curso de Robótica e IA, Informática y Telemática (portal del delegado) ---------- */
+function horSelHTML(st,m){
+  const cs=GUIAS_GRADO[st.hg]?cursosDe(st.hg):[],hc=cs.includes(st.hc)?st.hc:cs[0];
+  return `<div class="seg" role="group" aria-label="Qué horario"><button data-act="asHG" data-v="" aria-pressed="${!GUIAS_GRADO[st.hg]}">Tu horario</button>${Object.keys(GUIAS_GRADO).map(g=>`<button data-act="asHG" data-v="${g}" aria-pressed="${st.hg===g}">${esc(GCORTO[g])}</button>`).join('')}</div>
+    ${cs.length>1?`<div class="seg" role="group" aria-label="Curso">${cs.map(c=>`<button data-act="asHC" data-v="${c}" aria-pressed="${hc===c}">${c}º${st.hg===m.g&&c===m.c?' · el tuyo':''}</button>`).join('')}</div>`:''}`;
+}
+function horTexto(L,titulo){
+  const T=[];for(let d=1;d<=5;d++){const X=L.filter(x=>x.d===d).sort((a,b)=>hmin(a.a)-hmin(b.a));if(X.length)T.push(`*${DIAS[d]}*\n`+X.map(x=>`• ${x.a}–${x.b} ${x.n}${x.aula?' ('+x.aula+')':''}`).join('\n'))}
+  return `🗓️ *${titulo}*\n\n`+T.join('\n\n');
+}
+function horCursoSel(){const st=MODS.asignaturas.state,cs=cursosDe(st.hg);return {g:st.hg,c:cs.includes(st.hc)?st.hc:cs[0],s:st.hsem||semActual()}}
+MODS.asignaturas.horCurso=function(){
+  const {g,c,s}=horCursoSel(),m=miPlan(),tit=cursoTxt(g,c),L=clasesCurso(g,c,s).map(x=>Object.assign({},x,{aula:aulaDe(x)}));
+  if(!L.length)return `<div class="list"><div class="empty"><b>Sin clases en el ${esc(semTxt(s))}</b>Los horarios oficiales ${esc(GUIAS_CURSO)} no tienen clases de ${esc(tit)} en este semestre.</div></div>`;
+  const pv=L.some(x=>x.pv),fin=L.some(x=>hmin(x.b)>hmin('20:30'))?'22:30':'20:30';
+  const bloques=L.map(x=>({d:x.d,a:x.a,b:x.b,cls:GCLS[x.g],act:` data-act="asOpen" data-k="${esc(x.k)}" title="${esc(x.n)}"`,html:`<b>${esc(x.n)}</b>${esc(x.a)}–${esc(x.b)}${x.aula?' · '+esc(aulaTxt(x.aula)):''}${x.profs.length?'<br>'+esc(x.profs.map(p=>p[0]).join(', ')):''}`}));
+  const H=huecosDe(L),nA=uniqN(L.map(x=>x.n)).length,hrs=L.reduce((a,x)=>a+hmin(x.b)-hmin(x.a),0)/60;
+  return `<p class="small muted" style="margin:0 0 10px">Horario oficial de ${esc(tit)}${g===m.g&&c===m.c?' (tu curso)':''} en el ${esc(semTxt(s))}, según los horarios ${esc(GUIAS_CURSO)} de la Politécnica: ${nA} ${nA===1?'asignatura':'asignaturas'} y ${(Math.round(hrs*10)/10).toLocaleString('es-ES')} horas de clase a la semana. Pulsa una clase para abrir su asignatura.${pv?' <span class="chip warn">Provisional</span>':''}</p>
+    ${rejillaHTML(bloques,{fin})}
+    <div class="hleg small"><span><i class="hkey ${GCLS[g]}"></i>Horario oficial · ${esc(tit)}</span></div>
+    <section class="panel stack" style="margin-top:16px"><h3>Huecos libres de ${esc(tit)} (de 8:30 a 20:30, al menos 1 hora)</h3>${H.length?`<div class="row">${H.map(x=>`<span class="chip">${esc(DIAS[x.d].slice(0,3))} ${hm(x.a)}–${hm(x.b)}</span>`).join('')}</div><p class="small muted" style="margin:0">Franjas sin clase: sirven para quedar con esta clase o con sus delegados.</p>`:'<p class="small muted" style="margin:0">No tiene huecos de una hora o más entre las 8:30 y las 20:30.</p>'}
+      <div class="row"><button class="btn sm" data-act="horCopyC">Copiar este horario</button></div></section>`;
+};
+ACT.asHG=el=>{const st=MODS.asignaturas.state,g=GUIAS_GRADO[el.dataset.v]?el.dataset.v:'',m=miPlan();st.hg=g;if(g){const cs=cursosDe(g);st.hc=g===m.g&&cs.includes(m.c)?m.c:cs.includes(st.hc)?st.hc:cs[0]}renderAll()};
+ACT.asHC=el=>{MODS.asignaturas.state.hc=Number(el.dataset.v)||1;renderAll()};
+ACT.asHorCurso=el=>{const st=MODS.asignaturas.state;st.view='horario';st.sel=null;st.hg=el.dataset.g;st.hc=Number(el.dataset.c)||1;st.hsem=Number(el.dataset.s)||0;renderAll();window.scrollTo({top:0})};
+ACT.horCopyC=()=>{const {g,c,s}=horCursoSel(),L=clasesCurso(g,c,s).map(x=>Object.assign({},x,{aula:aulaDe(x)?aulaTxt(aulaDe(x)):''}));copyText(horTexto(L,`Horario de ${cursoTxt(g,c)} · ${semTxt(s)}`))};
 ACT.hueco=el=>setTab('redactar',{state:{tpl:'tutoria',normPrefill:{franjas:'el '+el.dataset.f}}});
 ACT.horCopy=()=>{const st=MODS.asignaturas.state,s=st.hsem||semActual(),m=miPlan(),B=miHorario(s),L=[];for(let d=1;d<=5;d++){const X=B.filter(x=>x.d===d).sort((a,b)=>hmin(a.a)-hmin(b.a));if(X.length)L.push(`*${DIAS[d]}*\n`+X.map(x=>`• ${x.a}–${x.b} ${x.n}${x.aula?' ('+x.aula+')':''}`).join('\n'))}copyText(`🗓️ *Horario de ${m.c}º ${GCORTO[m.g]} · ${semTxt(s)}*\n\n`+L.join('\n\n'))};
 
+/* compromisos de la ficha de una asignatura (el portal de clase los enseña como «Acuerdos con el profesorado») */
+function asComHTML(com){return com.length?`<h3 style="margin-top:8px">Compromisos</h3><div class="list">${com.map(c=>`<div class="it"><div class="main"><div class="t">${esc(c.que)}</div><div class="m"><span class="chip ${c.estado==='cumplido'?'ok':c.estado==='incumplido'?'bad':'warn'}">${esc(c.estado)}</span>${c.fecha?`<span class="date">${esc(fmt(c.fecha))}</span>`:''}</div></div></div>`).join('')}</div>`:''}
 /* registro de correos enviados desde Redactar */
 ACT.mailSent=async()=>{
   const R=MODS.redactar,v=R.values(),m=R.cur&&R.cur.mail;if(!m)return;
@@ -3976,7 +4027,8 @@ function searchAll(q){
   asTodas().forEach(k=>{const g=guia(k),n=asNombre(k),pr=profesAsig(k).map(p=>p.n);add('Asignaturas',n,[g?`${GCORTO[g.g]} ${g.c}º`:'',pr.slice(0,2).join(', ')].filter(Boolean).join(' · '),{t:'asignaturas',state:{view:'fichas',sel:k}},[n,g?g.cod:'',g?GCORTO[g.g]:'',pr.join(' ')].join(' '))});
   Object.values(PROFS).forEach(p=>{const L=CLASES.filter(x=>x.profs.some(q=>q[1]===p.e));if(!L.length)return;const A=[...new Set(L.map(x=>x.n))];add('Horarios del profesorado','Horario de '+p.n,A.slice(0,3).join(', ')+(A.length>3?'…':''),ED==='clase'?{t:'horario',state:{view:'prof'},hv:p.e}:{t:'directorio',state:{view:'horarios'},hv:p.e},['horario donde esta',p.n,A.join(' ')].join(' '))});
   D.reuniones.forEach(r=>add('Reuniones',r.titulo,[r.organo,fmt(r.fecha)].filter(Boolean).join(' · '),{t:'actas',id:r.id,state:{view:'reuniones'}},[r.titulo,r.organo,r.orden,r.acuerdos,r.lugar].join(' ')));
-  D.compromisos.forEach(c=>add('Compromisos',c.que,[c.quien,c.estado].filter(Boolean).join(' · '),{t:'actas',id:c.id,state:{view:'compromisos'}},[c.que,c.quien,c.notas].join(' ')));
+  if(ED==='clase')D.compromisos.forEach(c=>{const pr=(contact(c.contacto)||{}).nombre||'';add('Acuerdos con el profesorado',c.que,[pr,c.asignatura,c.fecha?'para el '+fmt(c.fecha):''].filter(Boolean).join(' · '),{t:'incidencias',id:c.id,state:{view:'acuerdos'}},['acuerdo promesa',c.que,pr,c.asignatura,c.notas].join(' '))});
+  else D.compromisos.forEach(c=>add('Compromisos',c.que,[c.quien,c.estado].filter(Boolean).join(' · '),{t:'actas',id:c.id,state:{view:'compromisos'}},[c.que,c.quien,c.notas].join(' ')));
   D.tareas.forEach(x=>add('Tareas',x.titulo,x.fecha?fmt(x.fecha):'',{t:'inicio',id:x.id},[x.titulo,x.notas].join(' ')));
   D.contactos.forEach(c=>add(ED==='clase'?'Profesorado':'Mi directorio',c.nombreCompleto||c.nombre,[c.cargo,(c.asignaturas||[]).join(', '),c.email].filter(Boolean).join(' · '),ED==='clase'?{t:'redactar',id:c.id,state:{view:'profes'}}:{t:'directorio',id:c.id,state:{view:'mios'}},[c.nombre,c.nombreCompleto,c.cargo,c.email,(c.asignaturas||[]).join(' ')].join(' ')));
   D.org.forEach(o=>add('Quién es quién',o.nombre,[o.cargo,o.email].filter(Boolean).join(' · '),{t:'directorio',id:o.id,state:{view:'org',q:''}},[o.nombre,o.cargo,o.email,(o.asignaturas||[]).join(' ')].join(' ')));
@@ -4035,7 +4087,7 @@ function resumenSemanal(mon){
   const ex=ev.filter(e=>e.tipo==='Examen'),en=ev.filter(e=>e.tipo!=='Examen');
   const re=D.reuniones.filter(r=>r.estado==='Convocada'&&r.fecha>=mon&&r.fecha<=sun).sort((a,b)=>String(a.fecha).localeCompare(b.fecha));
   const ac=D.reuniones.filter(r=>r.estado==='Celebrada'&&r.fecha>=addDays(t,-14)&&r.fecha<=t).flatMap(r=>lines(r.acuerdos));
-  const co=D.compromisos.filter(c=>c.estado==='pendiente').sort((a,b)=>String(a.fecha||'9').localeCompare(b.fecha||'9')).slice(0,5);
+  const co=(ED==='clase'?[]:D.compromisos).filter(c=>c.estado==='pendiente').sort((a,b)=>String(a.fecha||'9').localeCompare(b.fecha||'9')).slice(0,5);
   const pl=[];D.evaluaciones.forEach(e=>evalPlazos(e).items.filter(i=>i.k==='rec'||(i.s==='bad'&&i.k==='prov')).forEach(i=>pl.push(`${e.asignatura}: ${i.lbl.toLowerCase()}${i.k==='rec'?' hasta el '+fd(i.d):''}`)));
   const sec=(t,arr)=>arr.length?`\n*${t}*\n${arr.map(x=>'• '+x).join('\n')}\n`:'';
   const r1=parse(mon),r2=parse(sun);
@@ -4346,7 +4398,8 @@ MODS.ajustes={
       <div class="stack">${isLocal()?'<section class="panel stack" id="aj-pass"></section><section class="panel stack" id="aj-sync"></section>':'<section class="panel stack" id="aj-ext"></section>'}<section class="panel stack" id="aj-bk"></section></div></div>`;
     for(const k in AJSIG)delete AJSIG[k];
     this.refresh(true);
-    if(AJ.bkFocus){AJ.bkFocus=0;setTimeout(()=>{const b=$('aj-bk');if(b){b.scrollIntoView({block:'center',behavior:'smooth'});b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')}},80)}
+    const fo=AJ.bkFocus?'aj-bk':AJ.foco;AJ.bkFocus=0;AJ.foco='';
+    if(fo)setTimeout(()=>{const b=$(fo);if(b){b.scrollIntoView({block:'center',behavior:'smooth'});b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')}},80);
   },
   refresh(force){
     if(!$('aj-datos'))return;
