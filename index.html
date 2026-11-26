@@ -557,6 +557,33 @@ main .rpaper a:not(.btn){color:#96234a;word-break:break-all}
 .aqhint{border-left:3px solid var(--brand);background:var(--brand-50);padding:7px 10px;font-size:13px;margin:2px 0;overflow-wrap:anywhere}
 .aqhint a{color:var(--brand);font-weight:600}
 form.editor #aq-ehint:empty{display:none}
+/* queja colectiva (encuesta + informe para Dirección) */
+.co-kpis{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.co-kpi{background:var(--brand-50);border-left:4px solid var(--brand);padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.co-kpi b{font-size:28px;line-height:1.05;color:var(--brand);font-weight:700}
+.co-kpi span{font-size:13px;color:var(--ink)}
+.co-kpi .co-area{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.co-kpi small{font-size:11.5px;color:var(--muted)}
+.co-amb{margin:24px 0 10px;font-size:15px}
+.co-bars{display:flex;flex-direction:column;gap:6px}
+.co-bar{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px}
+.co-bar .track{height:12px;background:var(--surface-2)}
+.co-bar .fill{height:100%;background:var(--gra)}
+.co-bar.mal .fill{background:var(--brand)}
+.co-bar.na .fill{background:var(--line)}
+.co-op{appearance:none;border:1px solid transparent;background:none;font:inherit;color:inherit;text-align:left;padding:3px 6px;margin:-3px -6px;cursor:pointer;border-radius:4px;min-width:0;overflow-wrap:anywhere}
+button.co-op:hover{border-color:var(--line)}
+.co-bar.mal .co-op{font-weight:700;color:var(--brand)}
+.co-bar.sel .co-op{font-weight:700}
+.co-ind.ctx b{color:var(--gra)}
+.co-bar .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.co-ind{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px}
+.co-ind b{color:var(--brand);font-size:18px}
+.co-lab{display:flex;gap:6px;align-items:center;flex:1 1 260px;min-width:0}
+.co-lab input{flex:1;min-width:0}
+.co-lik{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--line)}
+.co-off{opacity:.62}
+@media (max-width:560px){.co-bar{grid-template-columns:minmax(0,1fr) auto}.co-bar .track{grid-column:1/-1;order:3}}
 
 </style>
 
@@ -1247,7 +1274,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>
 const BUILD="web";
 const LOGO_DEFAULT="";
-const LOCAL_VERSION="7.2.1 · 26 de noviembre de 2026";
+const LOCAL_VERSION="7.3 · 26 de noviembre de 2026";
 /* ===== núcleo: datos, utilidades, editor genérico ===== */
 /* edición: «delegado» (el portal de Fran) o «clase» (el portal para los delegados y subdelegados de cada clase) */
 const ED=typeof EDICION!=='undefined'?EDICION:'delegado';
@@ -1257,7 +1284,7 @@ const AMB=ED==='clase'?{}:{
   curso:{label:'2º curso',role:'Delegado',full:'2º curso del Grado en Ingeniería Robótica e Inteligencia Artificial',firma:'Delegado de 2º curso del Grado en Ingeniería Robótica e Inteligencia Artificial'}
 };
 const ASIG_BASE=ED==='clase'?[]:['Redes de Computadores','Fundamentos de Automática','Estadística','Sensores y Actuadores','Señales y Sistemas','Arquitectura de Computadores','Fundamentos de Bases de Datos','Estructura de Datos','Ingeniería y Sistemas de Control','Aspectos Profesionales de la Robótica','Matemática Discreta'];
-const COLS=['incidencias','evaluaciones','reuniones','tareas','contactos','wiki','encuestas','eventos','patrocinios','org','compromisos','enviados','asignaturas','horario','inventario','prestamos','participantes','resumenes','partes'];
+const COLS=['incidencias','evaluaciones','reuniones','tareas','contactos','wiki','encuestas','eventos','patrocinios','org','compromisos','enviados','asignaturas','horario','inventario','prestamos','participantes','resumenes','partes',...(ED==='clase'?[]:['colectivas'])];
 const LIBS={chart:'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js',pdf:'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js',zip:'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'};
 const TABS=ED==='clase'?['inicio','horario','calendario','asignaturas','incidencias','redactar','normativa','ajustes']:['inicio','incidencias','calendario','asignaturas','normativa','redactar','resumenes','actas','eventos','encuestas','directorio','wiki','ajustes'];
 
@@ -4228,7 +4255,7 @@ const BUILD_KIND=typeof BUILD!=='undefined'?BUILD:'claude';
 const LOCALAPI=()=>window.__portalLocal||null;
 const AJ={d:null,pwMsg:'',pwBusy:false,pwOpen:false,sy:{owner:'',repo:'portal-delegado-datos',token:'',pw:''},syMsg:'',syBusy:false,bkEnc:null,bkMsg:'',impTxt:null,impName:'',impNeedPw:false,imp:null,impDatos:null,impMsg:'',impBusy:false,impProg:'',logoMsg:''};
 const AJSIG={};
-const COL_LBL={incidencias:['queja','quejas'],evaluaciones:['examen o entrega','exámenes y entregas'],reuniones:['reunión','reuniones'],tareas:['tarea','tareas'],contactos:['contacto','contactos'],wiki:['entrada de la wiki','entradas de la wiki'],encuestas:['encuesta','encuestas'],eventos:['evento','eventos'],patrocinios:['patrocinio','patrocinios'],org:['persona del organigrama','personas del organigrama'],compromisos:['compromiso','compromisos'],enviados:['correo enviado','correos enviados'],asignaturas:['ficha de asignatura','fichas de asignatura'],horario:['clase del horario','clases del horario'],inventario:['material','materiales'],prestamos:['préstamo','préstamos'],participantes:['inscrito','inscritos'],resumenes:['resumen de charla','resúmenes de charlas'],partes:ED==='clase'?['parte enviado','partes enviados']:['parte de una clase','partes de las clases']};
+const COL_LBL={incidencias:['queja','quejas'],evaluaciones:['examen o entrega','exámenes y entregas'],reuniones:['reunión','reuniones'],tareas:['tarea','tareas'],contactos:['contacto','contactos'],wiki:['entrada de la wiki','entradas de la wiki'],encuestas:['encuesta','encuestas'],colectivas:['queja colectiva','quejas colectivas'],eventos:['evento','eventos'],patrocinios:['patrocinio','patrocinios'],org:['persona del organigrama','personas del organigrama'],compromisos:['compromiso','compromisos'],enviados:['correo enviado','correos enviados'],asignaturas:['ficha de asignatura','fichas de asignatura'],horario:['clase del horario','clases del horario'],inventario:['material','materiales'],prestamos:['préstamo','préstamos'],participantes:['inscrito','inscritos'],resumenes:['resumen de charla','resúmenes de charlas'],partes:ED==='clase'?['parte enviado','partes enviados']:['parte de una clase','partes de las clases']};
 function bkEncOn(){const L=LOCALAPI();return AJ.bkEnc===null?!!(L&&L.hasPassword()):AJ.bkEnc}
 function ajVal(k){if(AJ.d&&k in AJ.d)return AJ.d[k];if(k==='alumnos')return CFG.alumnos||'';return CFG[k]||''}
 function paintAj(){if(tab==='ajustes'&&MODS.ajustes)MODS.ajustes.refresh()}
@@ -5693,7 +5720,7 @@ function ptQRef(p,q){return ptKey(p)+'|'+norm(q.t).slice(0,120)}
 function ptPasada(p,q){const r=ptQRef(p,q);return D.incidencias.some(i=>i.parteRef===r)}
 function ptJunta(){const t=today();return D.reuniones.filter(r=>r.organo==='Junta de Escuela'&&r.estado==='Convocada'&&r.fecha>=t).sort((a,b)=>String(a.fecha).localeCompare(b.fecha))[0]||null}
 const PT_EST={nuevas:'Nueva',negociacion:'En negociación',resueltas:'Resuelta'};
-function kSegs(v){const n=ptNuevos();return [['tablero','Tablero'],['acudir','¿A quién acudo?'],['informe','Informe para Dirección'],['partes','Partes de las clases'+(n?` · ${n} ${n===1?'nuevo':'nuevos'}`:'')]].map(([k,l])=>`<button data-act="kview" data-v="${k}" aria-pressed="${v===k}">${esc(l)}</button>`).join('')}
+function kSegs(v){const n=ptNuevos();return [['tablero','Tablero'],['colectiva','Queja colectiva'],['acudir','¿A quién acudo?'],['informe','Informe para Dirección'],['partes','Partes de las clases'+(n?` · ${n} ${n===1?'nuevo':'nuevos'}`:'')]].map(([k,l])=>`<button data-act="kview" data-v="${k}" aria-pressed="${v===k}">${esc(l)}</button>`).join('')}
 
 /* ---------- vista ---------- */
 function ptRender(root){
@@ -5821,6 +5848,670 @@ ACT.ptJuntaAdd=async el=>{
   const base=lines(r.orden),orden=[...base,...nuevas].map((x,i)=>`${i+1}. ${x}`).join('\n');
   if(await patch('reuniones',r.id,{orden,actualizado:Date.now()}))toast(`${nuevas.length} ${nuevas.length===1?'tema añadido':'temas añadidos'} al orden del día`);
   el.disabled=false;
+};
+/* ===== Queja colectiva (solo en el portal del delegado): el formulario (Microsoft Forms o Google Forms), el Excel con las respuestas,
+   los resultados pregunta a pregunta y el informe formal para Dirección. Las respuestas se guardan solo en este portal. ===== */
+const CO={sel:null,nuevo:false,pend:null,pendNombre:'',msg:'',ver:'resultados',busy:false};
+const CO_NA=/^(no aplica|n\/?a|no procede|no la he usado|no lo he usado|no los he usado|prefiero no (contestar|responder|decirlo)|ns\/?nc)\b/;
+const CO_META=[['id',/^(id|n\.?o|numero)$/],['ini',/^(start time|hora de inicio)$/],['fin',/^(completion time|hora de finalizacion|marca temporal|timestamp)$/],['mail',/^(email|e-mail|correo|correo electronico|direccion de correo electronico)$/],['nom',/^(name|nombre)$/],['mod',/^(last modified time|hora de la ultima modificacion)$/]];
+const CO_FORM=/^https:\/\/(forms\.office\.com|forms\.cloud\.microsoft|forms\.microsoft\.com|docs\.google\.com\/forms|forms\.gle)\//i;
+/* ámbitos de la encuesta: el orden decide a cuál va cada pregunta */
+const CO_AREAS=[
+  ['perfil','Perfil de quienes responden','',/que grado|que titulacion|en que curso|dias a la semana|horas libres|que estudias|tu edad|que turno/],
+  ['biblioteca','Biblioteca','la biblioteca',/bibliotec/],
+  ['comedor','Comedor y zona común','el comedor y la zona común',/comedor|\bcomer\b|comida|zona comun|microondas|cafeteri/],
+  ['impresion','Impresión','el servicio de impresión',/imprim|impres/],
+  ['apertura','Apertura del edificio','el horario de apertura del edificio',/\babr(a|e|ir|iera|ieran|an|en)\b|apertura|llegas antes|esperas? hasta|horario del edificio|en la calle/],
+  ['estudio','Espacios de estudio','los espacios de estudio',/estudi|\bsalas?\b|silencio|concentr|rendimiento|espacio/],
+  ['aulas','Aulas','las aulas',/\baulas?\b|climatiz|calefacc|enchufe|proyector/],
+  ['wifi','Wifi y equipos','la wifi y los equipos',/wifi|internet|ordenador/],
+  ['limpieza','Limpieza y aseos','la limpieza y los aseos',/limpi|aseo|\bbanos?\b/],
+  ['general','Otras cuestiones','otras cuestiones',/$^/]
+];
+const CO_AREA=Object.fromEntries(CO_AREAS.map(a=>[a[0],a]));
+/* escalas conocidas, de menos a más */
+const CO_ESC={
+  frec:['nunca','casi nunca','rara vez','alguna vez','a veces','algunos dias','alguna vez al mes','semanalmente','con frecuencia','a menudo','la mayoria de los dias','casi a diario','casi siempre','a diario','todos los dias','siempre'],
+  cal:['pesimo','muy malo','muy mala','malo','mala','regular','aceptable','bueno','buena','muy bueno','muy buena','excelente'],
+  int:['nada','muy poco','poco','algo','moderadamente','bastante','mucho','muchisimo'],
+  fac:['en absoluto','con mucha dificultad','con algo de dificultad','casi sin problema','casi sin problemas','sin problema','sin problemas','sin ningun problema'],
+  sat:['muy insatisfecho','insatisfecho','neutral','satisfecho','muy satisfecho'],
+  acu:['totalmente en desacuerdo','en desacuerdo','ni de acuerdo ni en desacuerdo','de acuerdo','totalmente de acuerdo']
+};
+/* preguntas en las que lo malo es que pase mucho, y preguntas en las que lo malo es que pase poco */
+const CO_NEG=/no (has podido|podias|podia|puedes|funcionaba|funciona|estaba disponible|abre)|no disponible|ocupad|cerrad|tienes que salir|te han pedido|salieras|falta de|esperar|esperas|llegas antes|pierdes|fallo|averi|problema|no poder|molest|afecta|perjudic|fuera de la universidad/;
+const CO_POS=/encuentras? (alguna|algun|sitio|hueco|mesa)[^?]*(libre|disponible)|te deja|has podido usar|puedas estudiar|puedes estudiar|funciona bien|consigues/;
+/* frases ya pensadas para la encuesta de espacios comunes (si las preguntas coinciden) */
+const CO_PRESET=[
+  ['sueles tener horas libres entre clases',{ctx:1,mal:['Algunos días','La mayoría de los días'],lab:'tiene horas libres entre clases algunos días o la mayoría de los días'}],
+  ['con que frecuencia intentas usar la biblioteca',{ctx:1,mal:['Alguna vez al mes','Semanalmente','Casi a diario'],lab:'intenta usar la biblioteca al menos una vez al mes'}],
+  ['cuando has querido usarla',{lab:'no ha podido usar la biblioteca a menudo o siempre, porque estaba ocupada por un evento o cerrada'}],
+  ['alguna vez te han pedido que salieras de la biblioteca',{lab:'ha tenido que salir de la biblioteca porque se la pidieron para un evento'}],
+  ['desde que estas en la universidad, has podido usar la biblioteca',{lab:'nunca o casi nunca ha podido usar la biblioteca para estudiar',star:1}],
+  ['con que frecuencia encuentras el comedor no disponible',{lab:'encuentra el comedor ocupado por eventos a menudo o siempre',star:1}],
+  ['donde sueles comer',{ctx:1,mal:['Zona común del primer piso'],lab:'come habitualmente en la zona común del primer piso'}],
+  ['valora la zona comun del primer piso a la hora de comer|nivel de ruido',{lab:'valora como malo o muy malo el nivel de ruido de la zona común a la hora de comer'}],
+  ['valora la zona comun del primer piso a la hora de comer|limpieza',{lab:'valora como mala o muy mala la limpieza de la zona común a la hora de comer'}],
+  ['valora la zona comun del primer piso a la hora de comer|olores',{lab:'valora como malos o muy malos los olores de la zona común a la hora de comer'}],
+  ['valora la zona comun del primer piso a la hora de comer|sitio disponible',{lab:'valora como malo o muy malo el sitio disponible para comer en la zona común',star:1}],
+  ['valora la zona comun del primer piso a la hora de comer|disponibilidad de microondas',{lab:'valora como mala o muy mala la disponibilidad de microondas'}],
+  ['cuando necesitas una de las salas pequenas de estudio',{lab:'nunca o rara vez encuentra libre una sala pequeña de estudio'}],
+  ['cuando consigues una sala',{lab:'no puede concentrarse, o lo consigue con mucha dificultad, por el ruido de alrededor'}],
+  ['hay algun espacio en la universidad donde puedas estudiar en silencio',{lab:'no conoce ningún espacio de la universidad donde estudiar en silencio de forma fiable',star:1}],
+  ['con que frecuencia tienes que salir de la universidad para estudiar',{mal:['Alguna vez al mes','Semanalmente','Casi a diario'],lab:'ha tenido que salir de la universidad para estudiar entre clases por falta de espacio',star:1}],
+  ['cuanto tiempo pierdes aproximadamente',{lab:'pierde 10 minutos o más en cada desplazamiento (de quienes tienen que salir a estudiar fuera)'}],
+  ['cuanto crees que afecta la falta de espacios',{mal:['Moderadamente','Bastante','Mucho'],lab:'cree que la falta de espacios de estudio perjudica a su rendimiento académico',star:1}],
+  ['con que frecuencia necesitas imprimir',{ctx:1,mal:['Alguna vez al mes','Semanalmente','Casi a diario'],lab:'necesita imprimir en la universidad al menos una vez al mes'}],
+  ['cuando has ido a imprimir',{lab:'se ha encontrado la impresora sin funcionar a menudo o siempre'}],
+  ['que problemas has tenido con la web del servicio de impresion',{mal:['La web no carga o se cae'],lab:'se ha encontrado la web del servicio de impresión caída o sin cargar (de quienes la han usado)'}],
+  ['has tenido que imprimir fuera de la universidad',{lab:'ha tenido que imprimir fuera de la universidad, o no imprimir, por no poder hacerlo dentro'}],
+  ['te ha pasado alguna vez no poder entregar',{lab:'no ha podido entregar o llevar a clase un documento impreso a tiempo por los fallos de impresión',star:1}],
+  ['con que frecuencia llegas antes de que abra',{mal:['Rara vez','A veces','A menudo','Siempre'],lab:'llega antes de que abra el edificio (8:00) por los horarios del transporte'}],
+  ['cuando llegas antes de que abra',{lab:'espera 10 minutos o más a que abra el edificio (de quienes llegan antes)'}],
+  ['donde esperas hasta que abre',{mal:['En la calle, frente a la entrada'],lab:'espera en la calle, frente a la entrada (de quienes llegan antes)',star:1}],
+  ['a que hora crees que deberia abrir',{ctx:1,mal:['7:30','7:45'],lab:'pide que el edificio abra antes de las 8:00'}]
+];
+const CO_PET={
+  biblioteca:'Garantizar que la biblioteca pueda usarse para estudiar durante todo el horario lectivo, sin cierres ni desalojos por eventos, y celebrar los eventos en espacios destinados a ello.',
+  comedor:'Mantener el comedor libre de eventos en la franja de comidas (de 13:30 a 15:30) y mejorar la zona común del primer piso: más puestos y microondas, más limpieza y medidas contra el ruido y los olores.',
+  estudio:'Habilitar salas de estudio en silencio suficientes, insonorizadas y con un sistema de reserva, y permitir el uso de las aulas libres para estudiar entre clases.',
+  impresion:'Reparar o sustituir las impresoras averiadas, estabilizar la web del servicio de impresión, devolver el saldo cobrado por impresiones fallidas y fijar un plazo máximo para resolver las averías.',
+  apertura:'Adelantar la apertura del edificio a las {hora} los días lectivos o, como mínimo, habilitar un espacio interior donde esperar.',
+  aulas:'Revisar y adecuar las aulas: climatización, enchufes y equipos.',
+  wifi:'Mejorar la cobertura de la wifi y el estado de los equipos.',
+  limpieza:'Reforzar la limpieza de los espacios comunes y de los aseos.'
+};
+const CO_TEMAS=[
+  ['Que los eventos no ocupen los espacios del alumnado',/evento|convencion|extern/],
+  ['Una biblioteca disponible para estudiar',/bibliotec/],
+  ['Más salas y espacios de estudio en silencio',/\bsalas?\b|silencio|insonoriz|espacios? de estudio|estudiar/],
+  ['Comedor o cafetería disponibles y con más sitio',/comedor|cafeter|\bcomer\b|mesas/],
+  ['Más microondas',/microondas/],
+  ['Impresoras y web de impresión que funcionen',/impres|imprimir|saldo/],
+  ['Abrir antes el edificio',/\babr(a|e|an|ir)\b|apertura|7[:.]30|7[:.]45/],
+  ['Más limpieza',/limpi/],
+  ['Más fuentes de agua',/fuentes? de agua|\bagua\b/],
+  ['Precios más ajustados en la cafetería',/precio/]
+];
+const CO_GRADOS=[[/robot/,'Robótica e IA'],[/informat/,'Informática'],[/telemat/,'Telemática'],[/derecho/,'Derecho'],[/psicolog/,'Psicología'],[/criminolog/,'Criminología'],[/relaciones internacionales|\brrii\b|\brr\.? ?ii\b/,'Relaciones Internacionales'],[/protocolo|organizacion de eventos/,'Protocolo y Eventos'],[/\bade\b|administracion y direccion/,'ADE'],[/marketing/,'Marketing'],[/periodismo/,'Periodismo'],[/publicidad/,'Publicidad'],[/audiovisual/,'Comunicación Audiovisual'],[/infantil/,'Educación Infantil'],[/primaria|magisterio/,'Educación Primaria'],[/enfermer/,'Enfermería'],[/fisioterap/,'Fisioterapia'],[/farmac/,'Farmacia'],[/nutricion|dietetica/,'Nutrición'],[/odontolog/,'Odontología'],[/medicina/,'Medicina'],[/arquitect/,'Arquitectura'],[/diseno/,'Diseño'],[/bellas artes/,'Bellas Artes'],[/cafyd|actividad fisica|deporte/,'Ciencias del Deporte'],[/videojuego/,'Videojuegos'],[/traduccion|lenguas|idiomas/,'Lenguas y Traducción'],[/turismo/,'Turismo'],[/economia/,'Economía']];
+
+/* ---------- utilidades ---------- */
+function coH(h){return String(h??'').replace(/ /g,' ').replace(/\s+/g,' ').trim()}
+function coN(s){return norm(coH(s)).replace(/[¿?¡!"«»]/g,'').replace(/\s+/g,' ').trim()}
+function coPc(n,b){return b?Math.round(n/b*100):0}
+function coLista(L,y){y=y||'y';return L.length<2?(L[0]||''):L.slice(0,-1).join(', ')+' '+y+' '+L[L.length-1]}
+function coSel(){const L=coLista_();return L.find(x=>x.id===CO.sel)||L[0]||null}
+function coLista_(){return (D.colectivas||[]).slice().sort((a,b)=>(b.creado||0)-(a.creado||0))}
+function coTema(t){const s=String(t||'').trim();const m=s.match(/\bsobre\s+(.+)$/i);const x=(m?m[1]:s).replace(/[.\s]+$/,'');return m?x:x.charAt(0).toLowerCase()+x.slice(1)}
+function coFecha(x){
+  if(typeof x==='number'&&isFinite(x)&&x>20000)return new Date(Math.round((x-25569)*864e5)).toISOString().slice(0,16);
+  const s=String(x??'').trim();if(!s)return '';
+  let m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{1,2}):(\d{2}))?/);if(m)return `${m[1]}-${m[2]}-${m[3]}T${(m[4]||'0').padStart(2,'0')}:${m[5]||'00'}`;
+  m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})(?:,?\s+(\d{1,2}):(\d{2}))?/);if(m){const y=m[3].length===2?'20'+m[3]:m[3];return `${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}T${(m[4]||'0').padStart(2,'0')}:${m[5]||'00'}`}
+  return '';
+}
+function coMs(s){return s?Date.parse(s+':00Z'):NaN}
+function coGrado(v){
+  const n=norm(v).replace(/\s+/g,' ').trim();if(!n||!/[a-z]{2}/.test(n))return 'Sin especificar';
+  const L=CO_GRADOS.filter(([re])=>re.test(n)).map(x=>x[1]);
+  if(L.length)return L.join(' + ');
+  const t=coH(v).replace(/^(grado|doble grado|doble)\s+(en|de)\s+/i,'');return t.charAt(0).toUpperCase()+t.slice(1);
+}
+function coLimpia(t){return String(t||'').replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g,'[correo eliminado]').replace(/(\+?\d[\d\s]{7,}\d)/g,'[teléfono eliminado]').trim()}
+
+/* ---------- leer el Excel (.xlsx) sin librerías externas, con JSZip ---------- */
+async function coXlsx(buf){
+  await lib('zip');
+  let z;try{z=await JSZip.loadAsync(buf)}catch(e){throw new Error('No he podido abrir el archivo. ¿Es un Excel (.xlsx)?')}
+  const txt=async p=>{const f=z.file(p);return f?f.async('string'):null};
+  const xml=s=>new DOMParser().parseFromString(s,'application/xml');
+  const wbS=await txt('xl/workbook.xml');if(!wbS)throw new Error('El archivo no es un Excel (.xlsx) válido.');
+  const sh=xml(wbS).getElementsByTagName('sheet')[0];if(!sh)throw new Error('El Excel no tiene ninguna hoja.');
+  const rid=sh.getAttribute('r:id')||sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');
+  let target='worksheets/sheet1.xml';const relS=await txt('xl/_rels/workbook.xml.rels');
+  if(relS&&rid)for(const r of xml(relS).getElementsByTagName('Relationship'))if(r.getAttribute('Id')===rid){target=r.getAttribute('Target')||target;break}
+  const path=target.startsWith('/')?target.slice(1):'xl/'+target.replace(/^\.\//,'');
+  const ss=[];const ssS=await txt('xl/sharedStrings.xml');
+  if(ssS)for(const si of xml(ssS).getElementsByTagName('si')){let t='';for(const x of si.getElementsByTagName('t')){if(x.parentNode&&x.parentNode.nodeName==='rPh')continue;t+=x.textContent}ss.push(t)}
+  const shS=await txt(path);if(!shS)throw new Error('No encuentro la hoja con las respuestas.');
+  const rows=[];
+  for(const r of xml(shS).getElementsByTagName('row')){
+    const ri=(Number(r.getAttribute('r'))||rows.length+1)-1,arr=[];
+    for(const c of r.getElementsByTagName('c')){
+      const m=(c.getAttribute('r')||'').match(/^([A-Z]+)/);let ci=arr.length;
+      if(m){ci=0;for(const ch of m[1])ci=ci*26+(ch.charCodeAt(0)-64);ci--}
+      const t=c.getAttribute('t'),v=c.getElementsByTagName('v')[0];let val='';
+      if(t==='s')val=v?(ss[Number(v.textContent)]??''):'';
+      else if(t==='inlineStr'){const is=c.getElementsByTagName('is')[0];val=is?[...is.getElementsByTagName('t')].map(x=>x.textContent).join(''):''}
+      else if(t==='b')val=v?(v.textContent==='1'?'Sí':'No'):'';
+      else if(t==='str'||t==='e'||t==='d')val=v?v.textContent:'';
+      else val=v?Number(v.textContent):'';
+      arr[ci]=val;
+    }
+    rows[ri]=arr;
+  }
+  return rows.filter(Boolean).map(r=>Array.from(r,x=>x??''));
+}
+/* filas → tabla del portal: cabeceras limpias, fechas legibles y sin las columnas de correo y nombre de Forms */
+function coTabla(rows){
+  if(!rows||rows.length<2)throw new Error('El archivo no tiene respuestas todavía.');
+  const h=rows[0].map(coH);
+  const cols=h.map((x,i)=>({i,n:coN(x),meta:(CO_META.find(([,re])=>re.test(coN(x)))||[])[0]||null}));
+  if(!cols.some(c=>!c.meta&&h[c.i]))throw new Error('No encuentro las preguntas en la primera fila del archivo.');
+  const fecha=new Set(cols.filter(c=>c.meta==='ini'||c.meta==='fin'||c.meta==='mod').map(c=>c.i)),fuera=new Set(cols.filter(c=>c.meta==='mail'||c.meta==='nom').map(c=>c.i));
+  const filas=rows.slice(1).filter(r=>r.some(x=>String(x??'').trim()!=='')).map(r=>h.map((_,i)=>{const x=r[i];if(fuera.has(i))return '';if(fecha.has(i))return coFecha(x);if(x==null)return '';return typeof x==='number'?String(x):String(x).replace(/ /g,' ').replace(/\r\n?/g,'\n').trim()}));
+  if(!filas.length)throw new Error('El archivo no tiene respuestas todavía.');
+  return {h,filas};
+}
+function coIdCol(h){return h.findIndex(x=>/^(id|n\.?o|numero)$/.test(coN(x)))}
+function coRowKey(h,r,ix){const i=ix==null?coIdCol(h):ix;return i>=0&&String(r[i]||'').trim()?'id'+String(r[i]).trim():'h'+hash32(JSON.stringify(r))}
+/* junta el Excel nuevo con lo que ya había: las respuestas se identifican por su Id de Forms */
+function coFusion(c,t){
+  const H=(c.h||[]).slice();t.h.forEach(x=>{if(!H.includes(x))H.push(x)});
+  const preg=hh=>new Set(hh.filter(x=>!CO_META.some(([,re])=>re.test(coN(x)))));
+  const A=preg(c.h||[]),B=preg(t.h);
+  if(A.size&&B.size){const com=[...B].filter(x=>A.has(x)).length;if(com<Math.min(A.size,B.size)*.5)throw new Error('Este Excel parece de otro formulario: sus preguntas no coinciden. Crea una queja colectiva nueva para él.')}
+  const m=new Map(),pos=x=>H.indexOf(x),ix=coIdCol(H);
+  const put=(hh,r)=>{const o=new Array(H.length).fill('');hh.forEach((x,i)=>{o[pos(x)]=r[i]??''});m.set(coRowKey(H,o,ix),o)};
+  (c.filas||[]).forEach(r=>put(c.h,r));const antes=m.size;t.filas.forEach(r=>put(t.h,r));
+  return {h:H,filas:[...m.values()],nuevas:m.size-antes};
+}
+
+/* ---------- análisis ---------- */
+function coTipo(c,vals){
+  const n=c.n;
+  if(/correo|e-?mail|telefono|contacto/.test(n)&&vals.some(v=>/@|\d{9}/.test(v)))return 'contacto';
+  if(/autoriz|consient|permit|permiso/.test(n)&&/cit|testimonio|public|compart/.test(n))return 'consent';
+  if(/que grado|que titulacion|que estudias|que carrera|grado estudias/.test(n))return 'grado';
+  if(!vals.length)return 'vacia';
+  if(/describe|cuentanos|explica|que mejoras|propondrias|propuesta|sugerenc|comentario|observacion|por que|^cual|^si has respondido|algo mas/.test(n))return 'texto';
+  const semi=vals.filter(v=>v.includes(';')).length;
+  if(semi>=2){
+    /* varias opciones separadas por «;»: las opciones se repiten sueltas o en combinaciones distintas (un texto libre con «;» no) */
+    const sp=v=>v.split(';').map(x=>norm(x).trim()).filter(Boolean);
+    const combos=[...new Set(vals.filter(v=>v.includes(';')).map(v=>sp(v).join(';')))],sueltos=new Set(vals.filter(v=>!v.includes(';')).map(v=>norm(v).trim()));
+    const enCombos=t=>combos.filter(cb=>cb.split(';').includes(t)).length;
+    const occ=vals.filter(v=>v.includes(';')).flatMap(sp),ut=[...new Set(occ)];
+    const comp=occ.filter(t=>sueltos.has(t)||enCombos(t)>=2).length;
+    if(ut.length<=30&&comp>=occ.length*.5&&ut.reduce((a,t)=>a+t.length,0)/ut.length<=80)return 'multiple';
+  }
+  if(vals.every(v=>/^-?\d+([.,]\d+)?$/.test(v))&&new Set(vals).size<=11)return 'numero';
+  const u=new Set(vals.map(v=>norm(v))),avg=vals.reduce((a,v)=>a+v.length,0)/vals.length;
+  if(u.size<=12&&u.size<=Math.max(3,vals.length*.5)&&avg<70)return 'unica';
+  return 'texto';
+}
+function coLcp(L){let p=L[0]||'';for(const s of L)while(!s.startsWith(p))p=p.slice(0,-1);return p}
+function coOrden(labels){
+  const n=labels.map(l=>norm(l).replace(/[.;]+$/,'').trim());
+  const na=i=>CO_NA.test(n[i]);
+  for(const [k,sc] of Object.entries(CO_ESC)){
+    if(n.every((x,i)=>sc.includes(x)||na(i))&&n.some(x=>sc.includes(x)))return {esc:k,orden:labels.map((l,i)=>[l,na(i)?999:sc.indexOf(n[i])]).sort((a,b)=>a[1]-b[1]).map(x=>x[0])};
+  }
+  const num=x=>{const m=x.match(/(\d+)(?:[:.,](\d+))?/);if(!m)return null;let v=Number(m[1])+(m[2]?Number(m[2])/(x.includes(':')?60:100):0);if(/^menos de/.test(x))v-=.5;if(/^mas de/.test(x))v+=1e4;return v};
+  if(n.every((x,i)=>na(i)||num(x)!=null)&&n.some((x,i)=>!na(i)))return {esc:'num',orden:labels.map((l,i)=>[l,na(i)?1e9:num(n[i])]).sort((a,b)=>a[1]-b[1]).map(x=>x[0])};
+  return {esc:null,orden:null};
+}
+/* respuestas que cuentan como problema, si nadie lo ha elegido a mano */
+function coMalDefecto(q){
+  const L=q.opts.map(o=>o.l).filter(l=>!CO_NA.test(norm(l)));if(L.length<2)return [];
+  const n=norm(q.h),neg=CO_NEG.test(n),pos=CO_POS.test(n);
+  if(q.esc==='cal'||q.esc==='sat')return L.slice(0,2);
+  if(q.esc==='fac')return L.filter(l=>/en absoluto|mucha dificultad/.test(norm(l)));
+  if(q.esc==='frec'||q.esc==='int'||q.esc==='num'){if(neg&&!pos)return L.slice(-2);if(pos)return L.slice(0,2);return []}
+  const si=L.filter(l=>/^si\b/.test(norm(l))),no=L.filter(l=>/^(no|nunca)\b/.test(norm(l))||/rara vez|casi nunca/.test(norm(l)));
+  if(neg&&!pos&&si.length)return si;
+  if(pos&&no.length)return no;
+  return [];
+}
+function coPreset(key){const k=coN(key);const p=CO_PRESET.find(([t])=>k.startsWith(t));return p?p[1]:null}
+function coAnalizar(c){
+  const h=c.h||[],F=c.filas||[],cfg=(c.cfg&&c.cfg.q)||{};
+  const cols=h.map((x,i)=>({i,h:coH(x),n:coN(x),meta:(CO_META.find(([,re])=>re.test(coN(x)))||[])[0]||null}));
+  const col=k=>{const x=cols.find(c=>c.meta===k);return x?x.i:-1};
+  const iId=col('id'),iIni=col('ini'),iFin=col('fin');
+  const rid=r=>coRowKey(h,r,iId);
+  const Q=cols.filter(x=>!x.meta&&x.h);
+  Q.forEach(x=>{x.v=F.map(r=>String(r[x.i]??'').trim());x.t=coTipo(x,x.v.filter(Boolean))});
+  /* matrices de Forms («Pregunta.Afirmación»): columnas seguidas con el mismo principio */
+  for(let a=0;a<Q.length;a++){
+    if(Q[a].t!=='unica')continue;let b=a+1;while(b<Q.length&&Q[b].t==='unica')b++;
+    for(let e=b-1;e>a;e--){
+      const run=Q.slice(a,e+1),p=coLcp(run.map(r=>r.h)),sp=p.lastIndexOf('.');if(sp<12)continue;
+      const items=run.map(r=>r.h.slice(sp+1).trim());if(items.some(t=>!t||t.length>90))continue;
+      if(new Set(run.flatMap(r=>r.v.filter(Boolean).map(v=>norm(v)))).size>9)continue;
+      const gt=p.slice(0,sp).replace(/[.\s]+$/,'');run.forEach((r,j)=>{r.g='L'+a;r.item=items[j];r.gt=gt});a=e;break;
+    }
+  }
+  const qs=[],textos=[];let prev='general';
+  const area=(x,txt)=>{const n=norm(x.gt||x.h);if(txt)return /^¿?(si has respondido|cual|cuales|por que)/.test(n)?prev:'general';const ar=CO_AREAS.find(a=>a[3].test(n));if(ar){prev=ar[0];return ar[0]}return prev};
+  const cuenta=(vals,multi)=>{const m=new Map();vals.forEach(v=>{if(!v)return;(multi?v.split(';'):[v]).map(s=>s.trim()).filter(Boolean).forEach(s=>{const k=norm(s);const o=m.get(k)||{l:s,n:0};o.n++;m.set(k,o)})});return [...m.values()]};
+  const preparar=(q,vals)=>{
+    let opts=cuenta(vals,q.t==='multiple');
+    if(q.t==='grado'){const m=new Map();vals.filter(Boolean).forEach(v=>{const g=coGrado(v);m.set(g,(m.get(g)||0)+1)});opts=[...m].map(([l,n])=>({l,n}))}
+    if(q.t==='multiple'&&opts.length>8){const otras=opts.filter(o=>o.n<2&&!CO_NA.test(norm(o.l)));if(otras.length>1){q.otras=otras.map(o=>o.l);opts=opts.filter(o=>!otras.includes(o)).concat([{l:'Otras respuestas',n:otras.length,otras:true}])}}
+    const o=q.t==='multiple'||q.t==='grado'?{esc:null,orden:null}:coOrden(opts.map(x=>x.l));q.esc=o.esc;
+    q.opts=o.orden?o.orden.map(l=>opts.find(x=>x.l===l)):opts.sort((a,b)=>(CO_NA.test(norm(a.l))-CO_NA.test(norm(b.l)))||(b.n-a.n));
+    q.resp=vals.filter(Boolean).length;
+  };
+  const indicar=(q,vals)=>{
+    const C=cfg[q.k]||{},P=q.preset||{};
+    const labs=new Set(q.opts.map(o=>o.l));
+    let mal=Array.isArray(C.mal)?C.mal:(P.mal||coMalDefecto(q));
+    mal=mal.map(m=>(q.opts.find(o=>norm(o.l)===norm(m))||{}).l).filter(l=>l&&labs.has(l));
+    q.mal=new Set(mal);q.malUser=Array.isArray(C.mal);
+    const esNA=v=>CO_NA.test(norm(v));
+    let base,n;
+    if(q.t==='multiple'){
+      const toks=vals.filter(Boolean).map(v=>v.split(';').map(s=>s.trim()).filter(Boolean));
+      const valid=toks.filter(t=>!t.every(esNA));base=valid.length;
+      const isMal=s=>q.mal.has(s)||(q.mal.has('Otras respuestas')&&(q.otras||[]).includes(s));
+      if(q.mal.size)n=valid.filter(t=>t.some(isMal)).length;
+      else{const top=q.opts.filter(o=>!esNA(o.l)&&!o.otras)[0];if(!top)return;n=top.n;q.mal=new Set([top.l]);q.top=true}
+    }else{
+      base=q.resp-q.opts.filter(o=>esNA(o.l)).reduce((a,o)=>a+o.n,0);
+      if(q.mal.size)n=q.opts.filter(o=>q.mal.has(o.l)).reduce((a,o)=>a+o.n,0);
+      else{const top=q.opts.filter(o=>!esNA(o.l)).sort((a,b)=>b.n-a.n)[0];if(!top)return;n=top.n;q.mal=new Set([top.l]);q.top=true}
+    }
+    if(!base)return;
+    const sel=q.opts.filter(o=>q.mal.has(o.l)).map(o=>'«'+o.l+'»');
+    const gen=q.item?`valora «${q.item}» como ${coLista(sel,'o')}`:(q.t==='multiple'?'marca ':'responde ')+coLista(sel,'o');
+    const lab=C.lab||(q.malUser&&!q.top?gen:(P.lab||gen));
+    q.ind={p:coPc(n,base),n,base,lab,gen:!C.lab&&!(P.lab&&!q.malUser),k:q.k,area:q.area,ctx:!!P.ctx&&!q.malUser,q};q.ctx=q.ind.ctx;
+    q.star=C.star!=null?!!C.star:(P.star!=null?!!P.star:null);
+  };
+  const vistos=new Set();
+  for(const x of Q){
+    if(x.g){
+      if(vistos.has(x.g))continue;vistos.add(x.g);
+      const run=Q.filter(y=>y.g===x.g);const ar=area(x);
+      const g={t:'likert',k:hash32(norm(x.gt)),h:x.gt,area:ar,items:[]};
+      run.forEach(y=>{const it={t:'unica',k:hash32(norm(x.gt+'|'+y.item)),h:x.gt,item:y.item,area:ar,ci:y.i,preset:coPreset(x.gt+'|'+y.item)};preparar(it,y.v);it.esc=it.esc||coOrden(it.opts.map(o=>o.l)).esc;indicar(it,y.v);g.items.push(it)});
+      const L=[];g.items.forEach(it=>it.opts.forEach(o=>{if(!L.includes(o.l))L.push(o.l)}));const o=coOrden(L);g.escala=o.orden||L;g.esc=o.esc;
+      qs.push(g);continue;
+    }
+    if(x.t==='texto'||x.t==='contacto'||x.t==='consent'||x.t==='vacia'){
+      if(x.t==='texto')textos.push({k:hash32(x.n),h:x.h,ci:x.i,area:area(x,true),kind:/^(si has respondido|cual|cuales|por que)/.test(x.n)?'det':/describe|situacion|cuentanos|experiencia|que (te )?paso|que ocurrio|ejemplo/.test(x.n)?'sit':/mejora|propon|propuesta|sugerenc|idea/.test(x.n)?'prop':'otro'});
+      continue;
+    }
+    const q={t:x.t,k:hash32(x.n),h:x.h,ci:x.i,area:area(x),preset:coPreset(x.h)};
+    preparar(q,x.v);if(q.t!=='grado')indicar(q,x.v);qs.push(q);
+  }
+  /* testimonios: solo se pueden citar los de quien lo ha autorizado */
+  const cons=Q.find(x=>x.t==='consent'),cont=Q.find(x=>x.t==='contacto');
+  const citas=(c.cfg&&c.cfg.citas)||{};const T=[];
+  textos.forEach(t=>F.forEach(r=>{
+    const v=String(r[t.ci]??'').trim();if(v.length<3||/^(no|nada|ningun[oa]?|nadie|-|\.|n\/a)\.?$/i.test(norm(v)))return;
+    const ok=cons?/^si\b/.test(norm(r[cons.i])):true;const id=rid(r)+'_'+t.k;
+    const nv=norm(v),pos=CO_AREAS.filter(a=>a[0]!=='perfil'&&a[0]!=='general').map(a=>{const m=nv.match(a[3]);return m?[a[0],m.index]:null}).filter(Boolean).sort((x,y)=>x[1]-y[1]);
+    T.push({id,txt:v,q:t,ok,star:citas[id]===true,no:citas[id]===false,areas:pos.map(x=>x[0]),main:pos.length?pos[0][0]:''});
+  }));
+  /* temas de las propuestas (se cuentan personas, sin citar a nadie) */
+  const temas=CO_TEMAS.map(([l,re])=>({l,n:F.filter(r=>textos.some(t=>re.test(norm(r[t.ci])))).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+  /* perfil y fechas */
+  const fin=F.map(r=>r[iFin>=0?iFin:iIni]).filter(Boolean).sort();
+  const dur=iIni>=0&&iFin>=0?F.map(r=>(coMs(r[iFin])-coMs(r[iIni]))/6e4).filter(m=>m>0&&m<90):[];
+  const gq=qs.find(q=>q.t==='grado');const grados=gq?new Set(gq.opts.flatMap(o=>o.l.split(' + ')).filter(l=>l!=='Sin especificar')).size:0;
+  const A={N:F.length,qs,textos,T,temas,grados,ini:fin[0]||'',fin:fin[fin.length-1]||'',horas:fin.length?(coMs(fin[fin.length-1])-coMs(fin[0]))/36e5:0,min:dur.length?Math.round(dur.reduce((a,b)=>a+b,0)/dur.length):0,consent:!!cons,contactos:cont?F.map(r=>String(r[cont.i]??'').trim()).filter(Boolean):[]};
+  /* indicadores destacados: los marcados; si no hay ninguno marcado ni sugerido, los más altos (dos por ámbito como mucho) */
+  const inds=[];qs.forEach(q=>(q.t==='likert'?q.items:[q]).forEach(it=>{if(it.ind&&q.area!=='perfil')inds.push(it)}));
+  A.inds=inds;A.orden=[];qs.forEach(q=>{if(!A.orden.includes(q.area))A.orden.push(q.area)});
+  const marcados=inds.filter(it=>it.star===true);
+  if(!marcados.length&&!inds.some(it=>it.star===false)){
+    const por={};inds.filter(it=>!it.top&&!it.ctx).sort((a,b)=>b.ind.p-a.ind.p).forEach(it=>{if((por[it.area]=(por[it.area]||0)+1)<=2&&marcados.length<8)marcados.push(it)});
+  }
+  A.kpis=marcados.map(it=>it.ind);
+  return A;
+}
+
+/* ---------- textos del informe ---------- */
+function coPeriodo(A){
+  if(!A.ini)return '';const a=A.ini.slice(0,10),b=A.fin.slice(0,10);
+  if(a===b)return 'el '+fmtLong(a);
+  const pa=parse(a),pb=parse(b);
+  if(pa.getMonth()===pb.getMonth()&&pa.getFullYear()===pb.getFullYear())return `entre el ${pa.getDate()} y el ${fmtLong(b)}`;
+  return `entre el ${fmtLong(a).replace(/ de \d{4}$/,pa.getFullYear()===pb.getFullYear()?'':'$&')} y el ${fmtLong(b)}`;
+}
+function coPeriodoCorto(A){
+  if(!A.ini)return '';const a=A.ini.slice(0,10),b=A.fin.slice(0,10);if(a===b)return fmtLong(a);
+  const pa=parse(a),pb=parse(b),d=Math.round((pb-pa)/864e5);
+  if(pa.getMonth()===pb.getMonth()&&pa.getFullYear()===pb.getFullYear())return d===1?`${pa.getDate()} y ${fmtLong(b)}`:`del ${pa.getDate()} al ${fmtLong(b)}`;
+  return `del ${fmtLong(a)} al ${fmtLong(b)}`;
+}
+function coRapidez(A){return A.horas>0&&A.horas<24?'en menos de 24 horas':A.horas>0?`en ${Math.max(1,Math.round(A.horas/24))} días`:''}
+function coResumenAuto(c,A){
+  const K=A.kpis.slice().sort((a,b)=>b.p-a.p);if(!A.N)return '';
+  const f=k=>`el ${k.p} % ${k.lab}`;
+  let s=`Un total de ${A.N} estudiantes${A.grados>1?` de ${A.grados} grados distintos`:''} respondieron ${coPeriodo(A)}${coRapidez(A)?', '+coRapidez(A)+',':''} a una encuesta anónima sobre ${coTema(c.titulo)}.`;
+  if(K.length){
+    const fuerte=K.filter(k=>k.p>=70).length>=3;
+    s+=` ${fuerte?'Los resultados muestran un problema generalizado, no puntual:':'Estos son los principales resultados:'} ${coLista(K.slice(0,3).map(f))}.`;
+    if(K.length>3)s+=` Además, ${coLista(K.slice(3,6).map(f))}.`;
+    if(fuerte)s+=' Son carencias que afectan cada día a la vida académica del alumnado y que requieren medidas concretas, con plazos y responsables.';
+  }
+  return s;
+}
+function coHora(A){
+  for(const q of A.qs){if(q.area!=='apertura'||!q.opts)continue;const T=q.opts.filter(o=>/^\d{1,2}:\d{2}/.test(o.l)&&!/suficiente/.test(norm(o.l)));if(T.length)return T.sort((a,b)=>b.n-a.n)[0].l.match(/^\d{1,2}:\d{2}/)[0]}
+  return '';
+}
+function coAreasCon(A){const s=[];A.inds.forEach(it=>{if(it.ind&&!it.top&&!it.ctx&&!s.includes(it.area))s.push(it.area)});return A.orden.filter(a=>s.includes(a))}
+function coPeticionesAuto(A,plazo){
+  const h=coHora(A);
+  const L=coAreasCon(A).filter(a=>CO_PET[a]).map(a=>a==='apertura'?(h?CO_PET.apertura.replace('{hora}',h):'Adelantar la apertura del edificio los días lectivos o, como mínimo, habilitar un espacio interior donde esperar.'):CO_PET[a]);
+  L.push(`Responder por escrito a este informe en un plazo de ${plazo} días hábiles, indicando para cada petición la medida que se adoptará, la persona responsable y la fecha prevista, y convocar una reunión de seguimiento con la representación estudiantil.`);
+  return L.join('\n');
+}
+function coInf(c,A){
+  const s=(c.cfg&&c.cfg.inf)||{},plazo=Math.max(1,Math.min(90,Number(s.plazo)||15));
+  return {titulo:s.titulo||'Informe sobre '+coTema(c.titulo),dest:s.dest??'Dirección de la Universidad Camilo José Cela',cc:s.cc??'',
+    firma:s.firma??(CFG.firma||''),cargo:s.cargo??'Vocal del Consejo de Estudiantes de la Universidad Camilo José Cela',otros:s.otros??'',plazo,sede:s.sede??'',
+    resumen:s.resumen||coResumenAuto(c,A),resumenAuto:!s.resumen,peticiones:s.peticiones||coPeticionesAuto(A,plazo),petAuto:!s.peticiones,
+    carta:s.carta!==false,fund:s.fund!==false,pasos:s.pasos!==false,anexo:s.anexo!==false};
+}
+function coExpone(c,A,I){
+  const L=[`Que ${coPeriodo(A)} la representación estudiantil ha realizado una encuesta anónima sobre ${coTema(c.titulo)}, a la que han respondido ${A.N} estudiantes${A.grados>1?` de ${A.grados} grados distintos`:''}${coRapidez(A)?' '+coRapidez(A):''}. Sus resultados completos se recogen en el informe adjunto.`];
+  coAreasCon(A).forEach(a=>{
+    const its=A.inds.filter(it=>it.area===a&&!it.top&&!it.ctx).sort((x,y)=>(y.star===true)-(x.star===true)||y.ind.p-x.ind.p).slice(0,3).sort((x,y)=>y.ind.p-x.ind.p);
+    if(its.length)L.push(`Que, en cuanto ${CO_AREA[a][2].replace(/^el /,'al ').replace(/^(?!al )/,'a ')}, ${coLista(its.map(it=>`el ${it.ind.p} % ${it.ind.lab}`))}.`);
+  });
+  if(A.contactos.length)L.push(`Que ${A.contactos.length} ${A.contactos.length===1?'estudiante se ha ofrecido':'estudiantes se han ofrecido'} a sumarse formalmente a esta queja y a aportar pruebas.`);
+  L.push('Que esta situación no se ajusta al derecho del estudiantado a contar con servicios generales accesibles y de calidad y a disponer de espacios dedicados al estudiantado, reconocido en el artículo 6.1, letras ai) y ak), del Estatuto del Estudiantado Universitario, aprobado por el Real Decreto 855/2026, de 21 de octubre.');
+  return L;
+}
+const CO_FUND=[
+  ['Estatuto del Estudiantado Universitario (Real Decreto 855/2026, de 21 de octubre), artículo 6.1.ai)','reconoce el derecho del estudiantado «a contar con unos servicios generales y específicos que garanticen un desarrollo adecuado de la vida universitaria del estudiantado, que deben ser accesibles y de calidad».'],
+  ['Mismo Estatuto, artículo 6.1.ak)','reconoce el derecho «a disponer en las universidades de espacios dedicados al estudiantado».'],
+  ['Mismo Estatuto, artículos 32.h) y 33.a)','atribuyen a la representación estudiantil la tarea de canalizar ante los órganos competentes las sugerencias, quejas y reclamaciones del estudiantado.'],
+  ['Mismo Estatuto, artículos 6.1.ag) y 7.8','reconocen la participación del estudiantado, a través de sus representantes, en los sistemas de garantía de la calidad y en su seguimiento.'],
+  ['Manual del Sistema de Garantía Interna de Calidad de la UCJC','prevé que el Consejo de Estudiantes traslade y haga el seguimiento de las sugerencias, quejas, felicitaciones y reclamaciones globales del alumnado.'],
+  ['Guía de evaluación para la renovación de la acreditación de los títulos (Fundación madri+d), criterios 5 y 7','exigen que los recursos materiales y los servicios puestos a disposición del título sean adecuados y valoran la satisfacción del estudiantado con las instalaciones, las infraestructuras y los servicios.']
+];
+const CO_PASOS='Si en el plazo indicado no se recibe una respuesta por escrito con medidas concretas, la representación estudiantil trasladará este informe al Defensor Universitario y a la Comisión de Garantía de Calidad de la Universidad, y lo pondrá en conocimiento de los paneles de evaluación en los procesos de seguimiento y renovación de la acreditación de los títulos, en los que se valoran los recursos materiales, los servicios y la satisfacción del estudiantado con las instalaciones.';
+function coCitasInforme(A){
+  const ok=A.T.filter(t=>t.ok&&!t.no),star=ok.filter(t=>t.star),manual=star.length>0,out={},usados=new Set(),cerca=t=>Math.abs(t.txt.length-220);
+  const con=coAreasCon(A);
+  con.forEach(a=>{
+    const pool=manual?star:ok.filter(t=>(t.q.kind==='sit'||t.q.kind==='otro')&&t.txt.length>=40);
+    const L=pool.filter(t=>!usados.has(t.id)&&t.areas.includes(a)).sort((x,y)=>((x.main!==a)-(y.main!==a))||(cerca(x)-cerca(y))).slice(0,manual?6:2);
+    L.forEach(t=>usados.add(t.id));if(L.length)out[a]=L;
+  });
+  out._prop=manual?star.filter(t=>!usados.has(t.id)):ok.filter(t=>t.q.kind==='prop'&&t.txt.length>=40&&t.txt.length<=520).sort((x,y)=>cerca(x)-cerca(y)).slice(0,3);
+  return out;
+}
+function coTexto(c){
+  const A=coAnalizar(c),I=coInf(c,A),E=coExpone(c,A,I),P=lines(I.peticiones);
+  return `ASUNTO: Queja formal sobre ${coTema(c.titulo)}\n\n${I.firma||'[Tu nombre]'}, ${lc1(I.cargo)}, en representación de los estudiantes,\n\nEXPONE\n\n${E.map((x,i)=>`${ORD[i]||(i+1)+'.º'}.- ${x}`).join('\n\n')}\n\nPor todo lo anterior,\n\nSOLICITA\n\n${P.map((x,i)=>`${i+1}. ${x}`).join('\n\n')}\n\nSe adjunta el «${I.titulo}», con los resultados completos de la encuesta (${A.N} respuestas).\n\n${I.firma||'[Tu nombre]'}\n${I.cargo}`;
+}
+
+/* ---------- informe en PDF ---------- */
+function coPdfTxt(s){return String(s??'').replace(/[\u2028\u2029\t]/g,' ').replace(/[“”]/g,'"').replace(/[‘’]/g,"'").replace(/[^\n\x20-\x7E\xA0-\xFF–—•…€]/g,'').replace(/ {2,}/g,' ')}
+async function coPdf(c){
+  const A=coAnalizar(c),I=coInf(c,A),X=coPdfTxt;
+  const W=await pdfWriter(X(I.titulo)),pdf=W.pdf,ML=W.ML,TW=W.TW;
+  const G=[150,35,74],INK=[29,31,33],GR=[96,98,99],SL=[78,98,112],ROSA=[245,233,237];
+  const col=c=>pdf.setTextColor(c[0],c[1],c[2]),fill=c=>pdf.setFillColor(c[0],c[1],c[2]);
+  const font=(st,sz)=>{pdf.setFont('helvetica',st);pdf.setFontSize(sz)};
+  const nueva=()=>W.ensure(1e4);
+  const pct=p=>p+' %';
+  /* portada */
+  W.y=62;font('bold',8.5);col(G);pdf.text('INFORME DE LA REPRESENTACIÓN ESTUDIANTIL',ML,W.y);W.y+=10;
+  font('bold',23);col(INK);pdf.splitTextToSize(X(I.titulo),TW).forEach(l=>{pdf.text(l,ML,W.y);W.y+=10});
+  W.y+=1;font('normal',11.5);col(GR);pdf.splitTextToSize(X(`Resultados de la encuesta al alumnado${I.sede?' · '+I.sede:''} · ${A.N} respuestas · ${coPeriodoCorto(A)}`),TW).forEach(l=>{pdf.text(l,ML,W.y);W.y+=5.6});
+  W.y+=4;fill(G);pdf.rect(ML,W.y,TW,1.1,'F');W.y+=10;
+  const kv=[['Dirigido a',I.dest],['Con copia a',I.cc],['Presentado por',[I.firma,I.cargo].filter(Boolean).join(', ')],['Fecha',fmtLong(today())],['Respuesta solicitada',`En un plazo de ${I.plazo} días hábiles`]].filter(r=>r[1]);
+  kv.forEach(([k,v])=>{font('bold',9.5);col(GR);pdf.text(k.toUpperCase(),ML,W.y);font('normal',11);col(INK);const L=pdf.splitTextToSize(X(v),TW-48);L.forEach((l,i)=>pdf.text(l,ML+48,W.y+i*5.2));W.y+=Math.max(1,L.length)*5.2+3});
+  const cifras=[[String(A.N),'estudiantes han respondido a la encuesta'],A.grados>1?[String(A.grados),'grados distintos representados']:null,coRapidez(A)&&A.horas<72?[A.horas<24?'<\u00a024\u00a0h':Math.ceil(A.horas/24)+'\u00a0días','han bastado para reunir las respuestas']:null].filter(Boolean);
+  A.kpis.slice().sort((a,b)=>b.p-a.p).forEach(k=>{if(cifras.length<3)cifras.push([pct(k.p),k.lab.length>70?k.lab.slice(0,67).replace(/\s+\S*$/,'')+'…':k.lab])});
+  const cw=(TW-(cifras.length-1)*5)/cifras.length,cy=212;
+  cifras.forEach(([n,t],i)=>{const x=ML+i*(cw+5);fill(ROSA);pdf.rect(x,cy,cw,34,'F');fill(G);pdf.rect(x,cy,cw,1.4,'F');font('bold',25);col(G);pdf.text(X(n),x+5,cy+16);font('normal',9.5);col(INK);pdf.splitTextToSize(X(t),cw-10).forEach((l,j)=>pdf.text(l,x+5,cy+24+j*4.4))});
+  font('italic',8.5);col(GR);pdf.splitTextToSize(X('Encuesta anónima. Los porcentajes se calculan sobre quienes respondieron a cada pregunta. Los testimonios se citan solo con autorización expresa de sus autores y sin datos que permitan identificarlos.'),TW).forEach((l,i)=>pdf.text(l,ML,256+i*4));
+  /* escrito de presentación */
+  const firmar=()=>{
+    W.gap(5);W.para(X(`En ${CFG.lugar||'Madrid'}, a ${fmtLong(today())}.`));W.gap(12);W.ensure(22);
+    W.para(X('Fdo.: '+(I.firma||'[Tu nombre]')),{after:0});W.para(X(I.cargo),{size:9.5,color:GR,after:3});
+    lines(I.otros).forEach(o=>{W.ensure(12);W.gap(6);W.para(X('Fdo.: '+o),{after:3})});
+  };
+  if(I.carta){
+    nueva();
+    lines(I.dest).forEach((l,i)=>W.para(X(l),{bold:i===0,after:0}));if(I.cc)W.para(X('Con copia a: '+I.cc),{size:9.5,color:GR,after:0});W.gap(4);
+    W.heading(X('Asunto: Queja formal sobre '+coTema(c.titulo)),{before:2});
+    W.para(X(`${I.firma||'[Tu nombre]'}, ${lc1(I.cargo)}, en representación de los estudiantes,`),{justify:true});
+    W.heading('Expone');coExpone(c,A,I).forEach((x,i)=>W.para(X(x),{lead:(ORD[i]||(i+1)+'.º')+'.- ',justify:true}));
+    W.para('Por todo lo anterior,');W.heading('Solicita');lines(I.peticiones).forEach((x,i)=>W.para(X(x),{lead:(i+1)+'. ',justify:true}));
+    W.para(X(`Documentación que se adjunta: ${I.titulo}, con los resultados completos de la encuesta (${A.N} respuestas).`),{italic:true,size:9.5,color:GR});
+    firmar();
+  }
+  /* 1. resumen ejecutivo */
+  nueva();let sec=0;const S=t=>{if(sec)W.ensure(48);W.heading(X(`${++sec}. ${t}`),{before:sec===1?0:7})};
+  S('Resumen ejecutivo');W.para(X(I.resumen),{justify:true});W.gap(2);
+  const tiles=(L)=>{const w=(TW-5)/2;for(let i=0;i<L.length;i+=2){const par=L.slice(i,i+2);font('normal',9.4);const ls=par.map(k=>pdf.splitTextToSize(X(k.lab),w-12));const hh=Math.max(31,22+Math.max(...ls.map(l=>l.length))*4.3+7);W.ensure(hh+4);const y=W.y;
+    par.forEach((k,j)=>{const x=ML+j*(w+5);fill(ROSA);pdf.rect(x,y,w,hh,'F');fill(G);pdf.rect(x,y,1.6,hh,'F');font('bold',7.2);col(G);pdf.text(X((CO_AREA[k.area]||CO_AREA.general)[1].toUpperCase()),x+6,y+6.2);font('bold',22);pdf.text(pct(k.p),x+6,y+16.5);font('normal',9.4);col(INK);ls[j].forEach((l,li)=>pdf.text(l,x+6,y+22.6+li*4.3));font('normal',7.4);col(GR);pdf.text(`${k.n} de ${k.base} respuestas`,x+6,y+hh-3.6)});
+    W.y+=hh+5}};
+  if(A.kpis.length)tiles(A.kpis.slice().sort((a,b)=>b.p-a.p));
+  /* 2. participación y método */
+  S('Participación y método');
+  W.kv([['Método','Cuestionario en línea anónimo (Microsoft Forms) difundido entre el alumnado'],['Periodo',coPeriodo(A).replace(/^./,m=>m.toUpperCase())+(coRapidez(A)?' ('+coRapidez(A)+')':'')],['Respuestas',String(A.N)],['Tiempo medio',A.min?A.min+' minutos por cuestionario':''],['Testimonios',A.consent?'Solo se citan los de quienes lo han autorizado de forma expresa':'Se citan de forma anónima']].map(([k,v])=>[k,X(v)]));
+  const barras=(q,o)=>{o=o||{};const tot=o.base||q.resp||1,LW=60,BX=ML+63,BW=TW-63-27;
+    q.opts.forEach(op=>{font('normal',8.8);const L=pdf.splitTextToSize(X(op.l),LW),rh=Math.max(5.4,L.length*3.8+1.6);W.ensure(rh);const y=W.y;col(INK);L.forEach((l,i)=>pdf.text(l,ML,y+3.7+i*3.8));
+      pdf.setFillColor(236,236,237);pdf.rect(BX,y+1,BW,3.4,'F');const na=CO_NA.test(norm(op.l));fill(o.plano?SL:q.mal&&q.mal.has(op.l)&&!q.top?G:na?[200,201,202]:SL);pdf.rect(BX,y+1,Math.max(.6,BW*Math.min(1,op.n/tot)),3.4,'F');
+      font('bold',8.8);col(INK);pdf.text(`${op.n} · ${pct(coPc(op.n,tot))}`,ML+TW,y+3.7,{align:'right'});W.y+=rh});W.gap(2)};
+  const perfil=A.qs.filter(q=>q.area==='perfil'&&q.opts);
+  perfil.forEach(q=>{const qq=q.t==='grado'&&q.opts.length>9?Object.assign({},q,{opts:q.opts.slice(0,8).concat([{l:'Otros grados',n:q.opts.slice(8).reduce((a,o)=>a+o.n,0)}])}):q;W.ensure(16);W.sub(X(q.h));barras(qq,{plano:true})});
+  /* 3. resultados por ámbito */
+  const citas=coCitasInforme(A);
+  const cita=(t,n)=>{font('italic',9.6);const L=pdf.splitTextToSize(X('«'+coLimpia(t.txt).slice(0,700)+(t.txt.length>700?'…':'')+'»'),TW-9);W.ensure(Math.min(L.length,4)*4.3+6);L.forEach(l=>{W.ensure(4.4);fill(G);pdf.rect(ML,W.y-.2,.9,4.5,'F');col(INK);font('italic',9.6);pdf.text(l,ML+5,W.y+3.2);W.y+=4.4});font('normal',7.6);col(GR);pdf.text(X('Testimonio anónimo'+(n?' T'+n:'')),ML+5,W.y+3.4);W.y+=7};
+  const numCita={};A.T.filter(t=>t.ok&&!t.no).forEach((t,i)=>numCita[t.id]=i+1);
+  const ambs=A.orden.filter(a=>a!=='perfil');
+  if(ambs.length){
+    S('Resultados por ámbito');
+    ambs.forEach((a,ai)=>{
+      W.ensure(30);W.gap(ai?4:0);font('bold',12.5);col(G);pdf.text(X(`${sec}.${ai+1}. ${CO_AREA[a][1]}`),ML,W.y+4.5);W.y+=9;
+      A.qs.filter(q=>q.area===a).forEach(q=>{
+        if(q.t==='likert'){
+          W.ensure(14+q.items.length*8);W.sub(X(q.h));
+          const esc=q.escala,BX=ML+52,BW=TW-52;const malG=new Set();q.items.forEach(it=>it.mal.forEach(m=>malG.add(m)));
+          const tonos=esc.map((l,i)=>{if(CO_NA.test(norm(l)))return [214,214,215];if(malG.has(l)){const k=esc.filter(x=>malG.has(x)).indexOf(l);return k===0?[120,28,59]:k===1?[192,123,146]:[214,160,178]}const buenos=esc.filter(x=>!malG.has(x)&&!CO_NA.test(norm(x)));const k=buenos.indexOf(l),m=buenos.length;return m<=1?SL:k===0?[198,206,212]:k===m-1?SL:[133,161,181]});
+          q.items.forEach(it=>{const tot=it.resp||1;W.ensure(8);const y=W.y;font('normal',8.8);col(INK);pdf.splitTextToSize(X(it.item),48).slice(0,2).forEach((l,i)=>pdf.text(l,ML,y+3.6+i*3.6));let x=BX;
+            esc.forEach((l,i)=>{const o=it.opts.find(op=>op.l===l);if(!o)return;const w=BW*o.n/tot;fill(tonos[i]);pdf.rect(x,y+.6,w,5,'F');if(w>9){font('bold',7.4);pdf.setTextColor(...(i<2&&malG.has(l)?[255,255,255]:INK));pdf.text(pct(coPc(o.n,tot)),x+w/2,y+4.1,{align:'center'})}x+=w});W.y+=7.6});
+          W.gap(1);let lx=ML;font('normal',7.6);esc.forEach((l,i)=>{const w=pdf.getTextWidth(X(l))+9;if(lx+w>ML+TW){lx=ML;W.y+=4.6}fill(tonos[i]);pdf.rect(lx,W.y+.4,3.2,3.2,'F');col(GR);pdf.text(X(l),lx+4.6,W.y+3.1);lx+=w+2});W.y+=6.5;
+          q.items.filter(it=>it.ind&&!it.top).sort((x,y)=>y.ind.p-x.ind.p).slice(0,3).forEach(it=>W.para(X(`${pct(it.ind.p)} ${it.ind.lab} (${it.ind.n} de ${it.ind.base}).`),{size:9.4,lead:'• ',after:.8}));W.gap(3);
+          return;
+        }
+        W.ensure(26);W.sub(X(q.h));
+        if(q.ind&&!q.top){font('bold',10);col(q.ctx?SL:G);const t=X(`${pct(q.ind.p)} ${q.ind.lab}`);const L=pdf.splitTextToSize(t,TW);L.forEach(l=>{W.ensure(4.8);pdf.text(l,ML,W.y+3.6);W.y+=4.6});font('normal',8);col(GR);pdf.text(`${q.ind.n} de ${q.ind.base} respuestas`,ML,W.y+3);W.y+=5.5}
+        barras(q,{plano:q.ctx});W.gap(2.5);
+      });
+      (citas[a]||[]).forEach(t=>cita(t,numCita[t.id]));
+    });
+  }
+  /* 4. propuestas */
+  if(A.temas.some(t=>t.n>=2)||A.contactos.length||citas._prop.length){
+    S('Lo que propone el alumnado');
+    const tem=A.temas.filter(t=>t.n>=2).slice(0,8);if(tem.length){W.para(X('Temas que más se repiten en las respuestas libres (número de estudiantes que los mencionan):'),{size:10});barras({opts:tem.map(t=>({l:t.l,n:t.n})),resp:A.N},{plano:true,base:A.N})}
+    if(citas._prop.length){W.para(X('Algunas de sus propuestas, tal y como las escribieron:'),{size:10,after:1.5});citas._prop.forEach(t=>cita(t,numCita[t.id]))}
+    if(A.contactos.length)W.para(X(`${A.contactos.length} ${A.contactos.length===1?'estudiante se ha ofrecido':'estudiantes se han ofrecido'} a sumarse formalmente a esta queja y a aportar pruebas (fotografías, correos). Sus datos no se incluyen en este informe.`),{italic:true,size:9.6,color:GR});
+  }
+  /* 5. peticiones */
+  S('Peticiones');W.para(X('A la vista de estos resultados, la representación estudiantil solicita:'),{after:2});
+  lines(I.peticiones).forEach((x,i)=>W.para(X(x),{lead:(i+1)+'. ',justify:true,after:2.2}));
+  if(I.fund){S('Fundamentación');CO_FUND.forEach(([t,d])=>{W.ensure(12);W.para(X(t+':'),{bold:true,size:9.8,after:.4});W.para(X(d.charAt(0).toUpperCase()+d.slice(1)),{size:9.8,justify:true,after:2.4,indent:4})})}
+  if(I.pasos){S('Próximos pasos');W.para(X(CO_PASOS),{justify:true})}
+  firmar();
+  /* anexos */
+  if(I.anexo){
+    const ok=A.T.filter(t=>t.ok&&!t.no);
+    if(ok.length){nueva();W.heading('Anexo I. Testimonios',{before:0});W.para(X(A.consent?'Se reproducen todos los testimonios de quienes han autorizado que se citen, tal y como los escribieron (solo se eliminan datos de contacto).':'Testimonios recogidos en la encuesta, tal y como los escribieron (solo se eliminan datos de contacto).'),{size:9.4,color:GR});
+      A.textos.forEach(tq=>{const L=ok.filter(t=>t.q.k===tq.k);if(!L.length)return;W.ensure(16);W.sub(X(tq.h));L.forEach(t=>{W.para(X(coLimpia(t.txt).slice(0,900)),{lead:'T'+numCita[t.id]+'. ',size:9.4,after:1.6})})})}
+    W.ensure(30);W.heading(ok.length?'Anexo II. Cuestionario':'Anexo I. Cuestionario',{before:ok.length?8:0});
+    const todas=[];A.qs.forEach(q=>{if(q.t==='likert')todas.push(q.h+' ('+q.items.map(i=>i.item).join(', ')+')');else todas.push(q.h)});A.textos.forEach(t=>todas.push(t.h+' (respuesta libre)'));
+    todas.forEach((t,i)=>W.para(X(t),{lead:(i+1)+'. ',size:9.2,after:.8}));
+  }
+  return W.finish();
+}
+
+/* ---------- vista ---------- */
+function coRender(root){
+  root.innerHTML=`<div class="head"><div><div class="kicker">Incidencias · queja colectiva</div><h2>Queja <em>colectiva</em></h2><p class="lead">Un formulario para que el alumnado cuente lo que pasa, sus respuestas en Excel y, cuando cierres la encuesta, el informe formal para Dirección con los datos, los testimonios y las peticiones.</p></div>
+    <div class="row"><div class="seg" role="group" aria-label="Vista">${kSegs('colectiva')}</div>${canWrite?'<button class="btn primary" data-act="coNuevo">+ Nueva queja colectiva</button>':''}</div></div>
+    <div id="ed"></div><div id="co-new"></div><div id="slot-co"></div>`;
+  coNewPaint();coPaint();
+}
+function coNewPaint(){
+  const box=$('co-new');if(!box)return;
+  if(!CO.nuevo){box.innerHTML='';return}
+  const p=CO.pend;
+  box.innerHTML=`<section class="editor stack"><h3>Nueva queja colectiva</h3>
+    <ol class="small" style="margin:0;padding-left:20px"><li>Crea el formulario en Microsoft Forms (o Google Forms) sin pedir el correo, para que sea anónimo.</li><li>Pega aquí su enlace y, si quieres, el mensaje para los grupos.</li><li>Para ver los resultados, abre las respuestas en Excel desde Forms, descarga una copia (.xlsx) y súbela aquí. Puedes volver a subirla cuando haya más respuestas.</li></ol>
+    <div class="form"><label class="f wide" for="co-t"><span>Título</span><input id="co-t" value="${esc(CO.pendT||'')}" data-inp="coPendT" placeholder="Encuesta al alumnado sobre los espacios comunes"></label>
+    <label class="f wide" for="co-l"><span>Enlace del formulario</span><input id="co-l" value="${esc(CO.pendL||'')}" data-inp="coPendL" placeholder="https://forms.cloud.microsoft/…"></label>
+    <label class="f wide" for="co-m"><span>Mensaje para los grupos (opcional)</span><textarea id="co-m" rows="4" data-inp="coPendM" placeholder="¡Hola a todos! Estamos preparando una queja formal…">${esc(CO.pendM||'')}</textarea></label></div>
+    <div class="drop" id="co-drop">${p?`Excel cargado: <b>${esc(CO.pendNombre)}</b> · ${p.filas.length} ${p.filas.length===1?'respuesta':'respuestas'} y ${p.h.filter(x=>!CO_META.some(([,re])=>re.test(coN(x)))).length} preguntas`:'Arrastra aquí el Excel de respuestas (.xlsx) o'} <label for="co-file" style="color:var(--brand);font-weight:600;cursor:pointer;text-decoration:underline">${p?'elige otro':'elige el archivo'}</label><input type="file" id="co-file" accept=".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" data-chg="coFile" data-mode="nuevo" hidden></div>
+    ${CO.msg?`<em class="err">${esc(CO.msg)}</em>`:''}
+    <div class="row"><button class="btn primary" data-act="coCrear">Crear</button><button class="btn" data-act="coCancel">Cancelar</button></div></section>`;
+}
+function coPaint(){
+  const s=$('slot-co');if(!s)return;
+  if(!ready()){s.innerHTML=loadingHTML();return}
+  const L=coLista_();
+  if(!L.length){s.innerHTML=CO.nuevo?'':`<div class="list"><div class="empty"><b>Todavía no hay ninguna queja colectiva</b>Crea una con el enlace del formulario y sube el Excel de respuestas para ver aquí los resultados y preparar el informe.</div></div>`;return}
+  const c=coSel();CO.sel=c.id;
+  const A=coAnalizar(c),n=A.N,cerrada=c.estado==='cerrada';
+  const inc=D.incidencias.find(i=>i.colectiva===c.id);
+  const sel=L.length>1?`<label class="f" for="co-sel" style="min-width:min(100%,360px)"><span>Queja colectiva</span><select id="co-sel" data-chg="coSel">${L.map(x=>`<option value="${esc(x.id)}"${x.id===c.id?' selected':''}>${esc(x.titulo)}</option>`).join('')}</select></label>`:'';
+  s.innerHTML=`${sel}<section class="panel stack co-top">
+      <div class="row" style="justify-content:space-between;align-items:flex-start"><div class="stack" style="gap:4px"><h3 style="margin:0">${esc(c.titulo)}</h3>
+        <div class="row small">${cerrada?'<span class="chip">Encuesta cerrada</span>':'<span class="chip ok">Recogiendo respuestas</span>'}<span><b>${n}</b> ${n===1?'respuesta':'respuestas'}</span>${A.fin?`<span class="muted">· la última, ${esc(fmtLong(A.fin.slice(0,10)))}</span>`:''}${c.archivo&&c.archivo.fecha?`<span class="muted">· Excel subido el ${esc(fmtLong(iso(new Date(c.archivo.fecha))))}</span>`:''}${inc?`<button class="chip" data-act="go" data-t="incidencias" data-id="${esc(inc.id)}" data-state='{"view":"tablero"}'>En el tablero · ${esc(PT_EST[inc.columna]||'Nueva')}</button>`:''}</div></div>
+        ${c.enlace?`<a class="btn" href="${esc(c.enlace)}" target="_blank" rel="noopener">Abrir el formulario</a>`:''}</div>
+      <div class="row">${canWrite?`<label class="btn primary" for="co-up">Subir el Excel actualizado</label><input type="file" id="co-up" accept=".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" data-chg="coFile" data-mode="upd" hidden>`:''}<button class="btn" data-act="coMsg">Copiar mensaje para los grupos</button>${n?'<button class="btn" data-act="coRecord">Copiar recordatorio</button>':''}${canWrite?`<button class="btn ghost" data-act="coEstado">${cerrada?'Reabrir la encuesta':'Cerrar la encuesta'}</button><button class="btn danger" data-act="del" data-col="colectivas" data-id="${esc(c.id)}">Eliminar</button>`:''}</div>
+      ${CO.msg?`<em class="err">${esc(CO.msg)}</em>`:''}${CO.info?`<p class="small" style="margin:0">${esc(CO.info)}</p>`:''}
+    </section>
+    ${n?`<div class="seg" role="group" aria-label="Apartado" style="margin:16px 0 12px">${[['resultados','Resultados'],['testimonios',`Testimonios${A.T.length?' · '+A.T.length:''}`],['informe','Informe para Dirección']].map(([k,l])=>`<button data-act="coVer" data-v="${k}" aria-pressed="${CO.ver===k}">${esc(l)}</button>`).join('')}</div><div id="co-body">${CO.ver==='testimonios'?coTestHTML(c,A):CO.ver==='informe'?coInfHTML(c,A):coResHTML(c,A)}</div>`
+    :`<div class="drop" id="co-drop2" style="margin-top:16px">Todavía no has subido respuestas. Arrastra aquí el Excel (.xlsx) que descargas de Forms o <label for="co-up2" style="color:var(--brand);font-weight:600;cursor:pointer;text-decoration:underline">elige el archivo</label><input type="file" id="co-up2" accept=".xlsx,.csv" data-chg="coFile" data-mode="upd" hidden></div>`}`;
+}
+function coKpisHTML(A){
+  if(!A.kpis.length)return '<p class="small muted" style="margin:0">Marca con ☆ las preguntas que quieras destacar en el resumen del informe.</p>';
+  return `<div class="co-kpis">${A.kpis.slice().sort((a,b)=>b.p-a.p).map(k=>`<div class="co-kpi"><span class="co-area">${esc((CO_AREA[k.area]||CO_AREA.general)[1])}</span><b>${k.p} %</b><span>${esc(k.lab)}</span><small>${k.n} de ${k.base} respuestas</small></div>`).join('')}</div>`;
+}
+function coBarsHTML(q,ro){
+  const tot=q.resp||1;
+  return `<div class="co-bars">${q.opts.map(o=>{const m=q.mal&&q.mal.has(o.l)&&!q.top,na=CO_NA.test(norm(o.l));return `<div class="co-bar${m?(q.ctx?' sel':' mal'):''}${na?' na':''}">${ro||!canWrite?`<span class="co-op">${esc(o.l)}</span>`:`<button class="co-op" data-act="coMal" data-k="${q.k}" data-o="${esc(o.l)}" aria-pressed="${m}" title="${m?'Quitar del dato destacado':'Contar en el dato destacado'}">${esc(o.l)}</button>`}<div class="track"><div class="fill" style="width:${Math.min(100,coPc(o.n,tot))}%"></div></div><b class="num">${o.n} · ${coPc(o.n,tot)} %</b></div>`}).join('')}</div>${q.otras?`<details class="small"><summary>Otras respuestas (${q.otras.length})</summary><ul style="margin:6px 0 0;padding-left:18px">${q.otras.map(o=>`<li>${esc(o)}</li>`).join('')}</ul></details>`:''}`;
+}
+function coIndHTML(it){
+  if(!it.ind)return '';const st=it.star===true||(it.star==null&&it.kpi);
+  return `<div class="co-ind${it.ctx?' ctx':''}"><div><b>${it.ind.p} %</b> ${esc(it.ind.lab)} <span class="small muted">(${it.ind.n} de ${it.ind.base})</span></div>
+    ${canWrite?`<div class="row small" style="gap:8px"><button class="btn ghost sm" data-act="coStar" data-k="${it.k}" aria-pressed="${st}">${st?'★ En el resumen':'☆ Destacar en el resumen'}</button>${st?`<label class="co-lab" for="col-${it.k}"><span class="muted">Frase:</span><input id="col-${it.k}" data-chg="coLab" data-k="${it.k}" value="${esc(it.ind.gen?'':it.ind.lab)}" placeholder="${esc(it.ind.lab)}"></label>`:''}</div>`:''}</div>`;
+}
+function coResHTML(c,A){
+  const kpiK=new Set(A.kpis.map(k=>k.k));A.inds.forEach(it=>it.kpi=kpiK.has(it.k));
+  const ambs=A.orden.map(a=>CO_AREA[a]);
+  return `<section class="panel stack"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Datos destacados</h3><span class="small muted">Saldrán en el resumen del informe. Pulsa una respuesta para contarla o no en el dato.</span></div>${coKpisHTML(A)}</section>
+    ${ambs.map(a=>`<h3 class="co-amb">${esc(a[1])}</h3><div class="grid g2">${A.qs.filter(q=>q.area===a[0]).map(q=>{
+      if(q.t==='likert')return `<article class="qcard co-q"><h3>${esc(q.h)}</h3>${q.items.map(it=>`<div class="co-lik"><div class="small" style="font-weight:600">${esc(it.item)}</div>${coBarsHTML(it)}${coIndHTML(it)}</div>`).join('')}</article>`;
+      return `<article class="qcard co-q"><h3>${esc(q.h)}</h3>${coBarsHTML(q,q.t==='grado'||q.area==='perfil')}${q.t==='grado'?'<p class="small muted" style="margin:0">Respuesta libre: el portal agrupa las distintas formas de escribir cada grado.</p>':q.area==='perfil'?'':coIndHTML(q)}</article>`}).join('')}</div>`).join('')}`;
+}
+function coTestHTML(c,A){
+  const L=A.T,ok=L.filter(t=>t.ok).length;
+  return `<section class="panel stack"><p class="small" style="margin:0">${A.consent?`<b>${ok} de ${L.length}</b> respuestas libres son de personas que autorizan citarlas. Solo esas pueden salir en el informe, siempre sin nombre.`:'El formulario no pregunta si se pueden citar los testimonios: marca solo los que quieras incluir.'} Marca con ★ los que quieras destacar; si no marcas ninguno, el informe elige hasta dos por ámbito.</p>
+      ${A.contactos.length?`<div class="row small"><span><b>${A.contactos.length}</b> ${A.contactos.length===1?'persona quiere':'personas quieren'} sumarse a la queja o aportar pruebas.</span><button class="btn sm" data-act="coMails">Copiar sus correos</button><span class="muted">(no salen en el informe)</span></div>`:''}</section>
+    ${A.temas.length?`<section class="panel stack" style="margin-top:12px"><h3 style="margin:0">Lo que más se repite en las respuestas libres</h3><div class="co-bars">${A.temas.map(t=>`<div class="co-bar"><span class="co-op">${esc(t.l)}</span><div class="track"><div class="fill" style="width:${coPc(t.n,A.N)}%"></div></div><b class="num">${t.n} ${t.n===1?'persona':'personas'}</b></div>`).join('')}</div></section>`:''}
+    ${A.textos.slice().sort((a,b)=>['sit','prop','otro','det'].indexOf(a.kind)-['sit','prop','otro','det'].indexOf(b.kind)).map(tq=>{const T=L.filter(t=>t.q.k===tq.k);if(!T.length)return '';return `<h3 class="co-amb">${esc(tq.h)}</h3><div class="list">${T.map(t=>`<div class="it${t.ok?'':' co-off'}"><div class="main"><div class="t" style="font-weight:400;white-space:pre-line">${esc(t.txt)}</div><div class="m">${t.ok?'<span class="chip ok">Autoriza citarlo</span>':'<span class="chip">No autoriza citarlo</span>'}${t.areas.map(a=>`<span class="chip">${esc(CO_AREA[a][1])}</span>`).join('')}</div></div>${t.ok&&canWrite?`<button class="btn ghost sm" data-act="coCita" data-id="${esc(t.id)}" aria-pressed="${t.star}">${t.star?'★ En el informe':'☆ Destacar'}</button>`:''}</div>`).join('')}</div>`}).join('')}`;
+}
+function coInfHTML(c,A){
+  const I=coInf(c,A),dis=canWrite?'':' disabled';
+  const f=(k,l,v,o)=>{o=o||{};const ctl=o.area?`<textarea id="coi-${k}" rows="${o.rows||4}" data-chg="coInf" data-k="${k}"${dis}>${esc(v)}</textarea>`:`<input id="coi-${k}" data-chg="coInf" data-k="${k}" value="${esc(v)}"${o.list?` list="${o.list}"`:''}${o.num?' type="number" min="1" max="90" step="1"':''}${o.ph?` placeholder="${esc(o.ph)}"`:''}${dis}>`;return `<label class="f${o.wide?' wide':''}" for="coi-${k}"><span>${l}</span>${ctl}</label>`};
+  const chk=(k,l,v)=>`<label class="row small" for="coi-${k}" style="gap:6px"><input type="checkbox" id="coi-${k}" data-chg="coInfChk" data-k="${k}"${v?' checked':''}${canWrite?'':' disabled'}> ${l}</label>`;
+  const cargos=[...new Set(['Vocal del Consejo de Estudiantes de la Universidad Camilo José Cela',...Object.values(AMB).map(a=>a.firma),'Delegado General de Estudiantes de la Universidad Camilo José Cela'])];
+  return `<section class="panel stack"><h3 style="margin:0">Informe para Dirección</h3>
+      <p class="small muted" style="margin:0">Un PDF formal con portada, escrito de queja (expone y solicita), resumen con los datos más fuertes, resultados por ámbito con gráficos, testimonios autorizados, peticiones con plazo de respuesta, fundamentación normativa y anexos. Lo que cambies aquí se guarda.</p>
+      <div class="form">
+        ${f('titulo','Título del informe',I.titulo,{wide:true})}
+        ${f('dest','Dirigido a (una línea por persona u órgano)',I.dest,{wide:true,area:true,rows:2})}
+        ${f('cc','Con copia a',I.cc,{wide:true,ph:'Dirección de la Escuela, Defensor Universitario…'})}
+        ${f('firma','Lo firma',I.firma,{ph:'Tu nombre'})}
+        ${f('cargo','Cargo con el que firmas',I.cargo,{list:'co-cargos',wide:true})}<datalist id="co-cargos">${cargos.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+        ${f('otros','Otras firmas (una por línea: nombre, cargo)',I.otros,{wide:true,area:true,rows:2})}
+        ${f('sede','Campus o edificio (opcional)',I.sede,{ph:'Campus de Castellana'})}
+        ${f('plazo','Plazo de respuesta (días hábiles)',String(I.plazo),{num:true})}
+        ${f('resumen',`Resumen ejecutivo${I.resumenAuto?' (automático: se actualiza con los datos)':''}`,I.resumen,{wide:true,area:true,rows:6})}
+        ${f('peticiones',`Peticiones, una por línea${I.petAuto?' (automáticas)':''}`,I.peticiones,{wide:true,area:true,rows:7})}
+      </div>
+      ${canWrite&&(!I.resumenAuto||!I.petAuto)?'<div class="row"><button class="btn ghost sm" data-act="coAuto">Volver a los textos automáticos</button></div>':''}
+      <div class="row" style="gap:16px">${chk('carta','Escrito de queja al principio',I.carta)}${chk('fund','Fundamentación normativa',I.fund)}${chk('pasos','Próximos pasos si no responden',I.pasos)}${chk('anexo','Anexos (testimonios y cuestionario)',I.anexo)}</div>
+      <div class="row"><button class="btn primary" data-act="coPdf">Descargar el informe (PDF)</button><button class="btn" data-act="coTexto">Copiar el texto de la queja</button>${D.incidencias.some(i=>i.colectiva===c.id)?'':canWrite?'<button class="btn" data-act="coTablero">Pasar al tablero de quejas</button>':''}</div>
+      <p class="small muted" style="margin:0">El texto de la queja sirve para el formulario de quejas y sugerencias del <a href="${esc(AQ_P360)}" target="_blank" rel="noopener">Portal 360º</a> o para un correo; adjunta el PDF.</p></section>
+    <section class="panel stack" style="margin-top:12px"><h3 style="margin:0">Datos que destaca el resumen</h3>${coKpisHTML(A)}<p class="small muted" style="margin:0">Se eligen en Resultados con ☆; si no marcas ninguno, salen los más altos de cada ámbito.</p></section>`;
+}
+
+/* ---------- integración en Incidencias ---------- */
+(function(){
+  const M=MODS.incidencias,_r=M.render,_f=M.refresh;
+  M.render=function(root){if(this.state.view==='colectiva'){coRender(root);return}_r.call(this,root)};
+  M.refresh=function(){if(this.state.view==='colectiva'){coPaint();return}_f.call(this)};
+})();
+
+/* ---------- acciones ---------- */
+async function coGuardarCfg(c,fn){const cfg=JSON.parse(JSON.stringify(c.cfg||{}));fn(cfg);c.cfg=cfg;coPaint();return patch('colectivas',c.id,{cfg,actualizado:Date.now()})}
+async function coLeer(f){
+  if(f.size>20*1024*1024)throw new Error('Ese archivo es demasiado grande para ser un Excel de respuestas.');
+  if(/\.xls$/i.test(f.name))throw new Error('Es el formato antiguo de Excel (.xls). Ábrelo en Excel, guárdalo como .xlsx y súbelo de nuevo.');
+  if(/\.csv$/i.test(f.name)||/^text\//.test(f.type))return coTabla(parseCSV(await f.text()));
+  return coTabla(await coXlsx(await f.arrayBuffer()));
+}
+async function coArchivo(f,mode){
+  CO.msg='';CO.info='';
+  let t;try{t=await coLeer(f)}catch(e){CO.msg=(e&&e.message)||'No se ha podido leer el archivo.';mode==='nuevo'?coNewPaint():coPaint();return}
+  if(mode==='nuevo'){CO.pend=t;CO.pendNombre=f.name;if(!CO.pendT)CO.pendT=f.name.replace(/\.(xlsx|csv)$/i,'').replace(/[_]+/g,' ').replace(/\s*\(\d+\)\s*$/,'').trim();coNewPaint();return}
+  const c=coSel();if(!c)return;
+  let r;try{r=coFusion(c,t)}catch(e){CO.msg=e.message;coPaint();return}
+  const ok=await patch('colectivas',c.id,{h:r.h,filas:r.filas,archivo:{nombre:f.name,fecha:Date.now()},actualizado:Date.now()});
+  if(ok){CO.info=r.nuevas?`${r.nuevas} ${r.nuevas===1?'respuesta nueva':'respuestas nuevas'}: ya hay ${r.filas.length} en total.`:`No hay respuestas nuevas: siguen siendo ${r.filas.length}.`;toast(r.nuevas?`+${r.nuevas} ${r.nuevas===1?'respuesta':'respuestas'}`:'Sin respuestas nuevas');coPaint()}
+}
+CHG.coFile=el=>{const f=el.files&&el.files[0];const mode=el.dataset.mode;el.value='';if(f)coArchivo(f,mode)};
+document.addEventListener('dragover',e=>{const d=e.target.closest&&e.target.closest('#co-drop,#co-drop2');if(d){e.preventDefault();d.classList.add('over')}});
+document.addEventListener('dragleave',e=>{const d=e.target.closest&&e.target.closest('#co-drop,#co-drop2');if(d)d.classList.remove('over')});
+document.addEventListener('drop',e=>{const d=e.target.closest&&e.target.closest('#co-drop,#co-drop2');if(!d)return;e.preventDefault();d.classList.remove('over');const f=e.dataTransfer.files&&e.dataTransfer.files[0];if(f)coArchivo(f,d.id==='co-drop'?'nuevo':'upd')});
+INP.coPendT=el=>{CO.pendT=el.value};INP.coPendL=el=>{CO.pendL=el.value};INP.coPendM=el=>{CO.pendM=el.value};
+ACT.coNuevo=()=>{CO.nuevo=true;CO.msg='';CO.info='';CO.pend=null;CO.pendT='';CO.pendL='';CO.pendM='';coNewPaint();coPaint();const t=$('co-t');if(t){t.focus();t.scrollIntoView({block:'nearest',behavior:'smooth'})}};
+ACT.coCancel=()=>{CO.nuevo=false;CO.pend=null;CO.msg='';coNewPaint();coPaint()};
+ACT.coCrear=async el=>{
+  const t=($('co-t')||{}).value||CO.pendT||'',l=(($('co-l')||{}).value||CO.pendL||'').trim(),m=($('co-m')||{}).value||CO.pendM||'';
+  if(!t.trim()){CO.msg='Ponle un título.';coNewPaint();return}
+  if(l&&!CO_FORM.test(l)){CO.msg='El enlace no parece de Microsoft Forms ni de Google Forms. Cópialo desde el botón «Recopilar respuestas» del formulario.';coNewPaint();return}
+  el.disabled=true;const p=CO.pend,now=Date.now();
+  const id=await save('colectivas',null,{titulo:t.trim(),enlace:l,mensaje:m.trim(),estado:'abierta',h:p?p.h:[],filas:p?p.filas:[],archivo:p?{nombre:CO.pendNombre,fecha:now}:null,cfg:{},creado:now,actualizado:now});
+  el.disabled=false;
+  if(id){CO.sel=id;CO.nuevo=false;CO.pend=null;CO.msg='';CO.ver='resultados';toast('Queja colectiva creada');coNewPaint();coPaint()}
+};
+CHG.coSel=el=>{CO.sel=el.value;CO.msg='';CO.info='';coPaint()};
+ACT.coVer=el=>{CO.ver=el.dataset.v;coPaint()};
+ACT.coMal=async el=>{
+  const c=coSel(),k=el.dataset.k,o=el.dataset.o;if(!c)return;
+  const A=coAnalizar(c);let it=null;A.qs.forEach(q=>(q.t==='likert'?q.items:[q]).forEach(x=>{if(x.k===k)it=x}));if(!it)return;
+  const cur=it.top?[]:[...it.mal];const nx=cur.includes(o)?cur.filter(x=>x!==o):cur.concat([o]);
+  await coGuardarCfg(c,cfg=>{cfg.q=cfg.q||{};cfg.q[k]=Object.assign({},cfg.q[k],{mal:nx});if(cfg.q[k].lab&&!nx.length)delete cfg.q[k].lab});
+};
+ACT.coStar=async el=>{
+  const c=coSel(),k=el.dataset.k;if(!c)return;const on=el.getAttribute('aria-pressed')==='true';
+  const A=coAnalizar(c);const visibles=new Set(A.kpis.map(x=>x.k));
+  await coGuardarCfg(c,cfg=>{cfg.q=cfg.q||{};A.inds.forEach(it=>{cfg.q[it.k]=Object.assign({},cfg.q[it.k],{star:it.k===k?!on:visibles.has(it.k)})})});
+};
+CHG.coLab=async el=>{const c=coSel(),k=el.dataset.k;if(!c)return;const v=el.value.trim();await coGuardarCfg(c,cfg=>{cfg.q=cfg.q||{};cfg.q[k]=Object.assign({},cfg.q[k]);if(v)cfg.q[k].lab=v;else delete cfg.q[k].lab})};
+ACT.coCita=async el=>{const c=coSel(),id=el.dataset.id;if(!c)return;const on=el.getAttribute('aria-pressed')==='true';await coGuardarCfg(c,cfg=>{cfg.citas=Object.assign({},cfg.citas);if(on)delete cfg.citas[id];else cfg.citas[id]=true})};
+CHG.coInf=async el=>{const c=coSel(),k=el.dataset.k;if(!c)return;let v=el.value;if(k==='plazo')v=Math.max(1,Math.min(90,Math.round(Number(v)||15)));await coGuardarCfg(c,cfg=>{cfg.inf=Object.assign({},cfg.inf);cfg.inf[k]=v})};
+CHG.coInfChk=async el=>{const c=coSel(),k=el.dataset.k;if(!c)return;await coGuardarCfg(c,cfg=>{cfg.inf=Object.assign({},cfg.inf);cfg.inf[k]=el.checked})};
+ACT.coAuto=async()=>{const c=coSel();if(!c)return;await coGuardarCfg(c,cfg=>{cfg.inf=Object.assign({},cfg.inf);delete cfg.inf.resumen;delete cfg.inf.peticiones})};
+ACT.coEstado=async()=>{const c=coSel();if(!c)return;const cerrar=c.estado!=='cerrada';if(await patch('colectivas',c.id,{estado:cerrar?'cerrada':'abierta',actualizado:Date.now()})){if(cerrar)CO.ver='informe';toast(cerrar?'Encuesta cerrada: prepara el informe':'Encuesta reabierta')}};
+function coMensaje(c){const m=(c.mensaje||'').trim();const base=m||`¡Hola a todos! Estamos preparando una queja formal a la universidad sobre ${coTema(c.titulo)}. Para respaldarla necesitamos datos, así que os pedimos que rellenéis este formulario: es anónimo y se tarda unos 5 minutos.\n\nSi podéis reenviarlo a otros grupos de la uni, también nos ayudaría. ¡Gracias!`;return c.enlace&&!base.includes(c.enlace)?base+'\n\n'+c.enlace:base}
+ACT.coMsg=()=>{const c=coSel();if(c)copyText(coMensaje(c))};
+ACT.coRecord=()=>{const c=coSel();if(!c)return;const n=(c.filas||[]).length;copyText(`📣 ¡Ya llevamos ${n} respuestas, gracias! Si aún no has rellenado la encuesta sobre ${coTema(c.titulo)}, son 5 minutos y es anónima. Cuantas más respuestas, más fuerza tendrá la queja.${c.enlace?'\n\n'+c.enlace:''}`)};
+ACT.coMails=()=>{const c=coSel();if(!c)return;const A=coAnalizar(c);copyText(A.contactos.join('; '))};
+ACT.coTexto=()=>{const c=coSel();if(c)copyText(coTexto(c))};
+ACT.coPdf=async el=>{const c=coSel();if(!c)return;el.disabled=true;try{const blob=await coPdf(c);await saveFile(fileSlug('Informe '+coTema(c.titulo))+'.pdf',blob)}catch(e){console.warn(e);toast('No se ha podido crear el PDF.')}finally{el.disabled=false}};
+ACT.coTablero=async el=>{
+  const c=coSel();if(!c||D.incidencias.some(i=>i.colectiva===c.id))return;el.disabled=true;
+  const A=coAnalizar(c),now=Date.now(),K=A.kpis.slice().sort((a,b)=>b.p-a.p).slice(0,3);
+  const id=await save('incidencias',null,{titulo:('Queja colectiva: '+coTema(c.titulo)).slice(0,140),ambito:'escuela',categoria:'Instalaciones',asignatura:'',columna:'nuevas',urgente:false,afectados:A.N,origen:`Encuesta al alumnado (${A.N} respuestas)`,descripcion:`${A.N} estudiantes han respondido a la encuesta${K.length?': '+K.map(k=>`el ${k.p} % ${k.lab}`).join('; '):''}. El informe para Dirección está en Quejas → Queja colectiva.`,seguimiento:'',colectiva:c.id,historial:[{t:now,col:'nuevas'}],resuelto:null,creado:now,actualizado:now});
+  el.disabled=false;if(id){toast('Añadida al tablero de quejas');coPaint()}
 };
 /* ===== arranque ===== */
 init();
